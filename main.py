@@ -13,9 +13,15 @@ def greeting():
 def getAllParts():
     return '<h3>HELLO</h3>'
 
+# USERS
 @app.route('/api/users', methods=['GET','POST'])
 def getAllUsers():
     return UsersHandler().getAllUsers()
+
+@app.route('/api/users/<int:uid>', methods=['GET','POST','DELETE','UPDATE'])
+def getUserById(uid):
+    if request.method == 'GET':
+        return UsersHandler().getUserById(uid)
 
 
 if __name__ == '__main__':

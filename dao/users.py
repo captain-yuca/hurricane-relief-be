@@ -19,3 +19,11 @@ class UsersDAO:
         result = [(1,'captain','Manuel','Baez',True),
                    (2,'crayola','Jackelyn','Ivette',False)]
         return result
+
+    def getUserById(self, uid):
+        # cursor = self.conn.cursor()
+        # query = "select * from parts where pid = %s;"
+        # cursor.execute(query, (pid,))
+        # result = cursor.fetchone()
+        result = (uid,'captain','Manuel','Baez',True)
+        return result
