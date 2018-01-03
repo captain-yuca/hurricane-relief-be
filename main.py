@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from handler.users import UsersHandler
 from handler.resources import ResourcesHandler
 from handler.categories import CategoriesHandler
+from handler.resourceTransactions import ResourceTransactionsHandler
 
 
 
@@ -50,6 +51,20 @@ def getAllCategories():
 def getCategoryById(catid):
     if request.method == 'GET':
         return CategoriesHandler().getCategoryById(catid)
+
+#RESOURCE TRANSACTIONS
+@app.route('/api/transactions', methods=['GET', 'POST'])
+def getAllTransactions():
+    if not request.args:
+        return ResourceTransactionsHandler().getAllTransactions()
+    else:
+        return ResourceTransactionsHandler().searchTransactions(request.args)
+
+@app.route('/api/transactions/<int:tid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
+def getTransactionById(tid):
+    if request.method == 'GET':
+        return ResourceTransactionsHandler().getTransactionById(tid)
+    
 
 if __name__ == '__main__':
     app.run()
