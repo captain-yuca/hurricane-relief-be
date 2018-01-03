@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request
 from handler.users import UsersHandler
+from handler.resources import ResourcesHandler
+from handler.categories import CategoriesHandler
 
 
 
@@ -23,6 +25,31 @@ def getUserById(uid):
     if request.method == 'GET':
         return UsersHandler().getUserById(uid)
 
+# RESOURCES
+@app.route('/api/resources', methods=['GET', 'POST'])
+def getAllResources():
+    if not request.args:
+        return ResourcesHandler().getAllResources()
+    else:
+        return ResourcesHandler().searchResources(request.args)
+
+@app.route('/api/resources/<int:rid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
+def getResourceById(rid):
+    if request.method == 'GET':
+        return ResourcesHandler().getResourceById(rid)
+
+# CATEGORIES
+@app.route('/api/categories', methods=['GET', 'POST'])
+def getAllCategories():
+    if not request.args:
+        return CategoriesHandler().getAllCategories()
+    else:
+        return CategoriesHandler().searchCategories(request.args)
+
+@app.route('/api/categories/<int:catid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
+def getCategoryById(catid):
+    if request.method == 'GET':
+        return CategoriesHandler().getCategoryById(catid)
 
 if __name__ == '__main__':
     app.run()
