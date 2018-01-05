@@ -25,6 +25,11 @@ def getUserById(uid):
     if request.method == 'GET':
         return UsersHandler().getUserById(uid)
 
+@app.route('/api/users/<int:uid>/addresses', methods=['GET','POST','DELETE','UPDATE'])
+def getAddressesByUserId(uid):
+    if request.method == 'GET':
+        return UsersHandler().getAddressesByUserId(uid)
+
 # ADDRESSES
 @app.route('/api/addresses', methods=['GET','POST'])
 def getAllAddresses():

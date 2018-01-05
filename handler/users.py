@@ -1,6 +1,8 @@
 from flask import jsonify
 from dao.users import UsersDAO
+from dao.addresses import AddressesDAO
 from models.user import User
+from models.address import Address
 
 class UsersHandler:
 
@@ -21,3 +23,17 @@ class UsersHandler:
         else:
             user = User().build_dict_from_row(row)
             return jsonify(User = user)
+
+    def getAddressesByUserId(self, uid):
+        userDao = UsersDAO()
+        addressesDao = AddressesDAO()
+        user = userDao.getUserById(uid)
+        if not user:
+            return jsonify(Error = "User Not Found"), 404
+
+        addresses = addressesDao.getAddressesByUserId(uid)
+        result_list=[]
+        for row in addresses:
+            address = Address().build_dict_from_row(row)
+            result_list.append(address)
+        return jsonify(Addresses=result_list)

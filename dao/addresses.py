@@ -27,3 +27,13 @@ class AddressesDAO:
         # result = cursor.fetchone()
         result =  (add_id,'some address','something','00680', 'Mayaguez', 'Puerto Rico', 'Mayaguez')
         return result
+
+    def getAddressesByUserId(self, uid):
+        # cursor = self.conn.cursor()
+        # query = "select * from parts where pid = %s;"
+        # cursor.execute(query, (pid,))
+        # result = cursor.fetchone()
+        result =  [(5,'some address','something','00680', 'Mayaguez', 'Puerto Rico', 'Mayaguez'),
+                   (10,'some address','something','00680', 'Mayaguez', 'Puerto Rico', 'Mayaguez')
+                   ]
+        return result
