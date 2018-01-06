@@ -27,7 +27,7 @@ class CategoriesHandler:
         catName = args.get("catName")
         dao = CategoriesDAO()
         categories_list = []
-        if(len(args == 1) and catName):
+        if(len(args)==1 and catName):
             categories_list = dao.getCategoriesByName(catName)
         else:
             return jsonify(Error = "Malformed query string"), 400
