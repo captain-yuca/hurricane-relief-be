@@ -5,6 +5,7 @@ from routes.suppliers import suppliers_route
 from routes.resources import resources_route
 from routes.categories import categories_route
 from routes.resource_transactions import resource_transactions_route
+from routes.purchase import purchase_route
 from handler.resourceTransactionDetails import ResourceTransactionDetailsHandler
 
 
@@ -37,6 +38,9 @@ app.register_blueprint(suppliers_route)
 
 # REQUESTER
 app.register_blueprint(requesters_route)
+
+#PURCHASE
+app.register_blueprint(purchase_route)
 
 
 if __name__ == '__main__':
