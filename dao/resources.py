@@ -1,12 +1,12 @@
-#from config.dbconfig import pg_config
+from config.dbconfig import pg_config
 import psycopg2
 
 class ResourcesDAO:
-    #def __init__(self):
+    def __init__(self):
 
-     #   connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+       connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'], pg_config['user'], pg_config['passwd'])
 
-      #  self.conn = psycopg2._connect(connection_url)
+       self.conn = psycopg2._connect(connection_url)
 
     def getAllResources(self):
         cursor = self.conn.cursor()
@@ -16,7 +16,6 @@ class ResourcesDAO:
         for row in cursor:
            result.append(row)
 
-        #result = [(1, 'Dasani', 1), (2, 'Diesel Puma', 3)]
         return result
 
     def getResourceById(self, rid):
@@ -60,5 +59,3 @@ class ResourcesDAO:
         for row in cursor:
             result.append(row)
         return result
-
-

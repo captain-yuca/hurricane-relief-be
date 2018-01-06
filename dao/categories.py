@@ -1,12 +1,12 @@
-#from config.dbconfig import pg_config
+from config.dbconfig import pg_config
 import psycopg2
 
 class CategoriesDAO:
-    #def __init__(self):
+    def __init__(self):
 
-        # connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'], pg_config['user'], pg_config['passwd'])
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'], pg_config['user'], pg_config['passwd'])
 
-        # self.conn = psycopg2._connect(connection_url)
+        self.conn = psycopg2._connect(connection_url)
 
     def getAllCategories(self):
         cursor = self.conn.cursor()
@@ -26,12 +26,12 @@ class CategoriesDAO:
 
     def getCategoriesByName(self, catName):
         cursor = self.conn.cursor()
-        if (catName == "Water") or catName == "Fuel":
-            query = "select * from category where catid in " \
+        if (catName == "water") or catName == "fuel":
+            query = "select * from categories where catid in " \
                     "(select subcat_id from subcategories where parent_id = " \
                     "(select catid from categories where catName = %s));"
         else:
-            query = "select * from category where catName = %s"
+            query = "select * from categories where catName = %s"
         cursor.execute(query, (catName,))
         result = []
         for row in cursor:
