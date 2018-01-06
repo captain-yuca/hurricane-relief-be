@@ -1,8 +1,9 @@
 from flask import Flask, jsonify, request
 from routes.users import users_route
 from routes.requesters import requesters_route
-
 from handler.suppliers import SuppliersHandler
+from handler.resourceTransactionDetails import ResourceTransactionDetailsHandler
+
 from handler.resources import ResourcesHandler
 from handler.categories import CategoriesHandler
 from handler.resourceTransactions import ResourceTransactionsHandler
@@ -68,6 +69,21 @@ def getAllSuppliers():
 
 @app.route('/api/suppliers/<int:sid>', methods=['GET','POST','DELETE','UPDATE'])
 def getSupplierById(sid):
+
+#RESOURCE TRANSACTION DETAILS
+@app.route('/api/transactiondetails', methods=['GET', 'POST'])
+def getAllTransactionDetails():
+    if not request.args:
+        return ResourceTransactionDetailsHandler().getAllTransactionDetails()
+    else:
+        return ResourceTransactionDetailsHandler().searchTransactionDetails(request.args)
+
+@app.route('/api/transactiondetails/<int:tid>,<int:rid>', methods=['GET', 'POST'])
+def getTransactionDetailsById(tid, rid):
+    if request.method == 'GET':
+        return ResourceTransactionDetailsHandler().getTransactionDetailsById(rid, tid)
+
+
     if request.method == 'GET':
         return SuppliersHandler().getSupplierById(sid)
 
