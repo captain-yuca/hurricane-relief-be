@@ -33,7 +33,7 @@ class ResourceTransactionsDAO:
             result.append(row)
         return result
 
-    def getTransactionByPurchaseid(self, purchaseid):
+    def getTransactionsByPurchaseid(self, purchaseid):
         cursor = self.conn.cursor()
         query = "select * from resourcetransaction where purchase_id = %s;"
         cursor.execute(query, (purchaseid,))
