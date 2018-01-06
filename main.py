@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from handler.users import UsersHandler
+from handler.suppliers import SuppliersHandler
 from handler.resources import ResourcesHandler
 from handler.categories import CategoriesHandler
 from handler.resourceTransactions import ResourceTransactionsHandler
@@ -25,6 +26,11 @@ def getAllUsers():
 def getUserById(uid):
     if request.method == 'GET':
         return UsersHandler().getUserById(uid)
+
+@app.route('/api/users/<int:uid>/addresses', methods=['GET','POST','DELETE','UPDATE'])
+def getAddressesByUserId(uid):
+    if request.method == 'GET':
+        return UsersHandler().getAddressesByUserId(uid)
 
 # RESOURCES
 @app.route('/api/resources', methods=['GET', 'POST'])
@@ -65,11 +71,14 @@ def getTransactionById(tid):
     if request.method == 'GET':
         return ResourceTransactionsHandler().getTransactionById(tid)
 
-@app.route('/api/users/<int:uid>/addresses', methods=['GET','POST','DELETE','UPDATE'])
-def getAddressesByUserId(uid):
+# SUPPLIER
+@app.route('/api/suppliers', methods=['GET','POST'])
+def getAllSuppliers():
+    return SuppliersHandler().getAllSuppliers()
+
+@app.route('/api/suppliers/<int:uid>', methods=['GET','POST','DELETE','UPDATE'])
+def getSupplierById(uid):
     if request.method == 'GET':
-        return UsersHandler().getAddressesByUserId(uid)
-
-
+        return SuppliersHandler().getSupplierById(uid)
 if __name__ == '__main__':
     app.run()
