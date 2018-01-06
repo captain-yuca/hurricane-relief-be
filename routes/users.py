@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template, abort, request
 from handler.users import UsersHandler
 
 users_route = Blueprint('users_route', __name__)

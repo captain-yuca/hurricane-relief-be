@@ -1,12 +1,10 @@
 from flask import Flask, jsonify, request
 from routes.users import users_route
 from routes.requesters import requesters_route
-from handler.suppliers import SuppliersHandler
+from routes.suppliers import suppliers_route
+from routes.resources import resources_route
 from handler.resourceTransactionDetails import ResourceTransactionDetailsHandler
 
-from handler.resources import ResourcesHandler
-from handler.categories import CategoriesHandler
-from handler.resourceTransactions import ResourceTransactionsHandler
 
 
 
@@ -24,25 +22,10 @@ def getAllParts():
 app.register_blueprint(users_route)
 
 # RESOURCES
-@app.route('/api/resources', methods=['GET', 'POST'])
-def getAllResources():
-    if not request.args:
-        return ResourcesHandler().getAllResources()
-    else:
-        return ResourcesHandler().searchResources(request.args)
-
-@app.route('/api/resources/<int:rid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
-def getResourceById(rid):
-    if request.method == 'GET':
-        return ResourcesHandler().getResourceById(rid)
+app.register_blueprint(resources_route)
 
 # CATEGORIES
-@app.route('/api/categories', methods=['GET', 'POST'])
-def getAllCategories():
-    if not request.args:
-        return CategoriesHandler().getAllCategories()
-    else:
-        return CategoriesHandler().searchCategories(request.args)
+
 
 @app.route('/api/categories/<int:catid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
 def getCategoryById(catid):
@@ -63,12 +46,8 @@ def getTransactionById(tid):
         return ResourceTransactionsHandler().getTransactionById(tid)
 
 # SUPPLIER
-@app.route('/api/suppliers', methods=['GET','POST'])
-def getAllSuppliers():
-    return SuppliersHandler().getAllSuppliers()
+app.register_blueprint(suppliers_route)
 
-@app.route('/api/suppliers/<int:sid>', methods=['GET','POST','DELETE','UPDATE'])
-def getSupplierById(sid):
 
 #RESOURCE TRANSACTION DETAILS
 @app.route('/api/transactiondetails', methods=['GET', 'POST'])
@@ -84,8 +63,7 @@ def getTransactionDetailsById(tid, rid):
         return ResourceTransactionDetailsHandler().getTransactionDetailsById(rid, tid)
 
 
-    if request.method == 'GET':
-        return SuppliersHandler().getSupplierById(sid)
+
 
 # REQUESTER
 app.register_blueprint(requesters_route)
