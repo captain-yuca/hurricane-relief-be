@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, request
-from handler.users import UsersHandler
+from routes.users import users_route
+from routes.requesters import requesters_route
+
 from handler.suppliers import SuppliersHandler
-from handler.requesters import RequestersHandler
 from handler.resources import ResourcesHandler
 from handler.categories import CategoriesHandler
 from handler.resourceTransactions import ResourceTransactionsHandler
@@ -19,19 +20,7 @@ def getAllParts():
     return '<h3>HELLO</h3>'
 
 # USERS
-@app.route('/api/users', methods=['GET','POST'])
-def getAllUsers():
-    return UsersHandler().getAllUsers()
-
-@app.route('/api/users/<int:uid>', methods=['GET','POST','DELETE','UPDATE'])
-def getUserById(uid):
-    if request.method == 'GET':
-        return UsersHandler().getUserById(uid)
-
-@app.route('/api/users/<int:uid>/addresses', methods=['GET','POST','DELETE','UPDATE'])
-def getAddressesByUserId(uid):
-    if request.method == 'GET':
-        return UsersHandler().getAddressesByUserId(uid)
+app.register_blueprint(users_route)
 
 # RESOURCES
 @app.route('/api/resources', methods=['GET', 'POST'])
@@ -83,14 +72,8 @@ def getSupplierById(sid):
         return SuppliersHandler().getSupplierById(sid)
 
 # REQUESTER
-@app.route('/api/requesters', methods=['GET','POST'])
-def getAllRequesters():
-    return RequestersHandler().getAllRequesters()
+app.register_blueprint(requesters_route)
 
-@app.route('/api/requesters/<int:nid>', methods=['GET','POST','DELETE','UPDATE'])
-def getRequesterById(nid):
-    if request.method == 'GET':
-        return RequestersHandler().getRequesterById(nid)
 
 if __name__ == '__main__':
     app.run()
