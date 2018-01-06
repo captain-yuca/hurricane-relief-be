@@ -37,3 +37,17 @@ class UsersHandler:
             address = Address().build_dict_from_row(row)
             result_list.append(address)
         return jsonify(Addresses=result_list)
+
+    def searchUsers(self, args):
+        allowedKeys= {"fname", "lname", "username", "isAdmin"}
+        for key in args.keys():
+            if key not in allowedKeys:
+                return jsonify(Error="Malformed query string"), 400
+            
+        dao = UsersDAO()
+        users_list = dao.getUsersByParameters(args)
+        result_list=[]
+        for row in users_list:
+            user = User().build_dict_from_row(row)
+            result_list.append(user)
+        return jsonify(Users=result_list)

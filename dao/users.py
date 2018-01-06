@@ -24,3 +24,17 @@ class UsersDAO:
         cursor.execute(query, (uid,))
         result = cursor.fetchone()
         return result
+
+    def getUsersByParameters(self, args):
+
+        cursor = self.conn.cursor()
+
+        query ="select uid, username, lname, fname, isAdmin from users where "
+        query+= "=%s AND ".join(args.keys())
+        query+= "=%s"
+
+        cursor.execute(query, tuple(args.values()))
+        result=[]
+        for row in cursor:
+            result.append(row)
+        return result

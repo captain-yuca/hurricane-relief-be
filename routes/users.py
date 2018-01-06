@@ -5,7 +5,10 @@ users_route = Blueprint('users_route', __name__)
 
 @users_route.route('/api/users', methods=['GET','POST'])
 def getAllUsers():
-    return UsersHandler().getAllUsers()
+    if not request.args:
+        return UsersHandler().getAllUsers()
+    else:
+        return UsersHandler().searchUsers(request.args)
 
 @users_route.route('/api/users/<int:uid>', methods=['GET','POST','DELETE','UPDATE'])
 def getUserById(uid):
