@@ -26,12 +26,12 @@ class CategoriesDAO:
 
     def getCategoriesByName(self, catName):
         cursor = self.conn.cursor()
-        if (catName == "Water") or catName == "Fuel":
-            query = "select * from category where catid in " \
+        if (catName == "water") or catName == "fuel":
+            query = "select * from categories where catid in " \
                     "(select subcat_id from subcategories where parent_id = " \
                     "(select catid from categories where catName = %s));"
         else:
-            query = "select * from category where catName = %s"
+            query = "select * from categories where catName = %s"
         cursor.execute(query, (catName,))
         result = []
         for row in cursor:

@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from routes.users import users_route
 from routes.requesters import requesters_route
+from routes.purchase import purchase_route
 from handler.suppliers import SuppliersHandler
 from handler.resourceTransactionDetails import ResourceTransactionDetailsHandler
 
@@ -69,6 +70,8 @@ def getAllSuppliers():
 
 @app.route('/api/suppliers/<int:sid>', methods=['GET','POST','DELETE','UPDATE'])
 def getSupplierById(sid):
+    if request.method == 'GET':
+        return SuppliersHandler().getSupplierById(sid)
 
 #RESOURCE TRANSACTION DETAILS
 @app.route('/api/transactiondetails', methods=['GET', 'POST'])
@@ -84,11 +87,13 @@ def getTransactionDetailsById(tid, rid):
         return ResourceTransactionDetailsHandler().getTransactionDetailsById(rid, tid)
 
 
-    if request.method == 'GET':
-        return SuppliersHandler().getSupplierById(sid)
+
 
 # REQUESTER
 app.register_blueprint(requesters_route)
+
+#PURCHASE
+app.register_blueprint(purchase_route)
 
 
 if __name__ == '__main__':
