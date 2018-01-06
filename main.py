@@ -1,4 +1,6 @@
 from flask import Flask, jsonify, request
+
+from handler.resourceTransactionDetails import ResourceTransactionDetailsHandler
 from handler.users import UsersHandler
 from handler.resources import ResourcesHandler
 from handler.categories import CategoriesHandler
@@ -64,6 +66,19 @@ def getAllTransactions():
 def getTransactionById(tid):
     if request.method == 'GET':
         return ResourceTransactionsHandler().getTransactionById(tid)
+
+#RESOURCE TRANSACTION DETAILS
+@app.route('/api/transactiondetails', methods=['GET', 'POST'])
+def getAllTransactionDetails():
+    if not request.args:
+        return ResourceTransactionDetailsHandler().getAllTransactionDetails()
+    else:
+        return ResourceTransactionDetailsHandler().searchTransactionDetails(request.args)
+
+@app.route('/api/transactiondetails/<int:tid>,<int:rid>', methods=['GET', 'POST'])
+def getTransactionDetailsById(tid, rid):
+    if request.method == 'GET':
+        return ResourceTransactionDetailsHandler().getTransactionDetailsById(rid, tid)
 
 @app.route('/api/users/<int:uid>/addresses', methods=['GET','POST','DELETE','UPDATE'])
 def getAddressesByUserId(uid):
