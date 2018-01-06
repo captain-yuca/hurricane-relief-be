@@ -3,6 +3,8 @@ from handler.users import UsersHandler
 from handler.resources import ResourcesHandler
 from handler.categories import CategoriesHandler
 from handler.resourceTransactions import ResourceTransactionsHandler
+from handler.addresses import AddressesHandler
+from handler.payment_info import PaymentInfoHandler
 
 
 
@@ -64,7 +66,31 @@ def getAllTransactions():
 def getTransactionById(tid):
     if request.method == 'GET':
         return ResourceTransactionsHandler().getTransactionById(tid)
-    
+
+@app.route('/api/users/<int:uid>/addresses', methods=['GET','POST','DELETE','UPDATE'])
+def getAddressesByUserId(uid):
+    if request.method == 'GET':
+        return UsersHandler().getAddressesByUserId(uid)
+
+# ADDRESSES
+@app.route('/api/addresses', methods=['GET','POST'])
+def getAllAddresses():
+    return AddressesHandler().getAllAddresses()
+
+@app.route('/api/addresses/<int:add_id>', methods=['GET','POST','DELETE','UPDATE'])
+def getAddressById(add_id):
+    if request.method == 'GET':
+        return AddressesHandler().getAddressById(add_id)
+
+# PAYMENT_INFO
+@app.route('/api/payment_info', methods=['GET','POST'])
+def getAllPaymentInfo():
+    return PaymentInfoHandler().getAllPaymentInfo()
+
+@app.route('/api/payment_info/<int:pi_id>', methods=['GET','POST','DELETE','UPDATE'])
+def getPaymentInfoById(pi_id):
+    if request.method == 'GET':
+        return PaymentInfoHandler().getPaymentInfoById(pi_id)
 
 if __name__ == '__main__':
     app.run()
