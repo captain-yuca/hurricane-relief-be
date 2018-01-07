@@ -1,5 +1,5 @@
 from models.resource import Resource
-# from models.supplier import Supplier
+from models.supplier import Supplier
 class Stock:
 
     def build_dict_from_row(self, row):
