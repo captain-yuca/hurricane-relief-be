@@ -24,6 +24,22 @@ class SuppliersHandler:
             supplier = Supplier().build_dict_from_row(row)
             return jsonify(Supplier = supplier)
 
+    def searchSuppliers(self, args):
+        #Resource and Category
+        allowedKeys={"rid", "rname", "catid", "catname"}
+        for key in args.keys():
+            if key not in allowedKeys:
+                return jsonify(Error="Malfromed query string"), 400
+        dao = SuppliersDAO()
+        suppliers_list= dao.getSuppliersByResourceParams(args)
+        result_list =[]
+        for row in suppliers_list:
+            supplier = Supplier().build_dict_from_row_stock(row)
+            result_list.append(supplier)
+        return jsonify(Suppliers=result_list)
+
+
+
     # def getAddressesByUserId(self, sid):
     #     userDao = UsersDAO()
     #     addressesDao = AddressesDAO()
