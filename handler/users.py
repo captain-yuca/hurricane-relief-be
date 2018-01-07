@@ -39,7 +39,7 @@ class UsersHandler:
         return jsonify(Addresses=result_list)
 
     def searchUsers(self, args):
-        allowedKeys= {"fname", "lname", "username", "isAdmin"}
+        allowedKeys= {"fname", "lname", "username", "isAdmin", "add_id"}
         for key in args.keys():
             if key not in allowedKeys:
                 return jsonify(Error="Malformed query string"), 400
