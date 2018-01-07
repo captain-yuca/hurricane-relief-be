@@ -173,14 +173,13 @@ class PurchaseDAO:
     #added by Herbert, supposed to implement 18
     def getPurchasesBySupplier(self, username):
         cursor = self.conn.cursor()
-        query= "select rname, catname, purchaseprice, purhase total, purchase_date " \
-                "from purchase natural inner join resourcetransactiondetails natural inner join resource natural inner join category " \
+        query= "select rname, catname, purchaseprice, purchase_total, purchase_date " \
+                "from purchase natural inner join resourcetransaction natural inner join resourcetransactiondetail natural inner join resource natural inner join category " \
                 "where sid in" \
-                "(select sid from usr natural inner join supplier " \
+                "(select sid from appuser natural inner join supplier " \
                 "where username= %s );"
         cursor.execute(query, (username,))
         result = []
         for row in cursor:
             result.append(row)
         return result
-
