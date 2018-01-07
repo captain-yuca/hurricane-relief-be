@@ -26,19 +26,45 @@ class SuppliersDAO:
         return result
 
 
-    def getSuppliersByResourceParams(self, args):
+    def getSuppliersByResourceParams(self, args, max_args, min_args):
 
         cursor = self.conn.cursor()
+
 
         query ="""
         select sid, uid, username, lname, fname,  isadmin, currentpriceperitem, qtysum, rid, rname, catid, catname
         from supplier natural join appuser natural join stock natural join resource natural join category
         where
         """
-        query+= "=%s AND ".join(args.keys())
-        query+= "=%s"
 
-        cursor.execute(query, tuple(args.values()))
+        selection_length = len(args) + len(max_args) + len(min_args)
+
+        i = 0
+
+        # Go through each args list and append the key with its appropiate operator
+        # and value. 'i' keeps track of when to stop appending AND.
+        for key in min_args.keys():
+            if i == selection_length - 1:
+                query+= key + " < %s"
+            else:
+                query+= key + " < %s AND "
+                i+=1
+        for key in max_args.keys():
+            if i == selection_length - 1:
+                query+= key + " >= %s"
+            else:
+                query+= key + " >= %s AND "
+                i+=1
+        for key in args.keys():
+            if i == selection_length - 1:
+                query+= key + " = %s"
+            else:
+                query+= key + " = %s AND "
+                i+=1
+
+
+        args_tuple = tuple(min_args.values()) + tuple(max_args.values()) + tuple(args.values())
+        cursor.execute(query, args_tuple)
         result=[]
         for row in cursor:
             print(row)
