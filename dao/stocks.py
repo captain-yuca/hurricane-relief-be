@@ -98,7 +98,11 @@ class StocksDAO:
 
     def getStocksBySid(self, sid):
         cursor = self.conn.cursor()
-        query = "select * from stock where sid = %s;"
+        query = """
+        select currentpriceperitem, qtysum, rid, rname, catid, catname
+        from supplier natural join appuser natural join stock natural join resource natural join category
+        where sid=%s
+        """
         cursor.execute(query, (sid, ))
         result = []
         for row in cursor:
@@ -122,6 +126,3 @@ class StocksDAO:
         for row in cursor:
             result.append(row)
         return result
-
-
-

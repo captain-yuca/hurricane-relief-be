@@ -19,3 +19,15 @@ def getAllSuppliers():
 def getSupplierById(sid):
     if request.method == 'GET':
         return SuppliersHandler().getSupplierById(sid)
+
+@suppliers_route.route('/api/suppliers/<int:sid>/stocks', methods=['GET','POST','DELETE','UPDATE'])
+def getStocksBySid(sid):
+    if request.method == 'POST':
+        pass
+    elif request.method == 'GET':
+        if not request.args:
+            return SuppliersHandler().getStocksBySupplierId(sid)
+        else:
+            pass
+    else:
+        return jsonify(Error="Method not allowed. "), 405
