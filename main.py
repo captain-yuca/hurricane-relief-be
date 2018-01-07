@@ -6,6 +6,7 @@ from routes.resources import resources_route
 from routes.categories import categories_route
 from routes.resource_transactions import resource_transactions_route
 from routes.purchase import purchase_route
+from routes.resource_requests import resource_requests_route
 from routes.availability_announcements import availability_announcements_route
 from handler.resourceTransactionDetails import ResourceTransactionDetailsHandler
 
@@ -44,6 +45,8 @@ app.register_blueprint(requesters_route)
 app.register_blueprint(purchase_route)
 
 app.register_blueprint(availability_announcements_route)
+
+app.register_blueprint(resource_requests_route)
 
 
 if __name__ == '__main__':

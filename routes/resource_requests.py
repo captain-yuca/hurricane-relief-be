@@ -1,0 +1,15 @@
+from flask import Blueprint, render_template, abort, request
+from handler.resource_requests import ResourceRequestsHandler
+
+resource_requests_route = Blueprint('resource_requests_route', __name__)
+
+@resource_requests_route.route('/api/requests', methods=['GET', 'POST'])
+def getAllRequests():
+    if not request.args:
+        return ResourceRequestsHandler().getAllRequests()
+    else:
+        pass
+@resource_requests_route.route('/api/requests/<int:reqid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
+def getRequestById(reqid):
+    if request.method == 'GET':
+        return ResourceRequestsHandler().getrequestById(reqid)
