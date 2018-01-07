@@ -170,6 +170,7 @@ class PurchaseDAO:
         for row in cursor:
             result.append(row)
         return result
+    #added by Herbert, supposed to implement 18
     def getPurchaseBySupplier(self, username):
         cursor = self.conn.cursor()
         query= "select rname, catname, purchaseprice, purhase total, purchase_date " \
@@ -177,4 +178,9 @@ class PurchaseDAO:
                 "where sid in" \
                 "(select sid from usr natural inner join supplier " \
                 "where username= %s );"
+        cursor.execute(query, (username,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 

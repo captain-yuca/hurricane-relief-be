@@ -59,6 +59,7 @@ class ResourcesDAO:
         for row in cursor:
             result.append(row)
         return result
+    #added by Herbert. supposed to implement 14
     def getResourcesBySupplier(self, username):
         cursor = self.conn.cursor()
         query = "select * from resource where rid in " \
@@ -68,4 +69,4 @@ class ResourcesDAO:
         result = []
         for row in cursor:
             result.append(row)
-        return result 
+        return result
