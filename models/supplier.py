@@ -15,6 +15,10 @@ class Supplier:
         result['sid'] = row[0]
         result['user'] = User().build_dict_from_row(row[1:6])
         result['stock'] = Stock().build_dict_from_row_resource(row[6:])
+        return result
 
-
+    def build_dict_from_row_region(self, row):
+        result = {}
+        result['sid'] = row[0]
+        result['user'] = User().build_dict_from_row_region(row[1:])
         return result
