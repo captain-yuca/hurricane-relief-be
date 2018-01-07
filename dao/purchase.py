@@ -19,7 +19,7 @@ class PurchaseDAO:
 
     def getPurchaseById(self, purchase_id):
         cursor = self.conn.cursor()
-        query = "select * from purchase where purchase_id = %s;"
+        query = "select purchase_id, purchase_date, purchase_total, purchase.uid, pi_id, ccnum, expirationdate from purchase inner join paymentinfo on purchase.buyer_pi_id = paymentinfo.pi_id where purchase_id = %s;"
         cursor.execute(query, (purchase_id,))
         result = cursor.fetchone()
         return result

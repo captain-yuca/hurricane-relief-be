@@ -2,9 +2,11 @@ from flask import jsonify
 from dao.users import UsersDAO
 from dao.addresses import AddressesDAO
 from dao.purchase import PurchaseDAO
+from dao.resourceTransactions import ResourceTransactionsDAO
 from models.user import User
 from models.address import Address
 from models.purchase import Purchase
+from models.resourceTransaction import ResourceTransaction
 
 class UsersHandler:
 
@@ -53,6 +55,45 @@ class UsersHandler:
             purchase =Purchase().build_dict_from_row_payment(row)
             result_list.append(purchase)
         return jsonify(purchases=result_list)
+
+    def getUserPurchaseById(self, uid, pi_id):
+        userDao = UsersDAO()
+        purchasesDao = PurchaseDAO()
+        user = userDao.getUserById(uid)
+        if not user:
+            return jsonify(Error = "User Not Found"), 404
+
+        purchase = purchasesDao.getPurchaseById(pi_id)
+        if not purchase or purchase[3]  != uid:
+            return jsonify(Error = "Purchase Not Found"), 404
+
+        result = Purchase().build_dict_from_row_payment(purchase)
+        return jsonify(purchase=result)
+
+    def getPurchaseDetailsById(self, uid, pi_id):
+        userDao = UsersDAO()
+        purchasesDao = PurchaseDAO()
+        user = userDao.getUserById(uid)
+        if not user:
+            return jsonify(Error = "User Not Found"), 404
+
+        purchase = purchasesDao.getPurchaseById(pi_id)
+        if not purchase or purchase[3]  != uid:
+            return jsonify(Error = "Purchase Not Found"), 404
+
+        detailsDao = ResourceTransactionsDAO()
+        details_list = detailsDao.getTransactionsByPurchaseid(pi_id)
+        result_list = []
+
+        for row in details_list:
+            detail = ResourceTransaction().build_dict_from_row_transactions(row)
+            result_list.append(detail)
+        return jsonify(details=result_list)
+
+
+
+
+
 
     def searchUsers(self, args):
         allowedKeys= {"fname", "lname", "username", "isAdmin", "add_id"}

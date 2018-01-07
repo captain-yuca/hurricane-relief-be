@@ -35,7 +35,11 @@ class ResourceTransactionsDAO:
 
     def getTransactionsByPurchaseid(self, purchaseid):
         cursor = self.conn.cursor()
-        query = "select * from resourcetransaction where purchase_id = %s;"
+        query = """
+        select tid, transactionammount, sid, qty, purchaseprice, rid, rname, catid, catname
+        from resourcetransaction natural inner join resourcetransactiondetail natural inner join resource natural inner join category
+        where purchase_id = %s;
+        """
         cursor.execute(query, (purchaseid,))
         result = []
         for row in cursor:
@@ -112,4 +116,3 @@ class ResourceTransactionsDAO:
         for row in cursor:
             result.append(row)
         return result
-    
