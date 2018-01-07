@@ -10,7 +10,7 @@ class ResourcesDAO:
 
     def getAllResources(self):
         cursor = self.conn.cursor()
-        query = "select * from resources;"
+        query = "select * from resource;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -20,14 +20,14 @@ class ResourcesDAO:
 
     def getResourceById(self, rid):
         cursor = self.conn.cursor()
-        query = "select * from resources where rid = %s;"
+        query = "select * from resource where rid = %s;"
         cursor.execute(query, (rid,))
         result = cursor.fetchone()
         return result
 
     def getResourcesByRname(self, rname):
         cursor = self.conn.cursor()
-        query = "select * from resources where rname = %s;"
+        query = "select * from resource where rname = %s;"
         cursor.execute(query, (rname,))
         result = []
         for row in cursor:
@@ -37,10 +37,10 @@ class ResourcesDAO:
     def getResourcesByCatId(self, catId):
         cursor = self.conn.cursor()
         if(catId == 1) or catId == 9:
-            query = "select * from resources where catid in " \
-                    "(select subcat_id from subcategories where parent_id = %s);"
+            query = "select * from resource where catid in " \
+                    "(select subcat_id from subcategory where parent_id = %s);"
         else:
-            query = "select * from resources where catid = %s;"
+            query = "select * from resource where catid = %s;"
         cursor.execute(query, (catId,))
         result = []
         for row in cursor:
@@ -50,10 +50,10 @@ class ResourcesDAO:
     def getResourcesByRnameAndCatId(self, rname, catId):
         cursor = self.conn.cursor()
         if (catId == 1) or catId == 9:
-            query = "select * from resources where rname = %s and catid in" \
-                    "(select subcat_id from subcategories where parent_id = %s);"
+            query = "select * from resource where rname = %s and catid in" \
+                    "(select subcat_id from subcategory where parent_id = %s);"
         else:
-            query = "select * from resources where rname = %s and catid = %s;"
+            query = "select * from resource where rname = %s and catid = %s;"
         cursor.execute(query, (rname, catId))
         result = []
         for row in cursor:

@@ -10,7 +10,7 @@ class AvailabilityAnnouncementsDAO:
 
     def getAllAnnouncements(self):
         cursor = self.conn.cursor()
-        query = "select * from availabilityannouncements;"
+        query = "select * from availabilityannouncement;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -19,7 +19,7 @@ class AvailabilityAnnouncementsDAO:
 
     def getAnnouncementById(self, add_id):
         cursor = self.conn.cursor()
-        query = "select * from availabilityannouncements where ann_id=%s;"
+        query = "select * from availabilityannouncement where ann_id=%s;"
         cursor.execute(query, (add_id,))
         result = cursor.fetchone()
         return result

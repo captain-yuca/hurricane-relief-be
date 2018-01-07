@@ -10,7 +10,7 @@ class ResourceRequestsDAO:
 
     def getAllRequests(self):
         cursor = self.conn.cursor()
-        query = "select * from resourcerequests;"
+        query = "select * from resourcerequest;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -19,7 +19,7 @@ class ResourceRequestsDAO:
 
     def getRequestById(self, req_id):
         cursor = self.conn.cursor()
-        query = "select * from resourcerequests where req_id=%s;"
+        query = "select * from resourcerequest where req_id=%s;"
         cursor.execute(query, (req_id,))
         result = cursor.fetchone()
         return result

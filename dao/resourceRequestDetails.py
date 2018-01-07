@@ -11,7 +11,7 @@ class ResourceRequestDetailsDAO:
 
     def getAllRequestDetails(self):
         cursor = self.conn.cursor()
-        query = "select * from resourcerequestdetails;"
+        query = "select * from resourcerequestdetail;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -20,14 +20,14 @@ class ResourceRequestDetailsDAO:
 
     def getRequestDetailsById(self, req_id, rid):
         cursor = self.conn.cursor()
-        query = "select * from resourcerequestdetails where req_id = %s and rid = %s;"
+        query = "select * from resourcerequestdetail where req_id = %s and rid = %s;"
         cursor.execute(query, (req_id, rid))
         result = cursor.fetchone()
         return result
 
     def getRequestDetailsByReqidAndQty(self, req_id, qty):
         cursor = self.conn.cursor()
-        query = "select * from resourcerequestdetails where req_id = %s and qty = %s;"
+        query = "select * from resourcerequestdetail where req_id = %s and qty = %s;"
         cursor.execute(query, (req_id, qty))
         result = []
         for row in cursor:
@@ -36,7 +36,7 @@ class ResourceRequestDetailsDAO:
 
     def getRequestDetailsByRisAndQty(self, rid, qty):
         cursor = self.conn.cursor()
-        query = "select * from resourcerequestdetails where rid = %s and qty = %s;"
+        query = "select * from resourcerequestdetail where rid = %s and qty = %s;"
         cursor.execute(query, (rid, qty))
         result = []
         for row in cursor:
