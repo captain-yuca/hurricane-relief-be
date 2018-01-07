@@ -10,7 +10,7 @@ class SuppliersDAO:
 
     def getAllSuppliers(self):
         cursor = self.conn.cursor()
-        query = "select sid, uid, username, lname, fname, isAdmin from supplier natural join appuser;"
+        query = "select sid, uid, username, lname, fname, isAdmin, add_id from supplier natural join appuser;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -20,7 +20,7 @@ class SuppliersDAO:
 
     def getSupplierById(self, sid):
         cursor = self.conn.cursor()
-        query = "select sid, uid, username, lname, fname, isAdmin from supplier natural join appuser where sid= %s";
+        query = "select sid, uid, username, lname, fname, isAdmin, add_id from supplier natural join appuser where sid= %s";
         cursor.execute(query, (sid,))
         result = cursor.fetchone()
         return result
@@ -32,7 +32,7 @@ class SuppliersDAO:
 
 
         query ="""
-        select sid, uid, username, lname, fname,  isadmin, currentpriceperitem, qtysum, rid, rname, catid, catname
+        select sid, uid, username, lname, fname,  isadmin, add_id, currentpriceperitem, qtysum, rid, rname, catid, catname
         from supplier natural join appuser natural join stock natural join resource natural join category
         where
         """
