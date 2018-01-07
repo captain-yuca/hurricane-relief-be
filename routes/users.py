@@ -26,6 +26,15 @@ def getUserById(uid):
     else:
         return jsonify(Error="Method not allowed. "), 405
 
+@users_route.route('/api/users/<int:uid>/purchases', methods=['GET','POST'])
+def getPurchasesByUserId(uid):
+    if request.method == 'GET':
+        return UsersHandler().getPurchasesByUserId(uid)
+    elif request.method == 'POST':
+        pass
+    else:
+        return jsonify(Error="Method not allowed. "), 405
+
 @users_route.route('/api/users/<int:uid>/addresses', methods=['GET','POST'])
 def getAddressesByUserId(uid):
     if request.method == 'GET':

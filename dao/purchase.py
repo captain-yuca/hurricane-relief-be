@@ -151,8 +151,10 @@ class PurchaseDAO:
 
     def getPurchasesByUid(self, uid):
         cursor = self.conn.cursor()
-        query = "select * from purchase where" \
-                "uid = %s;"
+        query = """
+        select purchase_id, purchase_date, purchase_total, purchase.uid, pi_id, ccnum, expirationdate from purchase inner join paymentinfo on purchase.buyer_pi_id = paymentinfo.pi_id
+        where purchase.uid = %s;
+        """
         cursor.execute(query, (uid,))
         result = []
         for row in cursor:

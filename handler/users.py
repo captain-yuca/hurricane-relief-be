@@ -1,8 +1,10 @@
 from flask import jsonify
 from dao.users import UsersDAO
 from dao.addresses import AddressesDAO
+from dao.purchase import PurchaseDAO
 from models.user import User
 from models.address import Address
+from models.purchase import Purchase
 
 class UsersHandler:
 
@@ -38,12 +40,26 @@ class UsersHandler:
             result_list.append(address)
         return jsonify(Addresses=result_list)
 
+    def getPurchasesByUserId(self, uid):
+        userDao = UsersDAO()
+        purchasesDao = PurchaseDAO()
+        user = userDao.getUserById(uid)
+        if not user:
+            return jsonify(Error = "User Not Found"), 404
+
+        purchases = purchasesDao.getPurchasesByUid(uid)
+        result_list=[]
+        for row in purchases:
+            purchase =Purchase().build_dict_from_row_payment(row)
+            result_list.append(purchase)
+        return jsonify(purchases=result_list)
+
     def searchUsers(self, args):
         allowedKeys= {"fname", "lname", "username", "isAdmin", "add_id"}
         for key in args.keys():
             if key not in allowedKeys:
                 return jsonify(Error="Malformed query string"), 400
-            
+
         dao = UsersDAO()
         users_list = dao.getUsersByParameters(args)
         result_list=[]
