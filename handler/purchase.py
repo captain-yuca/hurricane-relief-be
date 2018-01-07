@@ -27,6 +27,7 @@ class PurchaseHandler:
         total = args.get("total")
         uid = args.get("uid")
         buyer_pi_id = args.get("buyer_pi_id")
+        username = args.get("username") #added by Herbert to implement 18
         dao = PurchaseDAO()
         purchases_list = []
         if(len(args) == 4) and date and total and uid and buyer_pi_id:
@@ -59,6 +60,9 @@ class PurchaseHandler:
             purchases_list = dao.getPurchasesByUid(uid)
         elif(len(args) == 1) and buyer_pi_id:
             purchases_list = dao.getPurchasesByBuyerPaymentInfoId(buyer_pi_id)
+        #this case added by Herbert to implement 18
+        elif(len(args) == 1) and username:
+            purchases_list = dao.getPurchasesBySupplier(username)
         else:
             return jsonify(Error="Malformed query string"), 400
         result_list = []

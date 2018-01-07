@@ -171,7 +171,7 @@ class PurchaseDAO:
             result.append(row)
         return result
     #added by Herbert, supposed to implement 18
-    def getPurchaseBySupplier(self, username):
+    def getPurchasesBySupplier(self, username):
         cursor = self.conn.cursor()
         query= "select rname, catname, purchaseprice, purhase total, purchase_date " \
                 "from purchase natural inner join resourcetransactiondetails natural inner join resource natural inner join category " \
