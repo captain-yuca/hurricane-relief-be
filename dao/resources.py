@@ -59,3 +59,13 @@ class ResourcesDAO:
         for row in cursor:
             result.append(row)
         return result
+    def getResourcesBySupplier(self, username):
+        cursor = self.conn.cursor()
+        query = "select * from resource where rid in " \
+                "(select rid from supplier natural inner join usr natural inner join stock natural inner join resource where sid in " \
+                "(select sid from supplier natural inner join user where username = %s;"
+        cursor.execute(query, (username,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

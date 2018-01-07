@@ -170,3 +170,11 @@ class PurchaseDAO:
         for row in cursor:
             result.append(row)
         return result
+    def getPurchaseBySupplier(self, username):
+        cursor = self.conn.cursor()
+        query= "select rname, catname, purchaseprice, purhase total, purchase_date " \
+                "from purchase natural inner join resourcetransactiondetails natural inner join resource natural inner join category " \
+                "where sid in" \
+                "(select sid from usr natural inner join supplier " \
+                "where username= %s );"
+
