@@ -68,4 +68,4 @@ class ResourcesDAO:
         result = []
         for row in cursor:
             result.append(row)
-        return result
+        return result 
