@@ -176,7 +176,7 @@ class PurchaseDAO:
         query= "select rname, catname, purchaseprice, purhase total, purchase_date " \
                 "from purchase natural inner join resourcetransactiondetails natural inner join resource natural inner join category " \
                 "where sid in" \
-                "(select sid from usr natural inner join supplier " \
+                "(select sid from appuser natural inner join supplier " \
                 "where username= %s );"
         cursor.execute(query, (username,))
         result = []

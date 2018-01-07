@@ -42,5 +42,5 @@ class ResourcesHandler:
         for row in resources_list:
             result = Resource().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Resources=result_list) 
+        return jsonify(Resources=result_list)
 
