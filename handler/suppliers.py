@@ -27,10 +27,12 @@ class SuppliersHandler:
             return jsonify(Supplier = supplier)
 
     def getStocksBySupplierId(self, sid):
+        # Check if supplier exists
         supplierDAO = SuppliersDAO()
         row = supplierDAO.getSupplierById(sid)
         if not row:
             return jsonify(Error = "Supplier Not Found"), 404
+        #If supplier found, get all the stocks from that supplier
         else:
             dao = StocksDAO()
             stocks_list = dao.getStocksBySid(sid)
@@ -43,17 +45,18 @@ class SuppliersHandler:
 
     def searchSuppliers(self, args):
 
-        # Resource, Category and Stock parameters for searching
+        # Query parameters allowed when searching
+        # These parameters are from Resource, Category and Stock
         allowed_keys={"rid", "rname", "catid", "catname", "qtysum", "currentpriceperitem"}
 
-        # Add the min and max keys
+        # Allow every query parameter stated in allowed_keys to have a min or max value
         max_and_min_keys=set()
         for key in allowed_keys:
             max_and_min_keys.add("max-" + key)
             max_and_min_keys.add("min-" + key)
         allowed_keys = allowed_keys.union(max_and_min_keys)
 
-        # Divide the args into min, max and equal parameters for query
+        # Divide the args given by user into min, max and equal parameters for use in DAO
         max_args={}
         min_args={}
         equal_args={}
@@ -61,12 +64,13 @@ class SuppliersHandler:
             if key in allowed_keys and key[0:4] == "max-":
                 max_args[key[4:]] = args[key]
             elif key in allowed_keys and key[0:4] == "min-":
-                max_args[key[4:]] = args[key]
+                min_args[key[4:]] = args[key]
             elif key not in allowed_keys:
                 return jsonify(Error="Malfromed query string"), 400
             else:
                 equal_args[key] = args[key]
 
+        # Get all the results for the search
         dao = SuppliersDAO()
         suppliers_list= dao.getSuppliersByResourceParams(equal_args, max_args, min_args)
         result_list =[]
