@@ -27,6 +27,8 @@ class StocksHandler:
         sid = args.get("sid")
         qtysum = args.get("qtysum")
         currentpriceperitem = args.get("currentpriceperitem")
+        resource = args.get("resource") #added for herbert stock mod
+        user = args.get("user") #added for herbert stock mod
         dao = StocksDAO()
         stocks_list = []
         if(len(args) == 3) and rid and qtysum and currentpriceperitem:
@@ -43,6 +45,10 @@ class StocksHandler:
             stocks_list = dao.getStocksBySidAndCurrentpriceperitem(sid, currentpriceperitem)
         elif(len(args) == 2) and qtysum and currentpriceperitem:
             stocks_list = dao.getStocksByQtysumAndCurrentpriceperitem(qtysum, currentpriceperitem)
+        #added for herbert stock mod
+        elif(len(args) == 2) and resource and user:
+            stocks_list = dao.getStockByResourceAndUser(resource, user)
+        #end of herbert added modifications. need to test.
         elif(len(args) == 1) and rid:
             stocks_list = dao.getStocksByRid(rid)
         elif(len(args) == 1) and sid:
