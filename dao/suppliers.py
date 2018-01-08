@@ -33,7 +33,7 @@ class SuppliersDAO:
 
         query ="""
         select distinct sid, uid, username, lname, fname,  isadmin, add_id
-        from supplier natural join appuser natural join stock natural join resource natural join category
+        from supplier natural join appuser natural join stock natural join resource natural join category natural join address
         where
         """
 

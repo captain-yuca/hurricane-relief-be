@@ -64,7 +64,7 @@ class SuppliersHandler:
 
         # Query parameters allowed when searching
         # These parameters are from Resource, Category and Stock
-        allowed_keys={"rid", "rname", "catid", "catname", "qtysum", "currentpriceperitem"}
+        allowed_keys={"rid", "rname", "catid", "catname", "qtysum", "currentpriceperitem", "zipcode", "region", "city"}
 
         # Allow every query parameter stated in allowed_keys to have a min or max value
         max_and_min_keys=set()
