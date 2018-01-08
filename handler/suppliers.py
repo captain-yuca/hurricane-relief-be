@@ -2,9 +2,11 @@ from flask import jsonify
 from dao.users import UsersDAO
 from dao.suppliers import SuppliersDAO
 from dao.stocks import StocksDAO
+from dao.resourceTransactions import ResourceTransactionsDAO
 
 from models.supplier import Supplier
 from models.stock import Stock
+from models.resourceTransaction import ResourceTransaction
 
 class SuppliersHandler:
 
@@ -41,6 +43,21 @@ class SuppliersHandler:
                 stock = Stock().build_dict_from_row_resource(row)
                 result_list.append(stock)
             return jsonify(stocks = result_list)
+
+    def getTransactionsBySupplierId(self, sid):
+        supplierDAO = SuppliersDAO()
+        row = supplierDAO.getSupplierById(sid)
+        if not row:
+            return jsonify(Error = "Supplier Not Found"), 404
+        #If supplier found, get all the stocks from that supplier
+        else:
+            dao = ResourceTransactionsDAO()
+            transactions_list = dao.getTransactionsBySid(sid)
+            result_list=[]
+            for row in transactions_list:
+                transaction = ResourceTransaction().build_dict_from_row(row)
+                result_list.append(transaction)
+            return jsonify(transactions = result_list)
 
 
     def searchSuppliers(self, args):
