@@ -110,6 +110,7 @@ class StocksDAO:
             result.append(row)
         return result
 
+
     def getStocksByRid(self, rid):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
@@ -152,6 +153,17 @@ class StocksDAO:
                 "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
                 "suppliers natural inner join users natural inner join address where currentpriceperitem = %s;"
         cursor.execute(query, (currentpriceperitem, ))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+    #added by Herbert to search stock using actual names instead of ids
+    def getStockByResourceAndUser(self, resource, user):
+        cursor = self.conn.cursor()
+        query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
+                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
+                "suppliers natural inner join users natural inner join address where rname= %s and username = %s"
+        cursor.execute(query, (Resource, User,))
         result = []
         for row in cursor:
             result.append(row)
