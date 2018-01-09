@@ -21,3 +21,13 @@ class ResourceRequestsHandler:
         else:
             result = ResourceRequest().build_dict_from_table_details(request)
             return jsonify(ResourceRequest = result)
+
+    #added by Herbert
+    def getRequestedResources(self):
+        dao = ResourceRequestsDAO()
+        request_list = dao.getRequestedResources()
+        result_list=[]
+        for row in request_list:
+            request = ResourceRequest().build_dict_from_row2(row)
+            result_list.append(request)
+        return jsonify(ResourceRequests=result_list)

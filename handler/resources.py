@@ -25,9 +25,36 @@ class ResourcesHandler:
 
 
     def searchResources(self, args):
+
+        if args.get('category'):
+            dao = ResourcesDAO()
+            resources_list = dao.getResourcesByCategory(args.get('category'))
+            result_list =[]
+            for row in resources_list:
+                resource = Resource().build_dict_from_row(row)
+                result_list.append(resource)
+            return jsonify(resources=result_list)
+        elif args.get('requester'):
+            dao = ResourcesDAO()
+            resources_list = dao.getResourcesByRequester(args.get('requester'))
+            result_list =[]
+            for row in resources_list:
+                resource = Resource().build_dict_from_row(row)
+                result_list.append(resource)
+            return jsonify(resources=result_list)
+        elif args.get('supplier'):
+            dao = ResourcesDAO()
+            resources_list = dao.getResourcesBySupplier(args.get('supplier'))
+            result_list =[]
+            for row in resources_list:
+                resource = Resource().build_dict_from_row(row)
+                result_list.append(resource)
+            return jsonify(resources=result_list)
+
+
         # Query parameters allowed when searching
         # These parameters are from Resource, Category and Stock
-        allowed_keys={"rid", "rname", "catid", "catname", "qtysum", "currentpriceperitem", "zipcode", "region", "city"}
+        allowed_keys={"rid", "rname", "catid", "qtysum", "currentpriceperitem", "zipcode", "region", "city"}
 
         # Allow every query parameter stated in allowed_keys to have a min or max value
         max_and_min_keys=set()
@@ -58,6 +85,7 @@ class ResourcesHandler:
             resource = Resource().build_dict_from_row(row)
             result_list.append(resource)
         return jsonify(resources=result_list)
+
     #     rname = args.get("rname")
     #     catId = args.get("catId")
     #     supplier = args.get("supplier") #added by Herbert to implement 14

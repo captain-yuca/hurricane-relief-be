@@ -22,8 +22,8 @@ class StocksDAO:
     def getStockById(self, rid, sid):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where rid = %s and sid = %s;"
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where rid = %s and sid = %s;"
         cursor.execute(query, (rid, sid))
         result = cursor.fetchone()
         return result
@@ -31,8 +31,8 @@ class StocksDAO:
     def getStocksByRidQtysumAndCurrentpriceperitem(self, rid, qtysum, currentpriceperitem):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where rid = %s and qtysum = %s and " \
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where rid = %s and qtysum = %s and " \
                 "currentpriceperitem = %s;"
         cursor.execute(query, (rid, qtysum, currentpriceperitem))
         result = []
@@ -43,8 +43,8 @@ class StocksDAO:
     def getStocksBySidQtysumAndCurrentpriceperitem(self, sid, qtysum, currentpriceperitem):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where sid = %s and qtysum = %s " \
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where sid = %s and qtysum = %s " \
                 "and currentpriceperitem = %s;"
         cursor.execute(query, (sid, qtysum, currentpriceperitem))
         result = []
@@ -55,8 +55,8 @@ class StocksDAO:
     def getStocksByRidAndQtysum(self, rid, qtysum):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where rid = %s and qtysum = %s;"
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where rid = %s and qtysum = %s;"
         cursor.execute(query, (rid, qtysum))
         result = []
         for row in cursor:
@@ -66,8 +66,8 @@ class StocksDAO:
     def getStocksByRidAndCurrentpriceperitem(self, rid, currentpriceperitem):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where rid = %s and " \
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where rid = %s and " \
                 "currentpriceperitem = %s;"
         cursor.execute(query, (rid, currentpriceperitem))
         result = []
@@ -78,8 +78,8 @@ class StocksDAO:
     def getStocksBySidAndQtysum(self, sid, qtysum):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where sid = %s and qtysum = %s;"
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where sid = %s and qtysum = %s;"
         cursor.execute(query, (sid, qtysum))
         result = []
         for row in cursor:
@@ -89,8 +89,8 @@ class StocksDAO:
     def getStocksBySidAndCurrentpriceperitem(self, sid, currentpriceperitem):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where sid = %s and " \
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where sid = %s and " \
                 "currentpriceperitem = %s;"
         cursor.execute(query, (sid, currentpriceperitem))
         result = []
@@ -101,8 +101,8 @@ class StocksDAO:
     def getStocksByQtysumAndCurrentpriceperitem(self, qtysum, currentpriceperitem):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where qtysum = %s and " \
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where qtysum = %s and " \
                 "currentpriceperitem = %s;"
         cursor.execute(query, (qtysum, currentpriceperitem))
         result = []
@@ -114,8 +114,8 @@ class StocksDAO:
     def getStocksByRid(self, rid):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where rid = %s;"
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where rid = %s;"
         cursor.execute(query, (rid, ))
         result = []
         for row in cursor:
@@ -139,8 +139,8 @@ class StocksDAO:
     def getStocksByQtySum(self, qtysum):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where qtysum = %s;"
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where qtysum = %s;"
         cursor.execute(query, (qtysum, ))
         result = []
         for row in cursor:
@@ -150,8 +150,8 @@ class StocksDAO:
     def getStocksByCurrentpriceperitem(self, currentpriceperitem):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where currentpriceperitem = %s;"
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where currentpriceperitem = %s;"
         cursor.execute(query, (currentpriceperitem, ))
         result = []
         for row in cursor:
@@ -161,9 +161,23 @@ class StocksDAO:
     def getStockByResourceAndUser(self, resource, user):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
-                "qtysum from stock natural inner join resources natural inner join categories natural inner join " \
-                "suppliers natural inner join users natural inner join address where rname= %s and username = %s"
-        cursor.execute(query, (Resource, User,))
+                "qtysum from stock natural inner join resource natural inner join category natural inner join " \
+                "supplier natural inner join appuser natural inner join address where rname= %s and username = %s"
+        cursor.execute(query, (resource, user,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+    #added by herbert to satisfy "see all resource that are in stock with stock>0 and srotby"
+    def getStocksInStock(self):
+        cursor = self.conn.cursor()
+        query = """
+                select rid, rname, catId, catName, sid, uid, username, lname, fname, isAdmin, region, currentpriceperitem, 
+                qtysum from stock natural inner join resource natural inner join category natural inner join
+                supplier natural inner join appuser natural inner join address where qtysum>0
+                order by rname;
+                """
+        cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
