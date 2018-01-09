@@ -12,4 +12,4 @@ def getAllRequests():
 @resource_requests_route.route('/api/requests/<int:reqid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
 def getRequestById(reqid):
     if request.method == 'GET':
-        return ResourceRequestsHandler().getrequestById(reqid)
+        return ResourceRequestsHandler().getRequestById(reqid)

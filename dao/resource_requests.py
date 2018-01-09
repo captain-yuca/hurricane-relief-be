@@ -11,9 +11,9 @@ class ResourceRequestsDAO:
     def getAllRequests(self):
         cursor = self.conn.cursor()
         query = """
-        select req_id, req_date, nid, uid, username, lname, fname, isAdmin, add_id, qty, rid, rname, catid, catname
+        select req_id, req_date, qty, rid, rname, catid, catname
         from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category
-        order by req_id, rname ;
+        order by rname;
         """
         cursor.execute(query)
         result = []
@@ -21,9 +21,15 @@ class ResourceRequestsDAO:
             result.append(row)
         return result
 
-    def getRequestById(self, req_id):
+    def getRequestByIdWithDetails(self, req_id):
         cursor = self.conn.cursor()
-        query = "select * from resourcerequest where req_id=%s;"
-        cursor.execute(query, (req_id,))
-        result = cursor.fetchone()
+        query = """select req_id, req_date, nid, uid, username, lname, fname, isAdmin, add_id, qty, rid, rname, catid, catname
+        from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category
+        where req_id=%s
+        order by rname;
+        """
+        cursor.execute(query,(req_id,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
