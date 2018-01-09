@@ -26,6 +26,10 @@ class ResourcesHandler:
         rname = args.get("rname")
         catId = args.get("catId")
         supplier = args.get("supplier") #added by Herbert to implement 14
+        req_id = args.get("req_id") #-H
+        nid = args.get("nid") #-H
+        requester = args.get("requester") #-H
+        category = args.get("category") #-H
         dao = ResourcesDAO()
         resources_list = []
         if(len(args)==2) and rname and catId:
@@ -36,6 +40,14 @@ class ResourcesHandler:
             resources_list = dao.getResourcesByCatId(catId)
         elif(len(args) == 1) and supplier: #added by Herbert to implement 14
             resources_list = dao.getResourcesBySupplier(supplier)
+        elif(len(args) == 1) and req_id: # added by Herbert
+            resources_list = dao.getResourcesByRequest(req_id)
+        elif (len(args) == 1) and nid:  # added by Herbert
+            resources_list = dao.getResourcesByNID(nid)
+        elif (len(args) == 1) and requester:  # added by Herbert (requester is a username)
+            resources_list = dao.getResourcesByRequester(requester)
+        elif (len(args) == 1) and category:  # added by Herbert
+            resources_list = dao.getResourcesByCategory
         else:
             return jsonify(Error = "Malformed query string"), 400
         result_list = []

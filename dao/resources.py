@@ -72,3 +72,63 @@ class ResourcesDAO:
         for row in cursor:
             result.append(row)
         return result
+    #added by Herbert o satisfy Manuel point of get Resources from a request
+    def getResourcesByRequest(self, req_id):
+        cursor = self.conn.cursor()
+        query = """
+        select distinct * from resource where rid in
+        (select rid from resourcerequestdetail where req_id = %s);  
+        """
+        cursor.execute(query, (req_id,))
+        result= []
+        for row in cursor:
+            result.append(row)
+        return result
+    # also added cause I though coudl be useful. Herbert!
+    def getResourcesByNID(self, nid):
+        cursor = self.conn.cursor()
+        query = """
+        select * from resource where rid in 
+        (select rid from resourcerequestdetail where req_id in
+        (select req_id from resourcerequest where nid = %s ));
+        """
+        cursor.execute(query, (nid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+    #also added by Herbert! evolution of the previous one
+    def getResourcesByRequester(self, requester):
+        cursor = self.conn.cursor()
+        query = """
+         select distinct * from resource where rid in 
+        (select rid from resourcerequestdetail where req_id in
+        (select req_id from resourcerequest where nid in 
+        (select nid from appuser natural inner join requester where username = %s
+        )));
+        """
+        cursor.execute(query,(requester,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+    #also added by Herbert, this one seems VERy important
+    def getResourcesByCategory(self, category):
+        cursor = self.conn.cursor()
+
+        if (category == 'water') or category == 'fuel':
+            query = """
+            select distinct * from resource where catid in 
+            (select subcat_id from subcategory where parent_id in
+            (select catid from category where catname = %s));
+            """
+        else:
+            query = """
+            select * from resource where catid in
+            (select catid from category where catname = %s);
+            """
+        cursor.execute(query, (category,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
