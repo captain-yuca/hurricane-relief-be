@@ -22,6 +22,16 @@ class StocksHandler:
             stock = Stock().build_dict_from_row(row)
             return jsonify(Stock=stock)
 
+    def getStocksInStock(self):
+        dao = StocksDAO()
+        stocks_list = dao.getStocksInStock()
+        result_list = []
+        for row in stocks_list:
+            result = Stock().build_dict_from_row(row)
+            result_list.append(result)
+        return jsonify(Stocks=result_list)
+
+
     def searchStocks(self, args):
         rid = args.get("rid")
         sid = args.get("sid")

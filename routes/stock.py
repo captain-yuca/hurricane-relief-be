@@ -14,3 +14,8 @@ def getAllStocks():
 def getStockById(rid, sid):
     if request.method == 'GET':
         return StocksHandler().getStockById(rid, sid)
+
+@stocks_route.route('/api/stocks/InStock', methods=['GET', 'POST'])
+def getStocksInStock():
+    if not request.method =='GET':
+        return StocksHandler().getStocksInStock()
