@@ -77,7 +77,7 @@ class ResourcesDAO:
         cursor = self.conn.cursor()
         query = """
         select distinct * from resource where rid in
-        (select rid resourcerequestdetail where req_id = %s);  
+        (select rid from resourcerequestdetail where req_id = %s);  
         """
         cursor.execute(query, (req_id,))
         result= []
@@ -120,7 +120,7 @@ class ResourcesDAO:
             query = """
             select distinct * from resource where catid in 
             (select subcat_id from subcategory where parent_id in
-            select catid from category where catname = %s));
+            (select catid from category where catname = %s));
             """
         else:
             query = """
