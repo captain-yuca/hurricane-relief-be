@@ -15,9 +15,9 @@ class AvailabilityAnnouncementsHandler:
 
     def getAnnouncementById(self, ann_id):
         dao = AvailabilityAnnouncementsDAO()
-        row = dao.getAnnouncementById(ann_id)
-        if not row:
+        table = dao.getAnnouncementByIdWithDetails(ann_id)
+        if not table:
             return jsonify(Error = "Availability Announcement Not Found"), 404
         else:
-            availabilityAnnouncement = AvailabilityAnnouncement().build_dict_from_row(row)
-            return jsonify(AvailabilityAnnouncement = availabilityAnnouncement)
+            result = AvailabilityAnnouncement().build_dict_from_table_details(table)
+            return jsonify(announcement = result)

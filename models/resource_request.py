@@ -34,7 +34,6 @@ class ResourceRequest:
             else:
                 request_detail['qty'] = row[9]
                 request_detail['resource'] = Resource().build_dict_from_row_category(row[10:])
-                request['details'].append(request_detail)
 
             request['details'].append(request_detail)
             request_detail = {}
