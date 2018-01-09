@@ -13,3 +13,10 @@ def getAllRequests():
 def getRequestById(reqid):
     if request.method == 'GET':
         return ResourceRequestsHandler().getrequestById(reqid)
+#added by herbert, im bad with routes. verify
+@resource_requests_route.route('/api/requests/requestedresources', methods=['GET', 'POST'])
+def getAllRequests():
+    if request.method == 'GET':
+        return ResourceRequestsHandler().getRequestedResources()
+    else:
+        pass
