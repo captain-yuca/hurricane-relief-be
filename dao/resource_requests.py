@@ -38,8 +38,8 @@ class ResourceRequestsDAO:
         cursor = self.conn.cursor()
         query = """
                 select req_id, rid, rname, catname, qty, nid, uid, username, lname, fname, add_id, req_date
-                from resourcerequest natural inner join appuser natural inner join 
-                resourcerequestdetail natural inner join requester natural inner join 
+                from resourcerequest natural inner join appuser natural inner join
+                resourcerequestdetail natural inner join requester natural inner join
                 category natural inner join resource
                 order by rname;
                 """
@@ -48,4 +48,3 @@ class ResourceRequestsDAO:
         for row in cursor:
             result.append(row)
         return result
-

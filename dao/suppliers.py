@@ -10,7 +10,7 @@ class SuppliersDAO:
 
     def getAllSuppliers(self):
         cursor = self.conn.cursor()
-        query = "select sid, uid, username, lname, fname, isAdmin, add_id from supplier natural join appuser;"
+        query = "select sid, uid, username, lname, fname, add_id from supplier natural join appuser;" # Eliminated the isAdmin projection from this query -Kelvin
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -20,7 +20,7 @@ class SuppliersDAO:
 
     def getSupplierById(self, sid):
         cursor = self.conn.cursor()
-        query = "select sid, uid, username, lname, fname, isAdmin, add_id from supplier natural join appuser where sid= %s";
+        query = "select sid, uid, username, lname, fname, add_id from supplier natural join appuser where sid= %s"; #Elmininated the isAdmin projection from this query -Kelvin
         cursor.execute(query, (sid,))
         result = cursor.fetchone()
         return result
@@ -30,9 +30,9 @@ class SuppliersDAO:
 
         cursor = self.conn.cursor()
 
-
+        # Eliminated the isAdmin projection from this option -Kelvin
         query ="""
-        select distinct sid, uid, username, lname, fname,  isadmin, add_id
+        select distinct sid, uid, username, lname, fname, add_id
         from supplier natural join appuser natural join stock natural join resource natural join category natural join address
         where
         """

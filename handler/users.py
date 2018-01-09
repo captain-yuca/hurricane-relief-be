@@ -15,7 +15,7 @@ class UsersHandler:
         users_list = dao.getAllUsers()
         result_list=[]
         for row in users_list:
-            user = User().build_dict_from_row(row)
+            user = User().build_dict_from_row_noAdmin(row) #CHANGED DICT TO NOADMIN -Kelvin
             result_list.append(user)
         return jsonify(Users=result_list)
 
@@ -25,7 +25,7 @@ class UsersHandler:
         if not row:
             return jsonify(Error = "User Not Found"), 404
         else:
-            user = User().build_dict_from_row(row)
+            user = User().build_dict_from_row_noAdmin(row)
             return jsonify(User = user)
 
     def getAddressesByUserId(self, uid):
@@ -93,10 +93,10 @@ class UsersHandler:
 
 
 
-
+    #TOOK OUT ISADMIN HERE AND CHANGED DICT -KELVIN
 
     def searchUsers(self, args):
-        allowedKeys= {"fname", "lname", "username", "isAdmin", "add_id"}
+        allowedKeys= {"fname", "lname", "username", "add_id"}
         for key in args.keys():
             if key not in allowedKeys:
                 return jsonify(Error="Malformed query string"), 400
@@ -105,6 +105,6 @@ class UsersHandler:
         users_list = dao.getUsersByParameters(args)
         result_list=[]
         for row in users_list:
-            user = User().build_dict_from_row(row)
+            user = User().build_dict_from_row_noAdmin(row)
             result_list.append(user)
         return jsonify(Users=result_list)
