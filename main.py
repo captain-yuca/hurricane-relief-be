@@ -54,11 +54,6 @@ app.register_blueprint(resource_requests_route)
 # STOCKS
 app.register_blueprint(stocks_route)
 
-# AVAILABILITY ANNOUNCEMENT DETAILS
-app.register_blueprint(availability_announcement_details_route)
-
-# RESOURCE REQUEST DETAILS
-app.register_blueprint(resource_request_details_route)
 
 if __name__ == '__main__':
     app.run()
