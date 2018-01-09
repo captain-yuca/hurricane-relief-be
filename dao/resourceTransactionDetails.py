@@ -1,13 +1,13 @@
-#from config.dbconfig import pg_config
+from config.dbconfig import pg_config
 import psycopg2
 
 class ResourceTransactionDetailsDAO:
 
-    # def __init__(self):
+    def __init__(self):
 
-    # connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'], pg_config['user'], pgconfig['passwd'])
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'], pg_config['user'], pg_config['passwd'])
 
-    # self.conn = psycopg2._connect(connection_url)
+        self.conn = psycopg2._connect(connection_url)
 
     def getAllTransactionDetails(self):
         cursor = self.conn.cursor()
@@ -99,7 +99,11 @@ class ResourceTransactionDetailsDAO:
 
     def getTransactionDetailsByTid(self, tid):
         cursor = self.conn.cursor()
-        query = "select * from resourcetransactiondetail where tid = %s;"
+        query = """
+        select purchaseprice, qty, rid, rname, catid, catname
+        from resourcetransactiondetail natural inner join resource natural inner join category
+        where tid = %s;
+        """
         cursor.execute(query, (tid,))
         result = []
         for row in cursor:
@@ -123,22 +127,3 @@ class ResourceTransactionDetailsDAO:
         for row in cursor:
             result.append(row)
         return result
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

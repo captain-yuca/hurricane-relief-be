@@ -19,7 +19,7 @@ class ResourceTransactionsDAO:
 
     def getTransactionById(self, tid):
         cursor = self.conn.cursor()
-        query = "select * from resourcetransaction where tid = %s;"
+        query = "select tid, transactionammount, sid, supplier_pi_id, purchase_id from resourcetransaction where tid = %s;"
         cursor.execute(query, (tid,))
         result = cursor.fetchone()
         return result

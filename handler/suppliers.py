@@ -3,10 +3,13 @@ from dao.users import UsersDAO
 from dao.suppliers import SuppliersDAO
 from dao.stocks import StocksDAO
 from dao.resourceTransactions import ResourceTransactionsDAO
+from dao.resourceTransactionDetails import ResourceTransactionDetailsDAO
 
 from models.supplier import Supplier
 from models.stock import Stock
 from models.resourceTransaction import ResourceTransaction
+from models.resourceTransactionDetails import ResourceTransactionDetails
+
 
 class SuppliersHandler:
 
@@ -55,9 +58,42 @@ class SuppliersHandler:
             transactions_list = dao.getTransactionsBySid(sid)
             result_list=[]
             for row in transactions_list:
-                transaction = ResourceTransaction().build_dict_from_row(row)
+                transaction = ResourceTransaction().build_dict_from_row_transactions(row)
                 result_list.append(transaction)
             return jsonify(transactions = result_list)
+
+    def getSupplierTransactionById(self, sid, tid):
+        supplierDAO = SuppliersDAO()
+        supplier = supplierDAO.getSupplierById(sid)
+        if not supplier:
+            return jsonify(Error = "Supplier Not Found"), 404
+        #If supplier found, get all the stocks from that supplier
+        transactionsDao = ResourceTransactionsDAO()
+        transaction = transactionsDao.getTransactionById(tid)
+        if not transaction or transaction[2]  != sid:
+            return jsonify(Error = "Transaction Not Found"), 404
+        result = ResourceTransaction().build_dict_from_row(transaction)
+        return jsonify(transaction = result)
+
+    def getTransactionDetailsById(self, sid, tid):
+        supplierDAO = SuppliersDAO()
+        supplier = supplierDAO.getSupplierById(sid)
+        if not supplier:
+            return jsonify(Error = "Supplier Not Found"), 404
+        #If supplier found, get all the stocks from that supplier
+        transactionsDao = ResourceTransactionsDAO()
+        transaction = transactionsDao.getTransactionById(tid)
+        if not transaction or transaction[2]  != sid:
+            return jsonify(Error = "Transaction Not Found"), 404
+
+        detailsDAO = ResourceTransactionDetailsDAO()
+        details_list =  detailsDAO.getTransactionDetailsByTid(tid)
+        result_list = []
+        for row in details_list:
+            detail = ResourceTransactionDetails().build_dict_from_row_resource(row)
+            result_list.append(detail)
+        return jsonify(details=result_list)
+
 
 
     def searchSuppliers(self, args):

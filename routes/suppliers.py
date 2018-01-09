@@ -57,3 +57,32 @@ def getTransactionsBySid(sid):
         pass
     else:
         return jsonify(Error="Method not allowed. "), 405
+
+@suppliers_route.route('/api/suppliers/<int:sid>/transactions/<int:tid>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def getSupplierTransactionById(sid, tid):
+    """ Get all transactions pertaining to a given supplier. """
+    if request.method == 'GET':
+        if not request.args:
+            return SuppliersHandler().getSupplierTransactionById(sid, tid)
+        else:
+            pass
+    elif request.method == 'POST':
+        pass
+    elif request.method == 'PUT':
+        pass
+    elif request.method == 'DELETE':
+        pass
+    else:
+        return jsonify(Error="Method not allowed. "), 405
+
+@suppliers_route.route('/api/suppliers/<int:sid>/transactions/<int:tid>/details', methods=['GET', 'POST'])
+def getTransactionDetailsById(sid, tid):
+    if request.method == 'GET':
+        if not request.args:
+            return SuppliersHandler().getTransactionDetailsById(sid, tid)
+        else:
+            pass
+    elif request.method == 'POST':
+        pass
+    else:
+        return jsonify(Error="Method not allowed. "), 405

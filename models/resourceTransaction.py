@@ -8,6 +8,7 @@ class ResourceTransaction:
         result['sid'] = row[2] #Foreign Key from Supplier
         result['supplier_payment_info'] = row[3] #Foreign Key from PaymentInfo
         result['purchase_id'] = row[4] #Foreign Key from Purchase
+
         return result
 
     def build_dict_from_row_transactions(self, row):
