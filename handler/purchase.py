@@ -65,8 +65,16 @@ class PurchaseHandler:
             purchases_list = dao.getPurchasesBySupplier(username)
         else:
             return jsonify(Error="Malformed query string"), 400
-        result_list = []
-        for row in purchases_list:
-            result = Purchase().build_dict_from_row(row)
-            result_list.append(result)
-        return jsonify(Purchases=result_list)
+
+        if (len(args) == 1) and buyer_pi_id:
+            result_list = []
+            for row in purchases_list:
+                result = Purchase().build_dict_from_row2(row)
+                result_list.append(result)
+            return jsonify(Purchases=result_list)
+        else:
+            result_list = []
+            for row in purchases_list:
+                result = Purchase().build_dict_from_row(row)
+                result_list.append(result)
+            return jsonify(Purchases=result_list)
