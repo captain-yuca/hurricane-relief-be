@@ -7,10 +7,7 @@ class ResourceRequestsHandler:
     def getAllRequests(self):
         dao = ResourceRequestsDAO()
         request_list = dao.getAllRequests()
-        result_list=[]
-        for row in request_list:
-            request = ResourceRequest().build_dict_from_row(row)
-            result_list.append(request)
+        result_list=ResourceRequest().build_dict_from_table_resources(request_list)
         return jsonify(ResourceRequests=result_list)
 
     def getAnnouncementById(self, req_id):

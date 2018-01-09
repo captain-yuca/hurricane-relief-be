@@ -10,7 +10,11 @@ class ResourceRequestsDAO:
 
     def getAllRequests(self):
         cursor = self.conn.cursor()
-        query = "select req_id, req_date, nid, uid, username, lname, fname, isAdmin, add_id from resourcerequest natural inner join requester natural inner join appuser ;"
+        query = """
+        select req_id, req_date, nid, uid, username, lname, fname, isAdmin, add_id, qty, rid, rname, catid, catname
+        from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category
+        order by req_id, rname ;
+        """
         cursor.execute(query)
         result = []
         for row in cursor:
