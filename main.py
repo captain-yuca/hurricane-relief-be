@@ -9,8 +9,6 @@ from routes.purchase import purchase_route
 from routes.resource_requests import resource_requests_route
 from routes.availability_announcements import availability_announcements_route
 from routes.stock import stocks_route
-from routes.availability_announcement_details import availability_announcement_details_route
-from routes.resource_request_details import resource_request_details_route
 from handler.resourceTransactionDetails import ResourceTransactionDetailsHandler
 
 

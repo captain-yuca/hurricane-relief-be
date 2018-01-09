@@ -19,6 +19,7 @@ class User:
         result['lastName'] = row[2]
         result['firstName'] = row[3]
         result['address'] = Address().build_dict_from_row(row[4:])
+        return result
 
     def build_dict_from_row_region(self, row):
         result = {}
@@ -27,3 +28,4 @@ class User:
         result['lastName'] = row[2]
         result['firstName'] = row[3]
         result['region'] = row[4]
+        return result

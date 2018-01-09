@@ -58,7 +58,7 @@ class SuppliersHandler:
             transactions_list = dao.getTransactionsBySid(sid)
             result_list=[]
             for row in transactions_list:
-                transaction = ResourceTransaction().build_dict_from_row_transactions(row)
+                transaction = ResourceTransaction().build_dict_from_row(row)
                 result_list.append(transaction)
             return jsonify(transactions = result_list)
 
