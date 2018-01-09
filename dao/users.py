@@ -10,7 +10,7 @@ class UsersDAO:
 
     def getAllUsers(self):
         cursor = self.conn.cursor()
-        query = "select uid, username, lname, fname, isAdmin, add_id  from appuser;"
+        query = "select uid, username, lname, fname, add_id  from appuser;" # TOOK OUT ISADMIN HERE -Kelvin
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -20,7 +20,7 @@ class UsersDAO:
 
     def getUserById(self, uid):
         cursor = self.conn.cursor()
-        query = "select uid, username, lname, fname, isAdmin, add_id from appuser where uid= %s";
+        query = "select uid, username, lname, fname, isAdmin, add_id from appuser where uid= %s"; # GONNA LEAVE ISADMIN HERE FOR NOW -Kelvin
         cursor.execute(query, (uid,))
         result = cursor.fetchone()
         return result
@@ -29,7 +29,7 @@ class UsersDAO:
 
         cursor = self.conn.cursor()
 
-        query ="select uid, username, lname, fname, isAdmin, add_id from appuser where "
+        query ="select uid, username, lname, fname, add_id from appuser where " # TOOK OUT ISADMIN HERE -Kelvin
         query+= "=%s AND ".join(args.keys())
         query+= "=%s"
 

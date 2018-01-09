@@ -7,14 +7,14 @@ class Supplier:
     def build_dict_from_row(self, row):
         result = {}
         result['sid'] = row[0]
-        result['user'] = User().build_dict_from_row(row[1:])
+        result['user'] = User().build_dict_from_row_noAdmin(row[1:]) # Changed this to noAdmin -Kelvin
         return result
 
     def build_dict_from_row_stock(self, row):
         result = {}
         result['sid'] = row[0]
-        result['user'] = User().build_dict_from_row(row[1:7])
-        # result['stock'] = Stock().build_dict_from_row_resource(row[7:])
+        result['user'] = User().build_dict_from_row_noAdmin(row[1:6])          # Changed the 7 to a 6 to comply with the noAdmin
+        # result['stock'] = Stock().build_dict_from_row_resource(row[6:])
         return result
 
     def build_dict_from_row_region(self, row):

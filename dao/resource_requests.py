@@ -10,7 +10,8 @@ class ResourceRequestsDAO:
 
     def getAllRequests(self):
         cursor = self.conn.cursor()
-        query = "select req_id, req_date, nid, uid, username, lname, fname, isAdmin, add_id from resourcerequest natural inner join requester natural inner join appuser ;"
+        # Eliminated isAdmin projection in this query -Kelvin
+        query = "select req_id, req_date, nid, uid, username, lname, fname, add_id from resourcerequest natural inner join requester natural inner join appuser ;"
         cursor.execute(query)
         result = []
         for row in cursor:

@@ -12,6 +12,15 @@ class User:
         result['add_id'] = row[5]
         return result
 
+    def build_dict_from_row_noAdmin(self, row): # ADDED THIS DICT WITHOUT ISADMIN
+        result = {}
+        result['uid'] = row[0]
+        result['username'] = row[1]
+        result['lastName'] = row[2]
+        result['firstName'] = row[3]
+        result['add_id'] = row[4]
+        return result
+
     def build_dict_from_row_address(self, row):
         result = {}
         result['uid'] = row[0]
