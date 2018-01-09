@@ -9,7 +9,7 @@ class AvailabilityAnnouncementsHandler:
         announcement_list = dao.getAllAnnouncements()
         result_list=[]
         for row in announcement_list:
-            availabilityAnnouncement = AvailabilityAnnouncement().build_dict_from_row(row)
+            availabilityAnnouncement = AvailabilityAnnouncement().build_dict_from_row_resource(row)
             result_list.append(availabilityAnnouncement)
         return jsonify(AvailabilityAnnouncements=result_list)
 

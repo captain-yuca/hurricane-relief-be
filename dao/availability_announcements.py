@@ -10,7 +10,11 @@ class AvailabilityAnnouncementsDAO:
 
     def getAllAnnouncements(self):
         cursor = self.conn.cursor()
-        query = "select * from availabilityannouncement;"
+        query = """
+        select ann_id, ann_date, qty, rid, rname, catid, catname
+        from availabilityannouncement natural inner join availabilityannouncementdetail natural inner join resource natural inner join category
+        order by rname
+        """
         cursor.execute(query)
         result = []
         for row in cursor:
