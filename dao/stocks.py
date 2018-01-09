@@ -174,7 +174,8 @@ class StocksDAO:
         query = """
                 select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem,
                 qtysum from stock natural inner join resource natural inner join category natural inner join 
-                supplier natural inner join appuser natural inner join address where qtysum>0;
+                supplier natural inner join appuser natural inner join address where qtysum>0
+                order by rname;
                 """
         cursor.execute(query,)
         result = []
