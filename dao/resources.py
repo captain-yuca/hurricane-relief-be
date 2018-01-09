@@ -77,7 +77,7 @@ class ResourcesDAO:
         cursor = self.conn.cursor()
         query = """
         select distinct * from resource where rid in
-        (select rid from resourcerequestdetail where req_id = %s);  
+        (select rid from resourcerequestdetail where req_id = %s);
         """
         cursor.execute(query, (req_id,))
         result= []
@@ -88,7 +88,7 @@ class ResourcesDAO:
     def getResourcesByNID(self, nid):
         cursor = self.conn.cursor()
         query = """
-        select * from resource where rid in 
+        select * from resource where rid in
         (select rid from resourcerequestdetail where req_id in
         (select req_id from resourcerequest where nid = %s ));
         """
@@ -101,9 +101,9 @@ class ResourcesDAO:
     def getResourcesByRequester(self, requester):
         cursor = self.conn.cursor()
         query = """
-         select distinct * from resource where rid in 
+         select distinct * from resource where rid in
         (select rid from resourcerequestdetail where req_id in
-        (select req_id from resourcerequest where nid in 
+        (select req_id from resourcerequest where nid in
         (select nid from appuser natural inner join requester where username = %s
         )));
         """
@@ -118,7 +118,7 @@ class ResourcesDAO:
 
         if (category == 'water') or category == 'fuel':
             query = """
-            select distinct * from resource where catid in 
+            select distinct * from resource where catid in
             (select subcat_id from subcategory where parent_id in
             (select catid from category where catname = %s));
             """
@@ -129,6 +129,47 @@ class ResourcesDAO:
             """
         cursor.execute(query, (category,))
         result = []
+        for row in cursor:
+            result.append(row)
+        return result
+    def getResourcesByStockParams(self, args, max_args, min_args):
+        cursor = self.conn.cursor()
+
+
+        query ="""
+        select rid, rname, catid
+        from supplier natural inner join appuser natural inner join stock natural inner join resource
+        where
+        """
+
+        selection_length = len(args) + len(max_args) + len(min_args)
+
+        i = 0
+
+        # Go through each args list (args, max_args, min_args) and append the key with its appropiate operator
+        # and value. 'i' keeps track of when to stop appending AND to the query.
+        for key in min_args.keys():
+            if i == selection_length - 1:
+                query+= key + " >= %s"
+            else:
+                query+= key + " >= %s AND "
+                i+=1
+        for key in max_args.keys():
+            if i == selection_length - 1:
+                query+= key + " < %s"
+            else:
+                query+= key + " < %s AND "
+                i+=1
+        for key in args.keys():
+            if i == selection_length - 1:
+                query+= key + " = %s"
+            else:
+                query+= key + " = %s AND "
+                i+=1
+
+        args_tuple = tuple(min_args.values()) + tuple(max_args.values()) + tuple(args.values())
+        cursor.execute(query, args_tuple)
+        result=[]
         for row in cursor:
             result.append(row)
         return result
