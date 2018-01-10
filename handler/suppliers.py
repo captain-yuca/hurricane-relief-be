@@ -72,9 +72,9 @@ class SuppliersHandler:
         #If supplier found, get all the stocks from that supplier
         transactionsDao = ResourceTransactionsDAO()
         transaction = transactionsDao.getTransactionById(tid)
-        if not transaction or transaction[2]  != sid:
+        if not transaction:
             return jsonify(Error = "Transaction Not Found"), 404
-        result = ResourceTransaction().build_dict_from_row(transaction)
+        result = ResourceTransaction().build_dict_from_table(transaction)
         return jsonify(transaction = result)
 
     def getTransactionDetailsById(self, sid, tid):

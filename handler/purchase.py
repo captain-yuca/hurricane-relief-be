@@ -19,7 +19,7 @@ class PurchaseHandler:
         if not row:
             return jsonify(Error="Resource Purchase Not Found"), 404
         else:
-            purchase = Purchase().build_dict_from_row(row)
+            purchase = Purchase().build_dict_from_table(row)
             return jsonify(purchase=purchase)
 
     def getAllReserves(self):

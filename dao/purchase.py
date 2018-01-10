@@ -19,9 +19,15 @@ class PurchaseDAO:
 
     def getPurchaseById(self, purchase_id):
         cursor = self.conn.cursor()
-        query = "select purchase_id, purchase_date, purchase_total, purchase.uid, pi_id, ccnum, expirationdate from purchase inner join paymentinfo on purchase.buyer_pi_id = paymentinfo.pi_id where purchase_id = %s;"
+        query = """
+        select purchase_id, purchase_date, purchase_total, appuser.uid, username, lname, fname, appuser.add_id, pi_id, ccnum, expirationdate, paymentinfo.add_id, tid, sid, transactionammount
+        from (purchase natural inner join resourcetransaction natural inner join appuser),address, paymentinfo
+        where address.add_id = paymentinfo.add_id and paymentinfo.pi_id = purchase.buyer_pi_id and purchase_id = %s;
+        """
         cursor.execute(query, (purchase_id,))
-        result = cursor.fetchone()
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getPurchasesByDateTotalUidAndBuyerPaymentInfoId(self, date, total, uid, buyer_pi_id):
@@ -175,10 +181,10 @@ class PurchaseDAO:
     def getPurchasesBySupplier(self, username):
         cursor = self.conn.cursor()
         query=  """
-                select purchase_id, tid,  rname, catname, purchaseprice, transactionammount, purchase_date 
-                from purchase natural inner join resourcetransaction natural inner join resourcetransactiondetail natural inner join resource natural inner join category 
+                select purchase_id, tid,  rname, catname, purchaseprice, transactionammount, purchase_date
+                from purchase natural inner join resourcetransaction natural inner join resourcetransactiondetail natural inner join resource natural inner join category
                 where sid in
-                (select sid from appuser natural inner join supplier 
+                (select sid from appuser natural inner join supplier
                 where username= %s );
                 """
         cursor.execute(query, (username,))
@@ -211,4 +217,3 @@ class PurchaseDAO:
         for row in cursor:
             result.append(row)
         return result
-
