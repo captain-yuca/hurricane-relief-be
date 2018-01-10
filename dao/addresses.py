@@ -34,3 +34,11 @@ class AddressesDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getAddressBySid(self, sid):
+        cursor = self.conn.cursor()
+        query = "select add_id, address1, address2, city, country, region, zipcode from appuser natural join address where uid = " \
+                "(select uid from supplier where sid = %s);"
+        cursor.execute(query, (sid,))
+        result = cursor.fetchone()
+        return result
