@@ -33,44 +33,36 @@ class StocksHandler:
 
 
     def searchStocks(self, args):
-        rid = args.get("rid")
-        sid = args.get("sid")
-        qtysum = args.get("qtysum")
-        currentpriceperitem = args.get("currentpriceperitem")
-        resource = args.get("resource") #added for herbert stock mod
-        user = args.get("user") #added for herbert stock mod
+        # Query parameters allowed when searching
+        # These parameters are from Resource, Category and Stock
+        allowed_keys={"rid", "rname", "catid", "qtysum", "currentpriceperitem", "zipcode", "region", "city"}
+
+        # Allow every query parameter stated in allowed_keys to have a min or max value
+        max_and_min_keys=set()
+        for key in allowed_keys:
+            max_and_min_keys.add("max-" + key)
+            max_and_min_keys.add("min-" + key)
+        allowed_keys = allowed_keys.union(max_and_min_keys)
+
+        # Divide the args given by user into min, max and equal parameters for use in DAO
+        max_args={}
+        min_args={}
+        equal_args={}
+        for key in args.keys():
+            if key in allowed_keys and key[0:4] == "max-":
+                max_args[key[4:]] = args[key]
+            elif key in allowed_keys and key[0:4] == "min-":
+                min_args[key[4:]] = args[key]
+            elif key not in allowed_keys:
+                return jsonify(Error="Malfromed query string"), 400
+            else:
+                equal_args[key] = args[key]
+
+        # Get all the results for the search
         dao = StocksDAO()
-        stocks_list = []
-        if(len(args) == 3) and rid and qtysum and currentpriceperitem:
-            stocks_list = dao.getStocksByRidQtysumAndCurrentpriceperitem(rid, qtysum, currentpriceperitem)
-        elif(len(args) == 3) and sid and qtysum and currentpriceperitem:
-            stocks_list = dao.getStocksBySidQtysumAndCurrentpriceperitem(sid, qtysum, currentpriceperitem)
-        elif(len(args) == 2) and rid and qtysum:
-            stocks_list = dao.getStocksByRidAndQtysum(rid, qtysum)
-        elif(len(args) == 2) and rid and currentpriceperitem:
-            stocks_list = dao.getStocksByRidAndCurrentpriceperitem(rid, currentpriceperitem)
-        elif(len(args) == 2) and sid and qtysum:
-            stocks_list = dao.getStocksBySidAndQtysum(sid, qtysum)
-        elif(len(args) == 2) and sid and currentpriceperitem:
-            stocks_list = dao.getStocksBySidAndCurrentpriceperitem(sid, currentpriceperitem)
-        elif(len(args) == 2) and qtysum and currentpriceperitem:
-            stocks_list = dao.getStocksByQtysumAndCurrentpriceperitem(qtysum, currentpriceperitem)
-        #added for herbert stock mod
-        elif(len(args) == 2) and resource and user:
-            stocks_list = dao.getStockByResourceAndUser(resource, user)
-        #end of herbert added modifications. need to test.
-        elif(len(args) == 1) and rid:
-            stocks_list = dao.getStocksByRid(rid)
-        elif(len(args) == 1) and sid:
-            stocks_list = dao.getStocksBySid(sid)
-        elif(len(args) == 1) and qtysum:
-            stocks_list = dao.getStocksByQtySum(qtysum)
-        elif(len(args) == 1) and currentpriceperitem:
-            stocks_list = dao.getStocksByCurrentpriceperitem(currentpriceperitem)
-        else:
-            return jsonify(Error="Malformed query string"), 400
-        result_list = []
-        for row in stocks_list:
-            result = Stock().build_dict_from_row(row)
-            result_list.append(result)
-        return jsonify(Stocks=result_list)
+        resources_list= dao.getStocksByParams(equal_args, max_args, min_args)
+        result_list =[]
+        for row in resources_list:
+            resource = Stock().build_dict_from_row(row)
+            result_list.append(resource)
+        return jsonify(stocks=result_list)
