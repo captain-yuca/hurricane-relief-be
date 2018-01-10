@@ -4,11 +4,7 @@ class SuppliersDAO:
     def __init__(self):
 
 
-        self.conn = psycopg2._connect(database=pg_config['dbname'],
-                                       user=pg_config['user'],
-                                       password=pg_config['passwd'],
-                                       host=pg_config['host'],
-                                       port=pg_config['port'])
+        self.conn = psycopg2._connect('postgres://ebwyoylyofgguf:bce5e728f4d5504e7a83ba37ece6f608483572bb56baa5700c90dab37d151295@ec2-54-83-59-144.compute-1.amazonaws.com:5432/de320ggpcvnl39')
 
     def getAllSuppliers(self):
         cursor = self.conn.cursor()
