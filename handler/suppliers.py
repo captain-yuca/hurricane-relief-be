@@ -145,3 +145,14 @@ class SuppliersHandler:
             address = dao.getAddressBySid(sid)
             result_list = Address().build_dict_from_row(address)
             return jsonify(Address=result_list)
+
+    def getSuppliersCountPerRegion(self):
+        dao = SuppliersDAO()
+        counts_list = dao.getSuppliersCountPerRegion()
+        result_list = []
+        for row in counts_list:
+            count = Address().build_dict_from_row_count(row)
+            result_list.append(count)
+        return jsonify(suppliers_per_region=result_list)
+
+

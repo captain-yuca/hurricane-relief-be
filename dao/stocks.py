@@ -183,6 +183,15 @@ class StocksDAO:
             result.append(row)
         return result
 
+    def getSumOfResources(self):
+        cursor = self.conn.cursor()
+        query = " select rid, rname, sum(qtysum) from stock natural inner join resource group by rid;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getStocksByParams(self, args, max_args, min_args):
         cursor = self.conn.cursor()
 

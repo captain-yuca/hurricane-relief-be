@@ -10,3 +10,10 @@ class Address:
         result['country'] = row[5]
         result['city'] = row[6]
         return result
+
+    def build_dict_from_row_count(self, row):
+        result = {}
+        result['count'] = row[0]
+        result['region'] = row[1]
+        return result
+

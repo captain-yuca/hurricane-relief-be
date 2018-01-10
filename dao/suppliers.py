@@ -68,3 +68,12 @@ class SuppliersDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getSuppliersCountPerRegion(self):
+        cursor = self.conn.cursor()
+        query = "select count(*), region from address natural inner join user natural inner join supplier group by region;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

@@ -11,3 +11,10 @@ def getAllRequesters():
 def getRequesterById(nid):
     if request.method == 'GET':
         return RequestersHandler().getRequesterById(nid)
+
+@requesters_route.route('/api/requesters/countPerRegion', methods=['GET', 'POST'])
+def getRequestersCountPerRegion():
+    if request.method == 'GET':
+        return RequestersHandler().getRequestersCountByRegion()
+    else:
+        pass
