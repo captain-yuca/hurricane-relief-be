@@ -86,3 +86,10 @@ def getAddressBySid(sid):
         pass
     else:
         return jsonify(Error="Method not allowed. "), 405
+
+@suppliers_route.route('/api/suppliers/countPerRegion', methods=['GET', 'POST'])
+def getSuppliersCountPerRegion():
+    if request.method == 'GET':
+        return SuppliersHandler().getSuppliersCountPerRegion()
+    else:
+        pass

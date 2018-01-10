@@ -24,3 +24,12 @@ class RequestersDAO:
         cursor.execute(query, (nid,))
         result = cursor.fetchone()
         return result
+
+    def getRequestersCountByRegion(self):
+        cursor = self.conn.cursor()
+        query = "select count(*), region from address natural inner join user natural inner join requester group by region;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
