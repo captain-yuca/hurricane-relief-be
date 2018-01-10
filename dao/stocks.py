@@ -172,9 +172,22 @@ class StocksDAO:
     def getStocksInStock(self):
         cursor = self.conn.cursor()
         query = """
-                select rid, rname, catId, catName, sid, uid, username, lname, fname, isAdmin, region, currentpriceperitem,
+                select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem,
                 qtysum from stock natural inner join resource natural inner join category natural inner join
                 supplier natural inner join appuser natural inner join address where qtysum>0
+                order by rname;
+                """
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+    def getStocksEmptyStock(self):
+        cursor = self.conn.cursor()
+        query = """
+                select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem,
+                qtysum from stock natural inner join resource natural inner join category natural inner join
+                supplier natural inner join appuser natural inner join address where qtysum=0
                 order by rname;
                 """
         cursor.execute(query)
@@ -185,7 +198,7 @@ class StocksDAO:
 
     def getSumOfResources(self):
         cursor = self.conn.cursor()
-        query = " select rid, rname, sum(qtysum) from stock natural inner join resource group by rid;"
+        query = " select rid, rname, sum(qtysum) from stock natural inner join resource group by rid, rname;"
         cursor.execute(query)
         result = []
         for row in cursor:
