@@ -8,7 +8,7 @@ def getAllAnnouncements():
     if not request.args:
         return AvailabilityAnnouncementsHandler().getAllAnnouncements()
     else:
-        pass
+        return AvailabilityAnnouncementsHandler().searchAnnouncements(request.args)
 @availability_announcements_route.route('/api/announcements/<int:annid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
 def getAnnouncementById(annid):
     if request.method == 'GET':

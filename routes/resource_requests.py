@@ -8,7 +8,7 @@ def getAllRequests():
     if not request.args:
         return ResourceRequestsHandler().getAllRequests()
     else:
-        pass
+        return ResourceRequestsHandler().searchRequests(request.args)
 @resource_requests_route.route('/api/requests/<int:reqid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
 def getRequestById(reqid):
     if request.method == 'GET':

@@ -31,3 +31,17 @@ class ResourceRequestsHandler:
             request = ResourceRequest().build_dict_from_row2(row)
             result_list.append(request)
         return jsonify(ResourceRequests=result_list)
+
+    def searchRequests(self, args):
+        allowedKeys= {"rid", "rname", "catname", "catid"}
+        for key in args.keys():
+            if key not in allowedKeys:
+                return jsonify(Error="Malformed query string"), 400
+
+        dao = ResourceRequestsDAO()
+        requests_list = dao.getRequestsByParameters(args)
+        result_list=[]
+        for row in requests_list:
+            request = ResourceRequest().build_dict_from_row_resource(row)
+            result_list.append(request)
+        return jsonify(requests=result_list)

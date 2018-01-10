@@ -21,3 +21,17 @@ class AvailabilityAnnouncementsHandler:
         else:
             result = AvailabilityAnnouncement().build_dict_from_table_details(table)
             return jsonify(announcement = result)
+
+    def searchAnnouncements(self, args):
+        allowedKeys= {"rid", "rname"}
+        for key in args.keys():
+            if key not in allowedKeys:
+                return jsonify(Error="Malformed query string"), 400
+
+        dao = AvailabilityAnnouncementsDAO()
+        announcements_list = dao.getAnnouncementsByParameters(args)
+        result_list=[]
+        for row in announcements_list:
+            announcement = AvailabilityAnnouncement().build_dict_from_row_resource(row)
+            result_list.append(announcement)
+        return jsonify(announcements=result_list)

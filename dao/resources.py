@@ -138,7 +138,7 @@ class ResourcesDAO:
 
         query ="""
         select rid, rname, catid
-        from supplier natural inner join appuser natural inner join stock natural inner join resource natural inner join category
+        from supplier natural inner join appuser natural inner join stock natural inner join resource natural inner join category natural inner join address
         where
         """
 

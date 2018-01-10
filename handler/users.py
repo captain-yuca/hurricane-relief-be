@@ -96,7 +96,7 @@ class UsersHandler:
     #TOOK OUT ISADMIN HERE AND CHANGED DICT -KELVIN
 
     def searchUsers(self, args):
-        allowedKeys= {"fname", "lname", "username", "add_id"}
+        allowedKeys= {"fname", "lname", "username", "add_id", "isAdmin"}
         for key in args.keys():
             if key not in allowedKeys:
                 return jsonify(Error="Malformed query string"), 400

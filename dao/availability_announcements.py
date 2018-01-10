@@ -40,3 +40,21 @@ class AvailabilityAnnouncementsDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getAnnouncementsByParameters(self, args):
+
+        cursor = self.conn.cursor()
+
+        query ="""
+        select ann_id, ann_date, qty, rid, rname, catid, catname
+        from availabilityannouncement natural inner join availabilityannouncementdetail natural inner join resource natural inner join category
+        where
+        """ # TOOK OUT ISADMIN HERE -Kelvin
+        query+= "=%s AND ".join(args.keys())
+        query+= "=%s"
+
+        cursor.execute(query, tuple(args.values()))
+        result=[]
+        for row in cursor:
+            result.append(row)
+        return result

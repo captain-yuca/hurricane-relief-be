@@ -26,7 +26,7 @@ class ResourceTransactionsDAO:
 
     def getTransactionsBySid(self, sid):
         cursor = self.conn.cursor()
-        query = "select * from resourcetransaction where sid = %s;"
+        query = "select tid, transactionammount, sid, supplier_pi_id, purchase_id from resourcetransaction where sid = %s;"
         cursor.execute(query, (sid,))
         result = []
         for row in cursor:
