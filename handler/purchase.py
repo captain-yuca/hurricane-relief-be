@@ -22,6 +22,24 @@ class PurchaseHandler:
             purchase = Purchase().build_dict_from_row(row)
             return jsonify(Purchase=purchase)
 
+    def getAllReserves(self):
+        dao = PurchaseDAO()
+        row = dao.getAllReserves()
+        if not row:
+            return jsonify(Error="Resource Purchase Not Found"), 404
+        else:
+            purchase = Purchase().build_dict_from_row3(row)
+            return jsonify(Purchase=purchase)
+
+    def getAllPaidPurchases(self):
+        dao = PurchaseDAO()
+        row = dao.getAllPaidPurchases()
+        if not row:
+            return jsonify(Error="Resource Purchase Not Found"), 404
+        else:
+            purchase = Purchase().build_dict_from_row3(row)
+            return jsonify(Purchase=purchase)
+
     def searchPurchases(selfs, args):
         date = args.get("date")
         total = args.get("total")
@@ -65,8 +83,16 @@ class PurchaseHandler:
             purchases_list = dao.getPurchasesBySupplier(username)
         else:
             return jsonify(Error="Malformed query string"), 400
-        result_list = []
-        for row in purchases_list:
-            result = Purchase().build_dict_from_row(row)
-            result_list.append(result)
-        return jsonify(Purchases=result_list)
+
+        if (len(args) == 1) and buyer_pi_id:
+            result_list = []
+            for row in purchases_list:
+                result = Purchase().build_dict_from_row2(row)
+                result_list.append(result)
+            return jsonify(Purchases=result_list)
+        else:
+            result_list = []
+            for row in purchases_list:
+                result = Purchase().build_dict_from_row(row)
+                result_list.append(result)
+            return jsonify(Purchases=result_list)

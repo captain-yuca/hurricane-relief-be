@@ -8,6 +8,10 @@ purchase_route = Blueprint('purchase_route', __name__)
 def getAllPurchases():
     if not request.args:
         return PurchaseHandler().getAllPurchases()
+    elif request.args.get('isReserve') == True:
+        return PurchaseHandler().getAllReserves()
+    elif request.args.get('isReserve') == False:
+        return PurchaseHandler().getAllPaidPurchases()
     else:
         return PurchaseHandler().searchPurchases(request.args)
 
@@ -15,3 +19,4 @@ def getAllPurchases():
 def getPurchasesById(purchase_id):
     if request.method == 'GET':
         return PurchaseHandler().getPurchaseById(purchase_id)
+
