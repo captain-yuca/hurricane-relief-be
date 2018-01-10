@@ -2,18 +2,13 @@ import os
 from urllib import parse
 import psycopg2
 
-parse.uses_netloc.append("postgres")
-url = parse.urlparse(os.environ["DATABASE_URL"])
-dbname = url.path[1:]
-user = url.username
-password = url.password
-host = url.hostname
-port = url.port
+##parse.uses_netloc.append("postgres")
+
 
 pg_config = {
-    'user' : user,
-    'passwd' : password,
-    'dbname' : dbname
+    'user' : 'appusr',
+    'passwd' : 'appusr1',
+    'dbname' : 'appdb'
 }
 ##appusr
 ##appusr1
