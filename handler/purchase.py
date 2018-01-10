@@ -22,6 +22,24 @@ class PurchaseHandler:
             purchase = Purchase().build_dict_from_row(row)
             return jsonify(Purchase=purchase)
 
+    def getAllReserves(self):
+        dao = PurchaseDAO()
+        row = dao.getAllReserves()
+        if not row:
+            return jsonify(Error="Resource Purchase Not Found"), 404
+        else:
+            purchase = Purchase().build_dict_from_row3(row)
+            return jsonify(Purchase=purchase)
+
+    def getAllPaidPurchases(self):
+        dao = PurchaseDAO()
+        row = dao.getAllPaidPurchases()
+        if not row:
+            return jsonify(Error="Resource Purchase Not Found"), 404
+        else:
+            purchase = Purchase().build_dict_from_row3(row)
+            return jsonify(Purchase=purchase)
+
     def searchPurchases(selfs, args):
         date = args.get("date")
         total = args.get("total")

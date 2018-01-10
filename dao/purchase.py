@@ -186,3 +186,29 @@ class PurchaseDAO:
         for row in cursor:
             result.append(row)
         return result
+    def getAllReserves(self):
+        cursor = self.conn.cursor()
+        query=  """
+                select purchase.purchase_id, tid,  rname, catname, purchaseprice, transactionammount, purchase_date, s_user.username as supplier, u_user.username as buyer
+                from (resourcetransaction natural inner join resourcetransactiondetail natural inner join resource natural inner join category), appuser as s_user, appuser as u_user, purchase, supplier
+                where (s_user.uid=supplier.uid) and (u_user.uid=purchase.uid) AND (purchase.purchase_id=resourcetransaction.purchase_id) and purchaseprice=0;
+                """
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getAllPaidPurchases(self):
+        cursor = self.conn.cursor()
+        query = """
+                select purchase.purchase_id, tid,  rname, catname, purchaseprice, transactionammount, purchase_date, s_user.username as supplier, u_user.username as buyer
+                from (resourcetransaction natural inner join resourcetransactiondetail natural inner join resource natural inner join category), appuser as s_user, appuser as u_user, purchase, supplier
+                where (s_user.uid=supplier.uid) and (u_user.uid=purchase.uid) AND (purchase.purchase_id=resourcetransaction.purchase_id) and purchaseprice>0;
+                """
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+

@@ -28,3 +28,15 @@ class Purchase:
         result['transactionammount'] = row[5]
         result['purchase_date'] = row[6]
         return result
+    def build_dict_from_row3(self, row):
+        result = {}
+        result['purchase_id'] = row[0]
+        result['tid'] = row[1]
+        result['rname'] = row[2]
+        result['catname'] = row[3]
+        result['purchaseprice'] = row[4]
+        result['transactionammount'] = row[5]
+        result['purchase_date'] = row[6]
+        result['supplier'] = row[7]
+        result['buyer'] = row[8]
+        return result
