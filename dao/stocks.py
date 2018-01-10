@@ -182,6 +182,19 @@ class StocksDAO:
         for row in cursor:
             result.append(row)
         return result
+    def getStocksEmptyStock(self):
+        cursor = self.conn.cursor()
+        query = """
+                select rid, rname, catId, catName, sid, uid, username, lname, fname, isAdmin, region, currentpriceperitem,
+                qtysum from stock natural inner join resource natural inner join category natural inner join
+                supplier natural inner join appuser natural inner join address where qtysum=0
+                order by rname;
+                """
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getStocksByParams(self, args, max_args, min_args):
         cursor = self.conn.cursor()
