@@ -4,11 +4,13 @@ from dao.suppliers import SuppliersDAO
 from dao.stocks import StocksDAO
 from dao.resourceTransactions import ResourceTransactionsDAO
 from dao.resourceTransactionDetails import ResourceTransactionDetailsDAO
+from dao.addresses import AddressesDAO
 
 from models.supplier import Supplier
 from models.stock import Stock
 from models.resourceTransaction import ResourceTransaction
 from models.resourceTransactionDetails import ResourceTransactionDetails
+from models.address import Address
 
 
 class SuppliersHandler:
@@ -131,3 +133,15 @@ class SuppliersHandler:
             supplier = Supplier().build_dict_from_row_stock(row)
             result_list.append(supplier)
         return jsonify(Suppliers=result_list)
+
+    def getAddressBySid(self, sid):
+        supplierDAO = SuppliersDAO()
+        row = supplierDAO.getSupplierById(sid)
+        if not row:
+            return jsonify(Error="Supplier Not Found"), 404
+        # If supplier found, get all the stocks from that supplier
+        else:
+            dao = AddressesDAO()
+            address = dao.getAddressBySid(sid)
+            result_list = Address().build_dict_from_row(address)
+            return jsonify(Address=result_list)

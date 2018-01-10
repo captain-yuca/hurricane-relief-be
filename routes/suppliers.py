@@ -86,3 +86,15 @@ def getTransactionDetailsById(sid, tid):
         pass
     else:
         return jsonify(Error="Method not allowed. "), 405
+
+@suppliers_route.route('/api/suppliers/<int:sid>/address', methods=['GET', 'POST'])
+def getAddressBySid(sid):
+    if request.method == 'GET':
+        if not request.args:
+            return SuppliersHandler().getAddressBySid(sid)
+        else:
+            pass
+    elif request.method == 'POST':
+        pass
+    else:
+        return jsonify(Error="Method not allowed. "), 405
