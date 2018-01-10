@@ -20,7 +20,7 @@ class PaymentInfoDAO:
 
     def getPaymentInfoById(self, pi_id):
         cursor = self.conn.cursor()
-        query = "select * from paymentinfo where pi_id=%s;"
+        query = "select * from paymentinfo where billing_pi_id=%s;"
         cursor.execute(query, (pi_id,))
         result = cursor.fetchone()
         return result
