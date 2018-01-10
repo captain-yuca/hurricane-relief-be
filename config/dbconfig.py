@@ -13,7 +13,9 @@ port = url.port
 pg_config = {
     'user' : user,
     'passwd' : password,
-    'dbname' : dbname
+    'dbname' : dbname,
+    'host':host,
+    'port':port,
 }
 ##appusr
 ##appusr1

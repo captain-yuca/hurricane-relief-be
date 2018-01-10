@@ -3,10 +3,12 @@ import psycopg2
 class SuppliersDAO:
     def __init__(self):
 
-        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
-                                                            pg_config['user'],
-                                                            pg_config['passwd'])
-        self.conn = psycopg2._connect(connection_url)
+
+        self.conn = psycopg2._connect(database=pg_config['dbname'],
+                                       user=pg_config['user'],
+                                       password=pg_config['passwd'],
+                                       host=pg_config['host'],
+                                       port=pg_config['port'])
 
     def getAllSuppliers(self):
         cursor = self.conn.cursor()
