@@ -1,14 +1,19 @@
 from config.dbconfig import pg_config
 import psycopg2
+import os
+from urllib import parse
 class SuppliersDAO:
     def __init__(self):
 
-
-        self.conn = psycopg2._connect(database=pg_config['dbname'],
-                                       user=pg_config['user'],
-                                       password=pg_config['passwd'],
-                                       host=pg_config['host'],
-                                       port=pg_config['port'])
+        parse.uses_netloc.append("postgres")
+        url = parse.urlparse(os.environ["DATABASE_URL"])
+        self.conn = psycopg2.connect(
+                                        database=url.path[1:],
+                                        user=url.username,
+                                        password=url.password,
+                                        host=url.hostname,
+                                        port=url.port
+                                        )
 
     def getAllSuppliers(self):
         cursor = self.conn.cursor()
