@@ -1,13 +1,15 @@
-from config.dbconfig import pg_config
+from config.dbconfig import url
 import psycopg2
 
 class CategoriesDAO:
     def __init__(self):
-
-        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'], pg_config['user'], pg_config['passwd'])
-
-        self.conn = psycopg2._connect('postgres://ebwyoylyofgguf:bce5e728f4d5504e7a83ba37ece6f608483572bb56baa5700c90dab37d151295@ec2-54-83-59-144.compute-1.amazonaws.com:5432/de320ggpcvnl39')
-
+        self.conn = psycopg2.connect(
+                                        database=url.path[1:],
+                                        user=url.username,
+                                        password=url.password,
+                                        host=url.hostname,
+                                        port=url.port
+                                        )
     def getAllCategories(self):
         cursor = self.conn.cursor()
         query = "select * from category;"

@@ -1,12 +1,8 @@
-from config.dbconfig import pg_config
+from config.dbconfig import url
 import psycopg2
-import os
-from urllib import parse
 class SuppliersDAO:
     def __init__(self):
 
-        parse.uses_netloc.append("postgres")
-        url = parse.urlparse(os.environ["DATABASE_URL"])
         self.conn = psycopg2.connect(
                                         database=url.path[1:],
                                         user=url.username,
