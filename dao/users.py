@@ -39,3 +39,12 @@ class UsersDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insert(self, username, lastname, firstname, add_id):
+
+        cursor = self.conn.cursor()
+        query = "insert into appuser(username, lname, fname, add_id) values (%s, %s, %s, %s) returning uid;"
+        cursor.execute(query, (username, lastname, firstname, add_id,))
+        uid = cursor.fetchone()[0]
+        self.conn.commit()
+        return uid

@@ -7,7 +7,7 @@ users_route = Blueprint('users_route', __name__)
 def getAllUsers():
     """ Returns all users. """
     if request.method == 'POST':
-        pass
+        return UsersHandler().insertUser(request.form)
     elif request.method == 'GET':
         if not request.args:
             return UsersHandler().getAllUsers()
