@@ -118,3 +118,16 @@ class ResourcesHandler:
     #         result = Resource().build_dict_from_row(row)
     #         result_list.append(result)
     #     return jsonify(Resources=result_list)
+    def insertResource(self, form):
+        if len(form) != 2:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            rname = form['rname']
+            catid = form['catid']
+            if rname and catid:
+                dao = ResourcesDAO()
+                rid = dao.insert(rname, catid)
+                result = Resource().build_dict_from_row(dao.getResourceById(rid))
+                return jsonify(Resource=result), 201
+            else:
+                return jsonify(Error="Unepected attributes in post request"), 400
