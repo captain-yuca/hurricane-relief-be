@@ -1,13 +1,16 @@
-from config.dbconfig import pg_config
+from config.dbconfig import url
 import psycopg2
 
 class StocksDAO:
 
     def __init__(self):
-        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'], pg_config['user'], pg_config['passwd'])
-
-        self.conn = psycopg2._connect(connection_url)
-
+        self.conn = psycopg2.connect(
+                                        database=url.path[1:],
+                                        user=url.username,
+                                        password=url.password,
+                                        host=url.hostname,
+                                        port=url.port
+                                        )
     def getAllStocks(self):
         cursor = self.conn.cursor()
         query = "select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem, " \
@@ -172,7 +175,7 @@ class StocksDAO:
     def getStocksInStock(self):
         cursor = self.conn.cursor()
         query = """
-                select rid, rname, catId, catName, sid, uid, username, lname, fname, isAdmin, region, currentpriceperitem,
+                select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem,
                 qtysum from stock natural inner join resource natural inner join category natural inner join
                 supplier natural inner join appuser natural inner join address where qtysum>0
                 order by rname;
@@ -185,11 +188,20 @@ class StocksDAO:
     def getStocksEmptyStock(self):
         cursor = self.conn.cursor()
         query = """
-                select rid, rname, catId, catName, sid, uid, username, lname, fname, isAdmin, region, currentpriceperitem,
+                select rid, rname, catId, catName, sid, uid, username, lname, fname, region, currentpriceperitem,
                 qtysum from stock natural inner join resource natural inner join category natural inner join
                 supplier natural inner join appuser natural inner join address where qtysum=0
                 order by rname;
                 """
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getSumOfResources(self):
+        cursor = self.conn.cursor()
+        query = " select rid, rname, sum(qtysum) from stock natural inner join resource group by rid, rname;"
         cursor.execute(query)
         result = []
         for row in cursor:

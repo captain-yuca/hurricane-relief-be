@@ -23,3 +23,11 @@ class Stock:
     #     result['qty'] = row[1]
     #     result['supplier'] = Supplier().build_dict_from_row(row[2:])
     #     return result
+
+    def build_dict_from_row_sum(self, row):
+        result = {}
+        result['rid'] = row[0]
+        result['rname'] = row[1]
+        result['qty_available'] = row[2]
+        return result
+

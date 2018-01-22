@@ -1,16 +1,19 @@
-from config.dbconfig import pg_config
+from config.dbconfig import url
 import psycopg2
 
 class ResourceTransactionsDAO:
     def __init__(self):
-
-        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'], pg_config['user'], pg_config['passwd'])
-
-        self.conn = psycopg2._connect(connection_url)
+        self.conn = psycopg2.connect(
+                                        database=url.path[1:],
+                                        user=url.username,
+                                        password=url.password,
+                                        host=url.hostname,
+                                        port=url.port
+                                        )
 
     def getAllTransactions(self):
         cursor = self.conn.cursor()
-        query = "select * from resourcetransaction;"
+        query = "select tid, sid, transactionammount, purchase_id, supplier_pi_id from resourcetransaction;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -19,9 +22,15 @@ class ResourceTransactionsDAO:
 
     def getTransactionById(self, tid):
         cursor = self.conn.cursor()
-        query = "select tid, transactionammount, sid, supplier_pi_id, purchase_id from resourcetransaction where tid = %s;"
+        query = """
+        select tid, transactionammount, purchase_id, sid, uid, username, lname, fname, add_id, qty, purchaseprice, rid, rname, catid, catname
+        from resourcetransaction natural inner join resourcetransactiondetail natural inner join supplier natural inner join appuser natural inner join resource natural inner join category
+        where tid=%s
+        """
         cursor.execute(query, (tid,))
-        result = cursor.fetchone()
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getTransactionsBySid(self, sid):

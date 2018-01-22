@@ -3,6 +3,7 @@ from dao.users import UsersDAO
 from dao.requesters import RequestersDAO
 
 from models.requester import Requester
+from models.address import Address
 
 class RequestersHandler:
 
@@ -23,6 +24,15 @@ class RequestersHandler:
         else:
             requester = Requester().build_dict_from_row(row)
             return jsonify(Requester = requester)
+
+    def getRequestersCountByRegion(self):
+        dao = RequestersDAO()
+        counts_list = dao.getRequestersCountByRegion()
+        result_list = []
+        for row in counts_list:
+            count = Address().build_dict_from_row_count(row)
+            result_list.append(count)
+        return jsonify(requesters_per_region=result_list)
 
     # def getAddressesByUserId(self, sid):
     #     userDao = UsersDAO()

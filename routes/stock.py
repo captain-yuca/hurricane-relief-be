@@ -19,6 +19,12 @@ def getStockById(rid, sid):
     if request.method == 'GET':
         return StocksHandler().getStockById(rid, sid)
 
+@stocks_route.route('/api/stocks/qtysum', methods=['GET', 'POST'])
+def getSumOfResources():
+    if request.method == 'GET':
+        return StocksHandler().getSumOfResources()
+    else:
+        pass
 #@stocks_route.route('/api/stocks/instock', methods=['GET', 'POST'])
 #def getStocksInStock():
 #    if request.method =='GET':

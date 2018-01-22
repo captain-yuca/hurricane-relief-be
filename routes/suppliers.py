@@ -75,18 +75,6 @@ def getSupplierTransactionById(sid, tid):
     else:
         return jsonify(Error="Method not allowed. "), 405
 
-@suppliers_route.route('/api/suppliers/<int:sid>/transactions/<int:tid>/details', methods=['GET', 'POST'])
-def getTransactionDetailsById(sid, tid):
-    if request.method == 'GET':
-        if not request.args:
-            return SuppliersHandler().getTransactionDetailsById(sid, tid)
-        else:
-            pass
-    elif request.method == 'POST':
-        pass
-    else:
-        return jsonify(Error="Method not allowed. "), 405
-
 @suppliers_route.route('/api/suppliers/<int:sid>/address', methods=['GET', 'POST'])
 def getAddressBySid(sid):
     if request.method == 'GET':
@@ -98,3 +86,10 @@ def getAddressBySid(sid):
         pass
     else:
         return jsonify(Error="Method not allowed. "), 405
+
+@suppliers_route.route('/api/suppliers/countPerRegion', methods=['GET', 'POST'])
+def getSuppliersCountPerRegion():
+    if request.method == 'GET':
+        return SuppliersHandler().getSuppliersCountPerRegion()
+    else:
+        pass

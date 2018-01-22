@@ -1,13 +1,14 @@
-from config.dbconfig import pg_config
+from config.dbconfig import url
 import psycopg2
 class PaymentInfoDAO:
     def __init__(self):
-
-        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
-                                                            pg_config['user'],
-                                                            pg_config['passwd'])
-        self.conn = psycopg2._connect(connection_url)
-
+        self.conn = psycopg2.connect(
+                                        database=url.path[1:],
+                                        user=url.username,
+                                        password=url.password,
+                                        host=url.hostname,
+                                        port=url.port
+                                        )
     def getAllPaymentInfo(self):
         cursor = self.conn.cursor()
         query = "select * from paymentinfo;"
@@ -20,7 +21,7 @@ class PaymentInfoDAO:
 
     def getPaymentInfoById(self, pi_id):
         cursor = self.conn.cursor()
-        query = "select * from paymentinfo where billing_pi_id=%s;"
+        query = "select * from paymentinfo where pi_id=%s;"
         cursor.execute(query, (pi_id,))
         result = cursor.fetchone()
         return result

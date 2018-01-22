@@ -39,6 +39,15 @@ class StocksHandler:
             result_list.append(result)
         return jsonify(Stocks=result_list)
 
+    def getSumOfResources(self):
+        dao = StocksDAO()
+        sum_list = dao.getSumOfResources()
+        result_list = []
+        for row in sum_list:
+            result = Stock().build_dict_from_row_sum(row)
+            result_list.append(result)
+        return jsonify(Sums=result_list)
+
 
     def searchStocks(self, args):
         # Query parameters allowed when searching

@@ -72,9 +72,9 @@ class SuppliersHandler:
         #If supplier found, get all the stocks from that supplier
         transactionsDao = ResourceTransactionsDAO()
         transaction = transactionsDao.getTransactionById(tid)
-        if not transaction or transaction[2]  != sid:
+        if not transaction:
             return jsonify(Error = "Transaction Not Found"), 404
-        result = ResourceTransaction().build_dict_from_row(transaction)
+        result = ResourceTransaction().build_dict_from_table(transaction)
         return jsonify(transaction = result)
 
     def getTransactionDetailsById(self, sid, tid):
@@ -145,3 +145,14 @@ class SuppliersHandler:
             address = dao.getAddressBySid(sid)
             result_list = Address().build_dict_from_row(address)
             return jsonify(Address=result_list)
+
+    def getSuppliersCountPerRegion(self):
+        dao = SuppliersDAO()
+        counts_list = dao.getSuppliersCountPerRegion()
+        result_list = []
+        for row in counts_list:
+            count = Address().build_dict_from_row_count(row)
+            result_list.append(count)
+        return jsonify(suppliers_per_region=result_list)
+
+

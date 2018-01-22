@@ -1,13 +1,14 @@
-from config.dbconfig import pg_config
+from config.dbconfig import url
 import psycopg2
 class AddressesDAO:
     def __init__(self):
-
-        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
-                                                            pg_config['user'],
-                                                            pg_config['passwd'])
-        self.conn = psycopg2._connect(connection_url)
-
+        self.conn = psycopg2.connect(
+                                        database=url.path[1:],
+                                        user=url.username,
+                                        password=url.password,
+                                        host=url.hostname,
+                                        port=url.port
+                                        )
     def getAllAddresses(self):
         cursor = self.conn.cursor()
         query = "select * from address;"
@@ -42,3 +43,11 @@ class AddressesDAO:
         cursor.execute(query, (sid,))
         result = cursor.fetchone()
         return result
+
+    def insert(self, address1, address2, zipcode, region, country, city):
+        cursor = self.conn.cursor()
+        query = "insert into address(address1, address2, city, country, region, zipcode) values(%s, %s, %s, %s, %s, %s, %s) returning add_id;"
+        cursor.execute(query, (address1, address2, city, country, region, zipcode,))
+        add_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return add_id

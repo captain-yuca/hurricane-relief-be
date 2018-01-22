@@ -19,7 +19,7 @@ class ResourceTransactionsHandler:
         if not row:
             return jsonify(Error="Resource Transaction Not Found"), 404
         else:
-            transaction = ResourceTransaction().build_dict_from_row(row)
+            transaction = ResourceTransaction().build_dict_from_table(row)
             return jsonify(Transaction=transaction)
 
     def searchTransactions(self, args):
