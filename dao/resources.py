@@ -176,3 +176,6 @@ class ResourcesDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insert(self, rname, catid):
+        pass

@@ -7,7 +7,7 @@ resources_route = Blueprint('resources_route', __name__)
 @resources_route.route('/api/resources', methods=['GET', 'POST'])
 def getAllResources():
     if request.method == 'POST':
-        pass
+        return ResourcesHandler().insertResource(request.form)
     elif request.method == 'GET':
         if not request.args:
             return ResourcesHandler().getAllResources()
