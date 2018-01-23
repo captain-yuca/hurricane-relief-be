@@ -18,7 +18,9 @@ class User:
         result['username'] = row[1]
         result['lastName'] = row[2]
         result['firstName'] = row[3]
-        result['add_id'] = row[4]
+        result['email'] = row[4]
+        result['phone'] = row[5]
+        result['add_id'] = row[6]
         return result
 
     def build_dict_from_row_address(self, row):

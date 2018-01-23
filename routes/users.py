@@ -7,8 +7,8 @@ users_route = Blueprint('users_route', __name__)
 def getAllUsers():
     """ Returns all users. """
     if request.method == 'POST':
-        print(len(request.form))
-        return UsersHandler().insertUser(request.get_json())
+        print(len(request.form)) #will likely remove this right??
+        return UsersHandler().insertUser(request.get_json()) #here's the important change
     elif request.method == 'GET':
         if not request.args:
             return UsersHandler().getAllUsers()
@@ -17,17 +17,13 @@ def getAllUsers():
     else:
         return jsonify(Error="Method not allowed. "), 405
 
-@users_route.route('/api/users/<int:uid>', methods=['GET','PUT','DELETE', 'PUT'])
+@users_route.route('/api/users/<int:uid>', methods=['GET', 'PUT'])
 def getUserById(uid):
     """ Returns the user with the specified uid. """
     if request.method == 'GET':
         return UsersHandler().getUserById(uid)
-    elif request.method == 'POST':
-        pass
     elif request.method == 'PUT':
-        pass
-    elif request.method == 'DELETE':
-        pass
+        return UsersHandler().updateUser(uid, request.get_json())
     else:
         return jsonify(Error="Method not allowed. "), 405
 
