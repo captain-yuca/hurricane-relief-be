@@ -178,4 +178,9 @@ class ResourcesDAO:
         return result
 
     def insert(self, rname, catid):
-        pass
+        cursor = self.conn.cursor()
+        query = "insert into resource(rname, catid) values (%s, %s) returning rid;"
+        cursor.execute(query, (rname, catid,))
+        rid = cursor.fetchone()[0]
+        self.conn.commit()
+        return rid

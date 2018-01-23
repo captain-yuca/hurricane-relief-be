@@ -46,7 +46,7 @@ class AddressesDAO:
 
     def insert(self, address1, address2, zipcode, region, country, city):
         cursor = self.conn.cursor()
-        query = "insert into address(address1, address2, city, country, region, zipcode) values(%s, %s, %s, %s, %s, %s, %s) returning add_id;"
+        query = "insert into address(address1, address2, city, country, region, zipcode) values(%s, %s, %s, %s, %s, %s) returning add_id;"
         cursor.execute(query, (address1, address2, city, country, region, zipcode,))
         add_id = cursor.fetchone()[0]
         self.conn.commit()

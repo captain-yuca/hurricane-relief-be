@@ -110,12 +110,14 @@ class UsersHandler:
         return jsonify(Users=result_list)
 
     def insertUser(self, form):
-        if len(form) != 4:
+        print(len(form))
+        if len(form) != 5:
             return jsonify(Error="Malformed post request"), 400
         else:
             username = form['username']
             lastname = form['lastName']
             firstname = form['firstName']
+            password = form['password']
            #isAdmin = form['isAdmin']
             address1 = form['address']['address1']
             address2 = form['address']['address2']
@@ -123,15 +125,12 @@ class UsersHandler:
             region = form['address']['region']
             country = form['address']['country']
             city = form['address']['city']
-            if username and lastname and firstname and address1 and zipcode and region and country and city:
+            if username and lastname and firstname and password and address1 and zipcode and region and country and city:
                 dao = UsersDAO()
                 dao2 = AddressesDAO()
                 add_id = dao2.insert(address1, address2, zipcode, region, country, city)
-                uid = dao.insert(username, lastname, firstname, add_id)
+                uid = dao.insert(username, lastname, firstname,  password, add_id)
                 result = User().build_dict_from_row(dao.getUserById(uid))
                 return jsonify(User=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
-
-
-
