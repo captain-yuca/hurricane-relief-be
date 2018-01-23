@@ -157,7 +157,6 @@ class UsersHandler:
                 email = form['email']
                 addId = form['addId']
                 if username and lastname and firstname and password and addId and email and phone:
-                    dao = UsersDAO()
                     uid = dao.update(uid, username, lastname, firstname,  password, email, phone, addId)
                     result = User().build_dict_from_row(dao.getUserById(uid))
                     return jsonify(result), 201

@@ -16,7 +16,11 @@ def getAllResources():
     else:
         return jsonify(Error="Method Not Allowed"), 405
 
-@resources_route.route('/api/resources/<int:rid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
+@resources_route.route('/api/resources/<int:rid>', methods=['GET', 'PUT'])
 def getResourceById(rid):
     if request.method == 'GET':
         return ResourcesHandler().getResourceById(rid)
+    elif request.method == 'PUT':
+        return ResourcesHandler().updateResource(rid, request.get_json())
+    else:
+        return jsonify(Error="Method Not Allowed"), 405

@@ -131,3 +131,20 @@ class ResourcesHandler:
                 return jsonify(Resource=result), 201
             else:
                 return jsonify(Error="Unepected attributes in post request"), 400
+
+    def updateResource(self, rid, form):
+        dao = ResourcesDAO()
+        if not dao.getResourceById(rid):
+            return jsonify(Error="User not found."), 404
+        else:
+            if len(form) != 2:
+                return jsonify(Error="Malformed update request"), 400
+            else:
+                rname = form['rname']
+                catid = form['catid']
+                if rname and catid:
+                    rid = dao.update(rid, rname, catid)
+                    result = Resource().build_dict_from_row(dao.getResourceById(rid))
+                    return jsonify(result), 201
+                else:
+                    return jsonify(Error="Unexpected attributes in put request"), 400

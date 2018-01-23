@@ -184,3 +184,10 @@ class ResourcesDAO:
         rid = cursor.fetchone()[0]
         self.conn.commit()
         return rid
+
+    def update(self, rid, rname, catid):
+        cursor = self.conn.cursor()
+        query = "update resource set rname = %s, catid = %s where rid = %s;"
+        cursor.execute(query, (rname, catid, rid,))
+        self.conn.commit()
+        return rid
