@@ -155,4 +155,19 @@ class SuppliersHandler:
             result_list.append(count)
         return jsonify(suppliers_per_region=result_list)
 
-
+        
+    def insert(self, form):
+        if len(form) != 1:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            uid = form['uid']
+            if uid:
+                dao = UsersDAO()
+                if not dao.getUserById(uid):
+                    return jsonify(Error="User not found"), 404
+                dao = SuppliersDAO()
+                sid = dao.insert(uid)
+                result = Supplier().build_dict_from_row(dao.getSupplierById(sid))
+                return jsonify(result)
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
