@@ -39,3 +39,20 @@ class CategoriesDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insert(self, catname):
+
+        cursor = self.conn.cursor()
+        query = "insert into category(catname) values (%s) returning catid;"
+        cursor.execute(query, (catname,))
+        catid = cursor.fetchone()[0]
+        self.conn.commit()
+        return catid
+
+    def update(self, catid, catname):
+
+        cursor = self.conn.cursor()
+        query = "update category set catname = %s where catid = %s;"
+        cursor.execute(query, (catname, catid,))
+        self.conn.commit()
+        return catid

@@ -36,3 +36,32 @@ class CategoriesHandler:
             result = Category().build_dict_from_row(row)
             result_list.append(result)
         return jsonify(Categories=result_list)
+
+    def insertCategory(self, form):
+        if len(form) != 1:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            catname = form['catname']
+            if catname:
+                dao = CategoriesDAO()
+                catid = dao.insert(catname)
+                result = Category().build_dict_from_row(dao.getCategoryById(catid))
+                return jsonify(Category=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def updateCategory(self, catid, form):
+        dao = CategoriesDAO()
+        if not dao.getCategoryById(catid):
+            return jsonify(Error="User not found."), 404
+        else:
+            if len(form) != 1:
+                return jsonify(Error="Malformed update request"), 400
+            else:
+                catname = form['catname']
+                if catname:
+                    catid = dao.update(catid, catname)
+                    result = Category().build_dict_from_row(dao.getCategoryById(catid))
+                    return jsonify(Category=result), 201
+                else:
+                    return jsonify(Error="Unexpected attributes in post request"), 400
