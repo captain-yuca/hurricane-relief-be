@@ -7,7 +7,7 @@ users_route = Blueprint('users_route', __name__)
 def getAllUsers():
     """ Returns all users. """
     if request.method == 'POST':
-        return UsersHandler().insertUser(request.form)
+        return UsersHandler().insertUser(request.get_json()) #here's the important change
     elif request.method == 'GET':
         if not request.args:
             return UsersHandler().getAllUsers()
@@ -16,17 +16,21 @@ def getAllUsers():
     else:
         return jsonify(Error="Method not allowed. "), 405
 
-@users_route.route('/api/users/<int:uid>', methods=['GET','PUT','DELETE', 'PUT'])
+@users_route.route('/api/users/count', methods=['GET'])
+def getUserCount():
+    """ Returns the ammount of users"""
+    if request.method == 'GET':
+        return UsersHandler().count()
+    else:
+        return jsonify(Error="Method not allowed. "), 405
+
+@users_route.route('/api/users/<int:uid>', methods=['GET', 'PUT'])
 def getUserById(uid):
     """ Returns the user with the specified uid. """
     if request.method == 'GET':
         return UsersHandler().getUserById(uid)
-    elif request.method == 'POST':
-        pass
     elif request.method == 'PUT':
-        pass
-    elif request.method == 'DELETE':
-        pass
+        return UsersHandler().updateUser(uid, request.get_json())
     else:
         return jsonify(Error="Method not allowed. "), 405
 
@@ -35,8 +39,6 @@ def getPurchasesByUserId(uid):
     """ Returns all purchases made by the speicied user with uid. """
     if request.method == 'GET':
         return UsersHandler().getPurchasesByUserId(uid)
-    elif request.method == 'POST':
-        pass
     else:
         return jsonify(Error="Method not allowed. "), 405
 
@@ -45,28 +47,14 @@ def getUserPurchaseById(uid,pi_id):
     """ Returns a purchase with the specified pi_id made by the user with uid. """
     if request.method == 'GET':
         return UsersHandler().getUserPurchaseById(uid, pi_id)
-    elif request.method == 'POST':
-        pass
     else:
         return jsonify(Error="Method not allowed. "), 405
 
-@users_route.route('/api/users/<int:uid>/purchases/<int:pi_id>/details', methods=['GET','POST'])
-def getPurchaseDetailsById(uid,pi_id):
-    """ Returns all details of a purchase with the specified pi_id made by the user with uid. """
-
-    if request.method == 'GET':
-        return UsersHandler().getPurchaseDetailsById(uid, pi_id)
-    elif request.method == 'POST':
-        pass
-    else:
-        return jsonify(Error="Method not allowed. "), 405
 
 @users_route.route('/api/users/<int:uid>/addresses', methods=['GET','POST'])
 def getAddressesByUserId(uid):
     """ Returns all addresses tied to the user with uid. """
     if request.method == 'GET':
         return UsersHandler().getAddressesByUserId(uid)
-    elif request.method == 'POST':
-        pass
     else:
         return jsonify(Error="Method not allowed. "), 405

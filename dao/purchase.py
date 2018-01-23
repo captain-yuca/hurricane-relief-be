@@ -22,9 +22,32 @@ class PurchaseDAO:
     def getPurchaseById(self, purchase_id):
         cursor = self.conn.cursor()
         query = """
-        select purchase_id, purchase_date, purchase_total, appuser.uid, username, lname, fname, appuser.add_id, pi_id, ccnum, expirationdate, paymentinfo.add_id, tid, sid, transactionammount
-        from (purchase natural inner join resourcetransaction natural inner join appuser),address, paymentinfo
-        where address.add_id = paymentinfo.add_id and paymentinfo.pi_id = purchase.buyer_pi_id and purchase_id = %s;
+        SELECT
+        	pur.purchase_id, pur.purchase_date, pur.purchase_total,
+            pi.pi_id, pi.ccnum, pi.expirationdate, pi.add_id,
+            rt.tid, rt.transactionammount,
+            sup.sid, us.uid, us.username, us.fname, us.lname, us.email, us.phone, us.add_id,
+            re.rid, re.rname, cat.catid, cat.catname,
+            rtd.qty, rtd.purchaseprice
+        FROM
+        	(
+                supplier AS sup
+                NATURAL INNER JOIN appuser AS us
+                INNER JOIN
+                    (
+                        purchase AS pur
+                        INNER JOIN resourcetransaction AS rt
+                        ON pur.purchase_id = rt.purchase_id
+                    )
+                ON sup.sid = rt.sid
+            )
+            INNER JOIN paymentinfo AS pi ON pur.buyer_pi_id = pi.pi_id
+            NATURAL INNER JOIN resourcetransactiondetail as rtd
+            NATURAL INNER JOIN resource as re
+            NATURAL INNER JOIN category as cat
+
+        WHERE pur.purchase_id = %s
+        ORDER BY tid
         """
         cursor.execute(query, (purchase_id,))
         result = []
@@ -160,7 +183,7 @@ class PurchaseDAO:
     def getPurchasesByUid(self, uid):
         cursor = self.conn.cursor()
         query = """
-        select purchase_id, purchase_date, purchase_total, purchase.uid, pi_id, ccnum, expirationdate
+        select purchase_id, purchase_date, purchase_total, purchase.uid, pi_id, ccnum, expirationdate, add_id
         from purchase inner join paymentinfo on purchase.buyer_pi_id = paymentinfo.pi_id
         where purchase.uid = %s;
         """
