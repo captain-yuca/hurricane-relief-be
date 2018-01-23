@@ -30,7 +30,7 @@ class UsersDAO:
 
         cursor = self.conn.cursor()
 
-        query ="select uid, username, lname, fname, add_id from appuser where " # TOOK OUT ISADMIN HERE -Kelvin
+        query ="select uid, username, lname, fname, email, phone, add_id from appuser where " # TOOK OUT ISADMIN HERE -Kelvin
         query+= "=%s AND ".join(args.keys())
         query+= "=%s"
 
@@ -56,3 +56,19 @@ class UsersDAO:
         cursor.execute(query, (username, lastname, firstname, password, email, phone, add_id, uid,))
         self.conn.commit()
         return uid
+
+    def updateAdmin(self, uid, isAdmin):
+
+        cursor = self.conn.cursor()
+        query = "update appuser set isAdmin = %s where uid = %s;"
+        cursor.execute(query, (isAdmin, uid,))
+        self.conn.commit()
+        return uid
+
+    def count(self):
+
+        cursor =self.conn.cursor()
+        query = "select count(*) from appuser"
+        cursor.execute(query)
+        result = cursor.fetchone()
+        return result

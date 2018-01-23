@@ -5,4 +5,5 @@ class PaymentInfo:
         result['pi_id'] = row[0]
         result['ccnumber'] = row[1]
         result['exp_date'] = row[2]
+        result['addId'] = row[3]
         return result
