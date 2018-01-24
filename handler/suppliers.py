@@ -47,7 +47,7 @@ class SuppliersHandler:
             for row in stocks_list:
                 stock = Stock().build_dict_from_row_resource(row)
                 result_list.append(stock)
-            return jsonify(stocks = result_list)
+            return jsonify(result_list)
 
     def getTransactionsBySupplierId(self, sid):
         supplierDAO = SuppliersDAO()
@@ -62,7 +62,7 @@ class SuppliersHandler:
             for row in transactions_list:
                 transaction = ResourceTransaction().build_dict_from_row(row)
                 result_list.append(transaction)
-            return jsonify(transactions = result_list)
+            return jsonify(result_list)
 
     def getSupplierTransactionById(self, sid, tid):
         supplierDAO = SuppliersDAO()
@@ -75,7 +75,7 @@ class SuppliersHandler:
         if not transaction:
             return jsonify(Error = "Transaction Not Found"), 404
         result = ResourceTransaction().build_dict_from_table(transaction)
-        return jsonify(transaction = result)
+        return jsonify(result)
 
     def getTransactionDetailsById(self, sid, tid):
         supplierDAO = SuppliersDAO()
@@ -94,7 +94,7 @@ class SuppliersHandler:
         for row in details_list:
             detail = ResourceTransactionDetails().build_dict_from_row_resource(row)
             result_list.append(detail)
-        return jsonify(details=result_list)
+        return jsonify(result_list)
 
 
 
@@ -102,14 +102,15 @@ class SuppliersHandler:
 
         # Query parameters allowed when searching
         # These parameters are from Resource, Category and Stock
-        allowed_keys={"rid", "rname", "catid", "catname", "qtysum", "currentpriceperitem", "zipcode", "region", "city"}
-
+        allowed_keys={"rid", "rname", "catid", "catname",  "region", "city"}
+        allowed_range_keys={"qtysum", "currentpriceperitem","zipcode"}
         # Allow every query parameter stated in allowed_keys to have a min or max value
         max_and_min_keys=set()
-        for key in allowed_keys:
+        for key in allowed_range_keys:
             max_and_min_keys.add("max-" + key)
             max_and_min_keys.add("min-" + key)
         allowed_keys = allowed_keys.union(max_and_min_keys)
+        allowed_keys = allowed_keys.union(allowed_range_keys)
 
         # Divide the args given by user into min, max and equal parameters for use in DAO
         max_args={}
@@ -132,7 +133,7 @@ class SuppliersHandler:
         for row in suppliers_list:
             supplier = Supplier().build_dict_from_row_stock(row)
             result_list.append(supplier)
-        return jsonify(Suppliers=result_list)
+        return jsonify(result_list)
 
     def getAddressBySid(self, sid):
         supplierDAO = SuppliersDAO()
@@ -144,7 +145,7 @@ class SuppliersHandler:
             dao = AddressesDAO()
             address = dao.getAddressBySid(sid)
             result_list = Address().build_dict_from_row(address)
-            return jsonify(Address=result_list)
+            return jsonify(result_list)
 
     def getSuppliersCountPerRegion(self):
         dao = SuppliersDAO()
@@ -153,9 +154,9 @@ class SuppliersHandler:
         for row in counts_list:
             count = Address().build_dict_from_row_count(row)
             result_list.append(count)
-        return jsonify(suppliers_per_region=result_list)
+        return jsonify(result_list)
 
-        
+
     def insert(self, form):
         if len(form) != 1:
             return jsonify(Error="Malformed post request"), 400
@@ -171,3 +172,8 @@ class SuppliersHandler:
                 return jsonify(result)
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def count(self):
+        dao = SuppliersDAO()
+        result = dao.count()
+        return jsonify(count=result[0])

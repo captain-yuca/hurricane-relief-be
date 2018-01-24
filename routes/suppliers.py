@@ -16,8 +16,16 @@ def getAllSuppliers():
     else:
         return jsonify(Error="Method not allowed. "), 405
 
+@suppliers_route.route('/api/suppliers/count', methods=['GET'])
+def getSupplierCount():
+    """ Returns the ammount of suppliers"""
+    if request.method == 'GET':
+        return SuppliersHandler().count()
+    else:
+        return jsonify(Error="Method not allowed. "), 405
 
-@suppliers_route.route('/api/suppliers/<int:sid>', methods=['GET','POST','DELETE','PUT'])
+
+@suppliers_route.route('/api/suppliers/<int:sid>', methods=['GET'])
 def getSupplierById(sid):
     """ Gets a supplier by supplier id. """
     if request.method == 'GET':
@@ -26,44 +34,35 @@ def getSupplierById(sid):
         return jsonify(Error="Method not allowed. "), 405
 
 
-@suppliers_route.route('/api/suppliers/<int:sid>/stocks', methods=['GET','POST'])
+@suppliers_route.route('/api/suppliers/<int:sid>/stocks', methods=['GET'])
 def getStocksBySid(sid):
     """ Get all stocks pertaining to a given supplier. """
     if  request.method == 'GET':
         if not request.args:
             return SuppliersHandler().getStocksBySupplierId(sid)
         else:
+            # TODO: Search by stocks parameters
             pass
     else:
         return jsonify(Error="Method not allowed. "), 405
 
-@suppliers_route.route('/api/suppliers/<int:sid>/transactions', methods=['GET', 'POST'])
+@suppliers_route.route('/api/suppliers/<int:sid>/transactions', methods=['GET'])
 def getTransactionsBySid(sid):
     """ Get all transactions pertaining to a given supplier. """
     if request.method == 'GET':
         if not request.args:
             return SuppliersHandler().getTransactionsBySupplierId(sid)
         else:
+            # TODO: Search by transaction parameters
             pass
-    elif request.method == 'POST':
-        pass
     else:
         return jsonify(Error="Method not allowed. "), 405
 
-@suppliers_route.route('/api/suppliers/<int:sid>/transactions/<int:tid>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@suppliers_route.route('/api/suppliers/<int:sid>/transactions/<int:tid>', methods=['GET'])
 def getSupplierTransactionById(sid, tid):
     """ Get all transactions pertaining to a given supplier. """
     if request.method == 'GET':
-        if not request.args:
             return SuppliersHandler().getSupplierTransactionById(sid, tid)
-        else:
-            pass
-    elif request.method == 'POST':
-        pass
-    elif request.method == 'PUT':
-        pass
-    elif request.method == 'DELETE':
-        pass
     else:
         return jsonify(Error="Method not allowed. "), 405
 
@@ -79,9 +78,7 @@ def getAddressBySid(sid):
     else:
         return jsonify(Error="Method not allowed. "), 405
 
-@suppliers_route.route('/api/suppliers/countPerRegion', methods=['GET', 'POST'])
+@suppliers_route.route('/api/suppliers/countPerRegion', methods=['GET'])
 def getSuppliersCountPerRegion():
     if request.method == 'GET':
         return SuppliersHandler().getSuppliersCountPerRegion()
-    else:
-        pass

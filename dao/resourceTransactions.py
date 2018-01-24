@@ -13,7 +13,7 @@ class ResourceTransactionsDAO:
 
     def getAllTransactions(self):
         cursor = self.conn.cursor()
-        query = "select tid, sid, transactionammount, purchase_id, supplier_pi_id from resourcetransaction;"
+        query = "select tid, transactionammount, purchase_id, supplier_pi_id from resourcetransaction;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -23,7 +23,7 @@ class ResourceTransactionsDAO:
     def getTransactionById(self, tid):
         cursor = self.conn.cursor()
         query = """
-        select tid, transactionammount, purchase_id, sid, uid, username, lname, fname, add_id, qty, purchaseprice, rid, rname, catid, catname
+        select tid, transactionammount, purchase_id, sid, uid, username, lname, fname, email, phone, add_id, qty, purchaseprice, rid, rname, catid, catname
         from resourcetransaction natural inner join resourcetransactiondetail natural inner join supplier natural inner join appuser natural inner join resource natural inner join category
         where tid=%s
         """
