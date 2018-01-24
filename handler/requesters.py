@@ -47,3 +47,16 @@ class RequestersHandler:
     #         address = Address().build_dict_from_row(row)
     #         result_list.append(address)
     #     return jsonify(Addresses=result_list)
+    def insertRequester(self, form):
+        daou = UsersDAO()
+        if len(form) != 1:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            uid = form['uid']
+            if uid and daou.getUserById(uid):
+                dao = RequestersDAO()
+                nid = dao.insert(uid)
+                result = Requester().build_dict_from_row(dao.getRequesterById(nid))
+                return jsonify(Requester=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post requester"), 400

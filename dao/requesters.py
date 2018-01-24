@@ -34,3 +34,11 @@ class RequestersDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insert(self, uid):
+        cursor = self.conn.cursor()
+        query = "insert into requester(uid) values(%s) returning nid;"
+        cursor.execute(query, (uid,))
+        nid = cursor.fetchone()[0]
+        self.conn.commit()
+        return nid
