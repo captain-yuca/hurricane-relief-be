@@ -85,3 +85,15 @@ def getSuppliersCountPerRegion():
         return SuppliersHandler().getSuppliersCountPerRegion()
     else:
         pass
+
+@suppliers_route.route('/api/suppliers/<int:sid>/announcements', methods=['GET', 'POST'])
+def getAnnouncementsBySid(sid):
+    if request.method == 'GET':
+        if not request.args:
+            return SuppliersHandler().getAnnouncementsBySID(sid)
+        else:
+            pass
+    elif request.method == 'POST':
+        return SuppliersHandler().insertAnnouncementBySID(request.get_json())
+    else:
+        return jsonify(Error="Method not allowed. "), 405
