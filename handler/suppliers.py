@@ -135,6 +135,51 @@ class SuppliersHandler:
             result_list.append(supplier)
         return jsonify(result_list)
 
+    def searchStocks(self, sid, args):
+        dao = SuppliersDAO()
+        row = dao.getSupplierById(sid)
+        if not row:
+            return jsonify(Error = "Supplier Not Found"), 404
+
+        allowed_keys={"rid", "rname", "catid", "catname"}
+        allowed_range_keys={"qtysum", "currentpriceperitem"}
+
+        # Allow every query parameter stated in allowed_keys to have a min or max value
+        max_and_min_keys=set()
+        for key in allowed_range_keys:
+            max_and_min_keys.add("max-" + key)
+            max_and_min_keys.add("min-" + key)
+        allowed_keys = allowed_keys.union(max_and_min_keys)
+        allowed_keys = allowed_keys.union(allowed_range_keys)
+
+
+        # Divide the args given by user into min, max and equal parameters for use in DAO
+        max_args={}
+        min_args={}
+        equal_args={}
+        for key in args.keys():
+            if key in allowed_keys and key[0:4] == "max-":
+                max_args[key[4:]] = args[key]
+            elif key in allowed_keys and key[0:4] == "min-":
+                min_args[key[4:]] = args[key]
+            elif key not in allowed_keys:
+                return jsonify(Error="Malfromed query string"), 400
+            else:
+                equal_args[key] = args[key]
+
+        # Added sid for searching specific uid
+        equal_args['sid'] = sid
+
+
+        # Get all the results for the search
+        dao = StocksDAO()
+        stocks_list= dao.getStocksByParamsNoSupplier(equal_args, max_args, min_args)
+        result_list =[]
+        for row in stocks_list:
+            stock = Stock().build_dict_from_row_no_supplier(row)
+            result_list.append(stock)
+        return jsonify(result_list)
+
     def getAddressBySid(self, sid):
         supplierDAO = SuppliersDAO()
         row = supplierDAO.getSupplierById(sid)

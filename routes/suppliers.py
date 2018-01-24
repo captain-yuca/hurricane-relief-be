@@ -41,7 +41,8 @@ def getStocksBySid(sid):
         if not request.args:
             return SuppliersHandler().getStocksBySupplierId(sid)
         else:
-            # TODO: Search by stocks parameters
+            # TODO: Search by stocks parameter
+            return SuppliersHandler().searchStocks(sid,request.args)
             pass
     else:
         return jsonify(Error="Method not allowed. "), 405

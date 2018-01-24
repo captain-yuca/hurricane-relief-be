@@ -250,3 +250,46 @@ class StocksDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getStocksByParamsNoSupplier(self, args, max_args, min_args):
+        cursor = self.conn.cursor()
+
+
+        query ="""
+        select rid, rname, catId, catName, currentpriceperitem,
+        qtysum from stock natural inner join resource natural inner join category natural inner join
+        supplier natural inner join appuser natural inner join address
+        where
+        """
+
+        selection_length = len(args) + len(max_args) + len(min_args)
+
+        i = 0
+
+        # Go through each args list (args, max_args, min_args) and append the key with its appropiate operator
+        # and value. 'i' keeps track of when to stop appending AND to the query.
+        for key in min_args.keys():
+            if i == selection_length - 1:
+                query+= key + " >= %s"
+            else:
+                query+= key + " >= %s AND "
+                i+=1
+        for key in max_args.keys():
+            if i == selection_length - 1:
+                query+= key + " < %s"
+            else:
+                query+= key + " < %s AND "
+                i+=1
+        for key in args.keys():
+            if i == selection_length - 1:
+                query+= key + " = %s"
+            else:
+                query+= key + " = %s AND "
+                i+=1
+
+        args_tuple = tuple(min_args.values()) + tuple(max_args.values()) + tuple(args.values())
+        cursor.execute(query, args_tuple)
+        result=[]
+        for row in cursor:
+            result.append(row)
+        return result
