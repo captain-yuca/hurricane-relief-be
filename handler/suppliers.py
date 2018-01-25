@@ -175,7 +175,102 @@ class SuppliersHandler:
                 return jsonify(result)
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
-#this one feel like a damn placeholder, so much shit to fix -Herbert. Mostly confused since its a lot of stuff being added
+    def insertAvailabilityAnnouncementDetailByAnn_Id(self, form, ann_id):
+        print(len(form))
+        if len(form) == 3:
+            rid = form['rid']
+            qty = form['qty']
+            priceattime = form['priceattime']
+            sid=None
+            # rm['date'] #DATE has yet to be added to documentation
+
+            if rid and qty and priceattime:
+
+                dao = ResourcesDAO()
+                if not dao.getResourceById(rid):
+                    return jsonify(Error="Resource not found"), 404
+
+                dao = AvailabilityAnnouncementsDAO()
+                announcement=dao.getAnnouncementById(ann_id);
+                if not announcement:
+                    return jsonify(Error="Announcement not found"),404
+                else:
+                    sid=announcement[1] #verify this is true -H
+
+                dao = AvailabilityAnnoucementDetailsDAO()
+                if not dao.getAnnouncementDetailsById(ann_id,rid):
+                    dao.insertAvailabilityAnnouncementDetails(ann_id, rid, qty, priceattime)
+                else:
+                    return jsonify(Error="Duplicate Primary Key"), 400
+
+                dao = StocksDAO()
+                if not dao.getStockById(rid, sid):
+                    # add to stock if doesnt exist
+                    dao.insertStock(rid, sid, qty, priceattime)
+                else:
+                    astock = dao.getStockById(rid, sid)
+                    newqty = astock[11] + qty
+                    dao.updateStock(rid, sid, newqty, priceattime)
+
+                dao = AvailabilityAnnoucementDetailsDAO()
+                dao.insertAvailabilityAnnouncementDetails(ann_id, rid, qty,
+                                                          priceattime)
+                dao = AvailabilityAnnouncementsDAO()
+                table = dao.getAnnouncementByIdWithDetails(ann_id)
+                if not table:
+                    return jsonify(Error="Availability Announcement Not Found"), 404
+                else:
+                    result = AvailabilityAnnouncement().build_dict_from_table_details(table)
+                    return jsonify(announcement=result)
+        elif len(form) != 4:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            rname = form['rname']
+            catid = form['catid']
+            qty = form['qty']
+            priceattime = form['priceattime']
+            rid = None
+            sid = None
+            if rname and catid and qty and priceattime:
+                dao = ResourcesDAO()
+                resource = dao.getResourcesByRname(rname)
+                if not resource:
+                    rid = dao.insert(rname, catid)
+                else:
+                    rid = (resource[0])[0]
+                    print(rid)
+                dao = AvailabilityAnnouncementsDAO()
+                announcement = dao.getAnnouncementById(ann_id);
+                if not announcement:
+                    return jsonify(Error="Announcement not found"), 404
+                else:
+                    sid = announcement[1]  # verify this is true -H
+                dao = AvailabilityAnnoucementDetailsDAO()
+                if not dao.getAnnouncementDetailsById(ann_id, rid):
+                    dao.insertAvailabilityAnnouncementDetails(ann_id, rid, qty, priceattime)
+                else:
+                    return jsonify(Error="Duplicate Primary Key"), 400
+                dao = StocksDAO()
+                if not dao.getStockById(rid, sid):
+                    # add t
+                    # o stock if doesnt exist
+                    dao.insertStock(rid, sid, qty, priceattime)
+                else:
+                    astock = dao.getStockById(rid, sid)
+                    newqty = astock[11] + qty
+                    dao.updateStock(rid, sid, newqty, priceattime)
+                    # increase number of items in stock by qty. of each damn item. shit.
+                # dao = SuppliersDAO() # do I even need this one?
+                # dao2 = AvailabilityAnnouncementsDAO()
+                
+                dao = AvailabilityAnnouncementsDAO()
+                table = dao.getAnnouncementByIdWithDetails(ann_id)
+                if not table:
+                    return jsonify(Error="Availability Announcement Not Found"), 404
+                else:
+                    result = AvailabilityAnnouncement().build_dict_from_table_details(table)
+                    return jsonify(announcement=result)
+
     def insertAvailabilityAnnouncementbySID(self, form, sid): #added by herbert for post announcements by supplier
         print(len(form))
         if len(form) == 3:
