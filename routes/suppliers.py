@@ -94,6 +94,6 @@ def getAnnouncementsBySid(sid):
         else:
             pass
     elif request.method == 'POST':
-        return SuppliersHandler().insertAnnouncementBySID(request.get_json(), sid)
+        return SuppliersHandler().insertAnnouncement(request.get_json(), sid)
     else:
         return jsonify(Error="Method not allowed. "), 405

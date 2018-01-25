@@ -259,9 +259,9 @@ class StocksDAO:
 
     def updateStock(self, rid, sid, newQty, currentprice):
         cursor = self.conn.cursor()
-        query = "insert into Stock(currentpriceperitem, rid, sid, qtysum) values (%s,%s,%s,%s);"
-        query = "update Stock set currentpriceperitem= %s, rid=%s, sid=%s, qtysum=%s;"
-        cursor.execute(query, (currentprice, rid, sid, newQty))
+       # query = "insert into Stock(currentpriceperitem, rid, sid, qtysum) values (%s,%s,%s,%s);"
+        query = "update Stock set currentpriceperitem= %s, qtysum=%s where  rid=%s and sid=%s;"
+        cursor.execute(query, (currentprice, newQty, rid, sid, ))
         self.conn.commit()
 
 

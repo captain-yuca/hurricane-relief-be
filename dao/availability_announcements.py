@@ -64,7 +64,7 @@ class AvailabilityAnnouncementsDAO:
     def insertAvailabilityAnnouncement(self, sid):
         cursor = self.conn.cursor()
         date = time.strftime("%Y/%m/%d")
-        query = "insert into AvailabilityAnnouncement(sid, date) values (%s,%s) returning ann_id;"
+        query = "insert into AvailabilityAnnouncement(sid, ann_date) values (%s,%s) returning ann_id;"
         cursor.execute(query, (sid, date))
         ann_id = cursor.fetchone()[0]
         self.conn.commit()
