@@ -216,7 +216,7 @@ class SuppliersHandler:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
     def getAvailabilityAnnouncementsBySID(self, sid):
-
+    #TOMORROW FIX: WHATS UP WITH THE DIC. SOMETHING ABOUT ADMIN.
         supplierDAO = SuppliersDAO()
         supplier = supplierDAO.getSupplierById(sid)
         if not supplier:
