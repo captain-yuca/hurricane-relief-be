@@ -7,11 +7,8 @@ class AvailabilityAnnouncementsHandler:
     def getAllAnnouncements(self):
         dao = AvailabilityAnnouncementsDAO()
         announcement_list = dao.getAllAnnouncements()
-        result_list=[]
-        for row in announcement_list:
-            availabilityAnnouncement = AvailabilityAnnouncement().build_dict_from_row_resource(row)
-            result_list.append(availabilityAnnouncement)
-        return jsonify(AvailabilityAnnouncements=result_list)
+        result =  AvailabilityAnnouncement().build_dict_from_table(announcement_list)
+        return jsonify(result)
 
     def getAnnouncementById(self, ann_id):
         dao = AvailabilityAnnouncementsDAO()

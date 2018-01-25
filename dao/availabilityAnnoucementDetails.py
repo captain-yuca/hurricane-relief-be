@@ -125,3 +125,10 @@ class AvailabilityAnnoucementDetailsDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insertAvailabilityAnnouncementDetails(self, ann_id, rid, qty, priceattime):
+        cursor = self.conn.cursor()
+
+        query = "insert into AvailabilityAnnouncementDetail(qty, priceattime, ann_id, rid) values (%s,%s,%s,%s);"
+        cursor.execute(query, (qty, priceattime, ann_id, rid))
+        self.conn.commit()
