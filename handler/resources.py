@@ -91,7 +91,7 @@ class ResourcesHandler:
             return jsonify(Error="Malformed post request"), 400
         else:
             rname = form['rname']
-            catid = form['catid']
+            catid = form['catId']
             if rname and catid:
                 dao = ResourcesDAO()
                 rid = dao.insert(rname, catid)
