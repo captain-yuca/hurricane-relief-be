@@ -178,9 +178,7 @@ class SuppliersHandler:
 #this one feel like a damn placeholder, so much shit to fix -Herbert. Mostly confused since its a lot of stuff being added
     def insertAvailabilityAnnouncementbySID(self, form, sid): #added by herbert for post announcements by supplier
         print(len(form))
-        if len(form) != 3:
-            return jsonify(Error="Malformed post request"), 400
-        else:
+        if len(form) == 3:
             rid = form['rid']
             qty = form['qty']
             priceattime = form['priceattime']
@@ -210,11 +208,53 @@ class SuppliersHandler:
                 dao = AvailabilityAnnoucementDetailsDAO()
                 dao.insertAvailabilityAnnouncementDetails(ann_id,rid, qty, priceattime) #do a loop to add all the fields
                 dao = AvailabilityAnnouncementsDAO()
-                result = AvailabilityAnnouncement().build_dict_from_row(dao.getAnnouncementByIdWithDetails(ann_id)) #will likely be a new dictionary? or not.
-                return jsonify(result), 201
-            else:
-                return jsonify(Error="Unexpected attributes in post request"), 400
+                table = dao.getAnnouncementByIdWithDetails(ann_id)
+                if not table:
+                    return jsonify(Error="Availability Announcement Not Found"), 404
+                else:
+                    result = AvailabilityAnnouncement().build_dict_from_table_details(table)
+                    return jsonify(announcement=result)
+        elif len(form) !=4:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            rname = form['rname']
+            catid = form['catid']
+            qty = form['qty']
+            priceattime = form['priceattime']
+            rid = None
+            if rname and catid and qty and priceattime:
+                dao = ResourcesDAO()
+                resource = dao.getResourcesByRname(rname)
+                if not resource:
+                    rid=dao.insert(rname,catid)
+                else:
+                    rid=(resource[0])[0]
+                    print(rid)
+                dao = AvailabilityAnnouncementsDAO()
+                ann_id = dao.insertAvailabilityAnnouncement(sid)
 
+                dao = StocksDAO()
+                if not dao.getStockById(rid, sid):
+                    # add t
+                    # o stock if doesnt exist
+                    dao.insertStock(rid, sid, qty, priceattime)
+                else:
+                    astock = dao.getStockById(rid, sid)
+                    newqty = astock[11] + qty
+                    dao.updateStock(rid, sid, newqty, priceattime)
+                    # increase number of items in stock by qty. of each damn item. shit.
+                # dao = SuppliersDAO() # do I even need this one?
+                # dao2 = AvailabilityAnnouncementsDAO()
+                dao = AvailabilityAnnoucementDetailsDAO()
+                dao.insertAvailabilityAnnouncementDetails(ann_id, rid, qty,
+                                                          priceattime)  # do a loop to add all the fields
+                dao = AvailabilityAnnouncementsDAO()
+                table = dao.getAnnouncementByIdWithDetails(ann_id)
+                if not table:
+                    return jsonify(Error="Availability Announcement Not Found"), 404
+                else:
+                    result = AvailabilityAnnouncement().build_dict_from_table_details(table)
+                    return jsonify(announcement=result)
     def getAvailabilityAnnouncementsBySID(self, sid):
     #TOMORROW FIX: WHATS UP WITH THE DIC. SOMETHING ABOUT ADMIN.
         supplierDAO = SuppliersDAO()
