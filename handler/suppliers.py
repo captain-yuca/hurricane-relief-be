@@ -221,27 +221,12 @@ class SuppliersHandler:
         supplier = supplierDAO.getSupplierById(sid)
         if not supplier:
             return jsonify(Error="Supplier Not Found"), 404
-        dao = AvailabilityAnnouncementsDAO()
-        if not dao.getAnnouncementBySIDWithDetails():
-            return jsonify(Error="Announcements Not Found"), 404
 
+        dao = AvailabilityAnnouncementsDAO()
         table = dao.getAnnouncementBySIDWithDetails(sid)
         if not table:
             return jsonify(Error="Availability Announcement Not Found"), 404
         else:
             result = AvailabilityAnnouncement().build_dict_from_table_details(table)
             return jsonify(announcement=result)
-
-
-
-
-
-
-
-        announcement_list = dao.getAnnouncementBySIDWithDetails()
-        results_list = []
-        for row in announcement_list:
-            announcement = AvailabilityAnnouncement().build_dict_from_table_details(row)
-            results_list.append(announcement)
-        return jsonify(results_list)
 
