@@ -1,5 +1,6 @@
 from config.dbconfig import url
 import psycopg2
+import time
 class AvailabilityAnnouncementsDAO:
     def __init__(self):
         self.conn = psycopg2.connect(
@@ -59,3 +60,12 @@ class AvailabilityAnnouncementsDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insertAvailabilityAnnouncement(self, sid):
+        cursor = self.conn.cursor()
+        date = time.strftime("%Y/%m/%d")
+        query = "insert into AvailabilityAnnouncement(sid, ann_date) values (%s,%s) returning ann_id;"
+        cursor.execute(query, (sid, date))
+        ann_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return ann_id

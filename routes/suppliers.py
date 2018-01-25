@@ -12,7 +12,7 @@ def getAllSuppliers():
             else:
                 return SuppliersHandler().searchSuppliers(request.args)
     elif request.method == 'POST':
-        pass
+        return SuppliersHandler().insert(request.get_json())
     else:
         return jsonify(Error="Method not allowed. "), 405
 
@@ -22,12 +22,6 @@ def getSupplierById(sid):
     """ Gets a supplier by supplier id. """
     if request.method == 'GET':
         return SuppliersHandler().getSupplierById(sid)
-    elif request.method == 'POST':
-        pass
-    elif request.method == 'DELETE':
-        pass
-    elif request.method == 'PUT':
-        pass
     else:
         return jsonify(Error="Method not allowed. "), 405
 
@@ -40,8 +34,6 @@ def getStocksBySid(sid):
             return SuppliersHandler().getStocksBySupplierId(sid)
         else:
             pass
-    elif request.method == 'POST':
-        pass
     else:
         return jsonify(Error="Method not allowed. "), 405
 
@@ -93,3 +85,15 @@ def getSuppliersCountPerRegion():
         return SuppliersHandler().getSuppliersCountPerRegion()
     else:
         pass
+
+@suppliers_route.route('/api/suppliers/<int:sid>/announcements', methods=['GET', 'POST'])
+def getAnnouncementsBySid(sid):
+    if request.method == 'GET':
+        if not request.args:
+            return SuppliersHandler().getAnnouncementsBySID(sid)
+        else:
+            pass
+    elif request.method == 'POST':
+        return SuppliersHandler().insertAnnouncement(request.get_json(), sid)
+    else:
+        return jsonify(Error="Method not allowed. "), 405

@@ -64,10 +64,10 @@ class UsersHandler:
             return jsonify(Error = "User Not Found"), 404
 
         purchase = purchasesDao.getPurchaseById(pi_id)
-        if not purchase or purchase[3]  != uid:
+        if not purchase:
             return jsonify(Error = "Purchase Not Found"), 404
 
-        result = Purchase().build_dict_from_row_payment(purchase)
+        result = Purchase().build_dict_from_table_detailed(purchase)
         return jsonify(result)
 
     def getPurchaseDetailsById(self, uid, pi_id):
@@ -78,7 +78,7 @@ class UsersHandler:
             return jsonify(Error = "User Not Found"), 404
 
         purchase = purchasesDao.getPurchaseById(pi_id)
-        if not purchase or purchase[3]  != uid:
+        if not purchase:
             return jsonify(Error = "Purchase Not Found"), 404
 
         detailsDao = ResourceTransactionsDAO()
@@ -96,7 +96,7 @@ class UsersHandler:
     #TOOK OUT ISADMIN HERE AND CHANGED DICT -KELVIN
 
     def searchUsers(self, args):
-        allowedKeys= {"fname", "lname", "username", "add_id", "isAdmin"}
+        allowedKeys= {"fname", "lname", "username", "email", "phone","add_id", "isAdmin"}
         for key in args.keys():
             if key not in allowedKeys:
                 return jsonify(Error="Malformed query string"), 400
@@ -141,7 +141,12 @@ class UsersHandler:
         if not dao.getUserById(uid):
             return jsonify(Error= "User not found."), 404
         else:
-            if len(form) != 7:
+            if len(form) == 1 and form['isAdmin']:
+                dao = UsersDAO()
+                uid = dao.updateAdmin(uid, form['isAdmin'])
+                result = User().build_dict_from_row(dao.getUserById(uid))
+                return jsonify(result), 201
+            elif len(form) != 7:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 username = form['username']
@@ -157,3 +162,7 @@ class UsersHandler:
                     return jsonify(result), 201
                 else:
                     return jsonify(Error="Unexpected attributes in post request"), 400
+    def count(self):
+        dao = UsersDAO()
+        result = dao.count()
+        return jsonify(count=result[0])

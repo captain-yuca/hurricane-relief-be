@@ -16,4 +16,3 @@ class Address:
         result['count'] = row[0]
         result['region'] = row[1]
         return result
-

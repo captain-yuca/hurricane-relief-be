@@ -13,7 +13,7 @@ class SuppliersDAO:
 
     def getAllSuppliers(self):
         cursor = self.conn.cursor()
-        query = "select sid, uid, username, lname, fname, add_id from supplier natural join appuser;" # Eliminated the isAdmin projection from this query -Kelvin
+        query = "select sid, uid, username, lname, fname, email, phone, add_id from supplier natural join appuser;" # Eliminated the isAdmin projection from this query -Kelvin
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -23,7 +23,7 @@ class SuppliersDAO:
 
     def getSupplierById(self, sid):
         cursor = self.conn.cursor()
-        query = "select sid, uid, username, lname, fname, add_id from supplier natural join appuser where sid= %s"; #Elmininated the isAdmin projection from this query -Kelvin
+        query = "select sid, uid, username, lname, fname, email, phone, add_id from supplier natural join appuser where sid= %s"; #Elmininated the isAdmin projection from this query -Kelvin
         cursor.execute(query, (sid,))
         result = cursor.fetchone()
         return result
@@ -80,3 +80,11 @@ class SuppliersDAO:
         for row in cursor:
             result.append(row)
         return result
+    def insert(self, uid):
+
+        cursor = self.conn.cursor()
+        query = "insert into supplier(uid) values (%s) returning sid;"
+        cursor.execute(query, (uid,))
+        sid = cursor.fetchone()[0]
+        self.conn.commit()
+        return sid

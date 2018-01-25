@@ -5,12 +5,16 @@ from dao.stocks import StocksDAO
 from dao.resourceTransactions import ResourceTransactionsDAO
 from dao.resourceTransactionDetails import ResourceTransactionDetailsDAO
 from dao.addresses import AddressesDAO
+from dao.resources import ResourcesDAO #added by Herbert Jan 23 for a post
+from dao.availability_announcements import AvailabilityAnnouncementsDAO #added by Herbert
+from dao.availabilityAnnoucementDetails import AvailabilityAnnoucementDetailsDAO #H again
 
 from models.supplier import Supplier
 from models.stock import Stock
 from models.resourceTransaction import ResourceTransaction
 from models.resourceTransactionDetails import ResourceTransactionDetails
 from models.address import Address
+from models.availability_announcement import AvailabilityAnnouncement
 
 
 class SuppliersHandler:
@@ -155,4 +159,59 @@ class SuppliersHandler:
             result_list.append(count)
         return jsonify(suppliers_per_region=result_list)
 
+        
+    def insert(self, form):
+        if len(form) != 1:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            uid = form['uid']
+            if uid:
+                dao = UsersDAO()
+                if not dao.getUserById(uid):
+                    return jsonify(Error="User not found"), 404
+                dao = SuppliersDAO()
+                sid = dao.insert(uid)
+                result = Supplier().build_dict_from_row(dao.getSupplierById(sid))
+                return jsonify(result)
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
+#this one feel like a damn placeholder, so much shit to fix -Herbert. Mostly confused since its a lot of stuff being added
+    def insertAnnouncement(self, form, sid): #added by herbert for post announcements by supplier
+        print(len(form))
+        if len(form) != 3:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            rid = form['rid']
+            qty = form['qty']
+            priceattime = form['priceattime']
+            #rm['date'] #DATE has yet to be added to documentation
+
+            if rid and qty and priceattime:
+
+                dao = ResourcesDAO()
+                if not dao.getResourceById(rid):
+                    return jsonify(Error="Resource not found"), 404
+
+                dao = AvailabilityAnnouncementsDAO()
+                ann_id = dao.insertAvailabilityAnnouncement(sid)
+
+                dao = StocksDAO()
+                if not dao.getStockById(rid, sid):
+                    #add t
+                    # o stock if doesnt exist
+                    dao.insertStock(rid, sid, qty, priceattime)
+                else:
+                    astock = dao.getStockById(rid, sid)
+                    newqty = astock[11]+qty
+                    dao.updateStock(rid,sid, newqty, priceattime)
+                    #increase number of items in stock by qty. of each damn item. shit.
+                #dao = SuppliersDAO() # do I even need this one?
+                #dao2 = AvailabilityAnnouncementsDAO()
+                dao = AvailabilityAnnoucementDetailsDAO()
+                dao.insertAvailabilityAnnouncementDetails(ann_id,rid, qty, priceattime) #do a loop to add all the fields
+                dao = AvailabilityAnnouncementsDAO()
+                result = AvailabilityAnnouncement().build_dict_from_row(dao.getAvailabilityAnnouncementById(ann_id)) #will likely be a new dictionary? or not.
+                return jsonify(result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
 
