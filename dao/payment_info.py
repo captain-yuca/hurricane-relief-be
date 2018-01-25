@@ -25,3 +25,10 @@ class PaymentInfoDAO:
         cursor.execute(query, (pi_id,))
         result = cursor.fetchone()
         return result
+
+    def getPaymentInfoBySid(self, sid):
+        cursor = self.conn.cursor()
+        query = "select pi_id from paymentinfo natural inner join appuser natural inner join supplier where sid=%s;"
+        cursor.execute(query, (sid,))
+        result = cursor.fetchone()
+        return result

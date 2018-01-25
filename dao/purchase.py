@@ -242,3 +242,16 @@ class PurchaseDAO:
         for row in cursor:
             result.append(row)
         return result
+    def insert(self, uid, buyer_pi_id, purchase_total, purchase_date):
+        cursor = self.conn.cursor()
+        query = "insert into purchase(uid, buyer_pi_id, purchase_total, purchase_date) values (%s, %s, %s, %s) returning purchase_id;"
+        cursor.execute(query, (uid, buyer_pi_id, purchase_total, purchase_date,))
+        uid = cursor.fetchone()[0]
+        self.conn.commit()
+        return uid
+
+    def updatePurchasePrice(self, purchase_id, purchase_total):
+        cursor = self.conn.cursor()
+        query = "update purchase set purchase_total = %s where purchase_id = %s;"
+        cursor.execute(query, (purchase_total, purchase_id,))
+        self.conn.commit()

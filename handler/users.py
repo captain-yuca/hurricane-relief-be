@@ -70,29 +70,6 @@ class UsersHandler:
         result = Purchase().build_dict_from_table_detailed(purchase)
         return jsonify(result)
 
-    def getPurchaseDetailsById(self, uid, pi_id):
-        userDao = UsersDAO()
-        purchasesDao = PurchaseDAO()
-        user = userDao.getUserById(uid)
-        if not user:
-            return jsonify(Error = "User Not Found"), 404
-
-        purchase = purchasesDao.getPurchaseById(pi_id)
-        if not purchase:
-            return jsonify(Error = "Purchase Not Found"), 404
-
-        detailsDao = ResourceTransactionsDAO()
-        details_list = detailsDao.getTransactionsByPurchaseid(pi_id)
-        result_list = []
-
-        for row in details_list:
-            detail = ResourceTransaction().build_dict_from_row_transactions(row)
-            result_list.append(detail)
-        return jsonify(result_list)
-
-
-
-
     #TOOK OUT ISADMIN HERE AND CHANGED DICT -KELVIN
 
     def searchUsers(self, args):

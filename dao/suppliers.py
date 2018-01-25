@@ -35,7 +35,7 @@ class SuppliersDAO:
 
         # Eliminated the isAdmin projection from this option -Kelvin
         query ="""
-        select distinct sid, uid, username, lname, fname, add_id
+        select distinct sid, uid, username, lname, fname, email, phone, add_id
         from supplier natural join appuser natural join stock natural join resource natural join category natural join address
         where
         """
@@ -74,7 +74,7 @@ class SuppliersDAO:
 
     def getSuppliersCountPerRegion(self):
         cursor = self.conn.cursor()
-        query = "select count(*), region from address natural inner join user natural inner join supplier group by region;"
+        query = "select distinct count(*), region from address natural inner join appuser natural inner join supplier group by region;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -88,3 +88,11 @@ class SuppliersDAO:
         sid = cursor.fetchone()[0]
         self.conn.commit()
         return sid
+
+    def count(self):
+
+        cursor =self.conn.cursor()
+        query = "select count(*) from supplier"
+        cursor.execute(query)
+        result = cursor.fetchone()
+        return result

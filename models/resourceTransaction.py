@@ -5,10 +5,7 @@ class ResourceTransaction:
     def build_dict_from_row(self, row):
         result = {}
         result['tid'] = row[0]
-        result['sid'] = row[1]
-        result['transactionammount'] = row[2] #Foreign Key from Supplier
-        result['purchase_id'] = row[3] #Foreign Key from PaymentInfo
-        result['supplier_pi_id'] = row[4] #Foreign Key from Purchase
+        result['transactionammount'] = row[1] #Foreign Key from Supplier
 
         return result
 
@@ -31,16 +28,16 @@ class ResourceTransaction:
                 transaction['transaction_id'] = row[0]
                 transaction['total'] = row[1]
                 transaction['purchase_id'] = row[2]
-                transaction['supplier'] = Supplier().build_dict_from_row(row[3:9])
+                transaction['supplier'] = Supplier().build_dict_from_row(row[3:11])
                 transaction['details'] = []
-                transaction_detail['qty'] = row[9]
-                transaction_detail['purchase_price'] = row[10]
-                transaction_detail['resource'] = Resource().build_dict_from_row_category(row[11:])
+                transaction_detail['qty'] = row[11]
+                transaction_detail['purchase_price'] = row[12]
+                transaction_detail['resource'] = Resource().build_dict_from_row_category(row[13:])
                 isFirstRow = False
             else:
-                transaction_detail['qty'] = row[8]
-                transaction_detail['purchase_price'] = row[9]
-                transaction_detail['resource'] = Resource().build_dict_from_row_category(row[10:])
+                transaction_detail['qty'] = row[11]
+                transaction_detail['purchase_price'] = row[12]
+                transaction_detail['resource'] = Resource().build_dict_from_row_category(row[13:])
 
             transaction['details'].append(transaction_detail)
             transaction_detail = {}

@@ -131,3 +131,11 @@ class ResourceTransactionDetailsDAO:
         for row in cursor:
             result.append(row)
         return result
+        
+    def insert(self, tid, rid, purchaseprice, qty):
+        cursor = self.conn.cursor()
+        query = "insert into resourcetransactiondetail(tid, rid, purchaseprice, qty) values (%s, %s, %s, %s) returning tid;"
+        cursor.execute(query, (tid, rid, purchaseprice, qty,))
+        uid = cursor.fetchone()[0]
+        self.conn.commit()
+        return uid

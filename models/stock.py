@@ -17,13 +17,6 @@ class Stock:
         result['resource'] = Resource().build_dict_from_row_category(row[2:])
         return result
 
-    # def build_dict_from_row_supplier(self, row):
-    #     result = {}
-    #     result['currentpriceperitem'] = row[0]
-    #     result['qty'] = row[1]
-    #     result['supplier'] = Supplier().build_dict_from_row(row[2:])
-    #     return result
-
     def build_dict_from_row_sum(self, row):
         result = {}
         result['rid'] = row[0]
@@ -31,3 +24,9 @@ class Stock:
         result['qty_available'] = row[2]
         return result
 
+    def build_dict_from_row_no_supplier(self, row):
+        result = {}
+        result['resource'] = Resource().build_dict_from_row_category(row[0:4])
+        result['currentpriceperitem'] = row[4]
+        result['qty'] = row[5]
+        return result
