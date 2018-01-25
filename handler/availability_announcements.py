@@ -17,7 +17,7 @@ class AvailabilityAnnouncementsHandler:
             return jsonify(Error = "Availability Announcement Not Found"), 404
         else:
             result = AvailabilityAnnouncement().build_dict_from_table_details(table)
-            return jsonify(announcement = result)
+            return jsonify(result)
 
     def searchAnnouncements(self, args):
         allowedKeys= {"rid", "rname"}
@@ -31,4 +31,4 @@ class AvailabilityAnnouncementsHandler:
         for row in announcements_list:
             announcement = AvailabilityAnnouncement().build_dict_from_row_resource(row)
             result_list.append(announcement)
-        return jsonify(announcements=result_list)
+        return jsonify(result_list)
