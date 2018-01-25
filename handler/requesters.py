@@ -1,9 +1,15 @@
 from flask import jsonify
+
+from dao.resourceRequestDetails import ResourceRequestDetailsDAO
+from dao.resource_requests import ResourceRequestsDAO
+from dao.resources import ResourcesDAO
 from dao.users import UsersDAO
 from dao.requesters import RequestersDAO
 
 from models.requester import Requester
 from models.address import Address
+from models.resource_request import ResourceRequest
+
 
 class RequestersHandler:
 
@@ -60,3 +66,27 @@ class RequestersHandler:
                 return jsonify(Requester=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post requester"), 400
+
+    def insertRequest(self, form, nid):
+        if len(form) != 2:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            rid = form['rid']
+            qty = form['qty']
+
+            if rid and qty:
+                dao = ResourcesDAO()
+                if not dao.getResourceById(rid):
+                    return jsonify(Error="Resource Not Found"), 404
+
+                dao2 = ResourceRequestsDAO()
+                reqid = dao2.insertRequest(nid)
+
+
+                dao3 = ResourceRequestDetailsDAO()
+                dao3.insertRequestDetails(reqid, rid, qty)
+
+                result = ResourceRequest().build_dict_from_row(dao2.getRequestByIdWithDetails(reqid))
+                return jsonify(result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400

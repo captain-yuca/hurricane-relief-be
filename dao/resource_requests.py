@@ -1,3 +1,5 @@
+from datetime import time
+
 from config.dbconfig import url
 import psycopg2
 class ResourceRequestsDAO:
@@ -68,3 +70,12 @@ class ResourceRequestsDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insertRequest(self, nid):
+        cursor = self.conn.cursor()
+        date = time.strftime("%Y/%m/%d")
+        query = "insert into resourcerequest(nid, req_date) values(%s, %s) returning req_id;"
+        cursor.execute(query, (nid, date,))
+        req_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return req_id

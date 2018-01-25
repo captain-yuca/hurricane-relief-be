@@ -25,3 +25,16 @@ def getRequestersCountPerRegion():
         return RequestersHandler().getRequestersCountByRegion()
     else:
         pass
+
+@requesters_route.route('/api/requesters/<int:nid>/requests', methods=['GET', 'POST'])
+def getRequestsByNid(nid):
+    if request.method == 'GET':
+        if not request.args:
+            return RequestersHandler().getRequestsByNid(nid)
+        else:
+            pass
+    elif request.method == 'POST':
+        return RequestersHandler().insertRequest(request.get_json, nid)
+    else:
+        return jsonify(Error="Method not allowed"), 405
+
