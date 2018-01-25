@@ -21,16 +21,16 @@ class AvailabilityAnnouncement:
                 announcement = {}
                 announcement['ann_id'] = row[0]
                 announcement['date'] = row[1]
-                announcement['supplier'] = Supplier().build_dict_from_row(row[2:9])
+                announcement['supplier'] = Supplier().build_dict_from_row(row[2:11])
                 announcement['details'] = []
-                announcement_detail['qty'] = row[9]
-                announcement_detail['price_at_time'] = row[10]
-                announcement_detail['resource'] = Resource().build_dict_from_row_category(row[11:])
+                announcement_detail['qty'] = row[11]
+                announcement_detail['price_at_time'] = row[12]
+                announcement_detail['resource'] = Resource().build_dict_from_row_category(row[13:])
                 isFirstRow = False
             else:
-                announcement_detail['qty'] = row[9]
-                announcement_detail['price_at_time'] = row[10]
-                announcement_detail['resource'] = Resource().build_dict_from_row_category(row[11:])
+                announcement_detail['qty'] = row[11]
+                announcement_detail['price_at_time'] = row[12]
+                announcement_detail['resource'] = Resource().build_dict_from_row_category(row[13:])
 
             announcement['details'].append(announcement_detail)
             announcement_detail = {}

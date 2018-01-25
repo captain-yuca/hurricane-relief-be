@@ -33,7 +33,7 @@ class AvailabilityAnnouncementsDAO:
     def getAnnouncementBySIDWithDetails(self, sid):
         cursor = self.conn.cursor()
         query = """
-        select ann_id, ann_date, sid, uid, username, lname, fname, isAdmin, add_id, qty, priceattime, rid, rname, catid, catname
+        select ann_id, ann_date, sid, uid, username, lname, fname, isAdmin, email, phone, add_id, qty, priceattime, rid, rname, catid, catname
         from availabilityannouncement natural inner join availabilityannouncementdetail natural inner join resource natural inner join category natural inner join supplier natural inner join appuser
         where sid = %s
         """
@@ -46,7 +46,7 @@ class AvailabilityAnnouncementsDAO:
     def getAnnouncementByIdWithDetails(self, ann_id):
         cursor = self.conn.cursor()
         query = """
-        select ann_id, ann_date, sid, uid, username, lname, fname, isAdmin, add_id, qty, priceattime, rid, rname, catid, catname
+        select ann_id, ann_date, sid, uid, username, lname, fname, isAdmin,email, phone, add_id, qty, priceattime, rid, rname, catid, catname
         from availabilityannouncement natural inner join availabilityannouncementdetail natural inner join resource natural inner join category natural inner join supplier natural inner join appuser
         where ann_id = %s
         """
