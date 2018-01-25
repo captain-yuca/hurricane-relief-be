@@ -24,3 +24,11 @@ def getResourceById(rid):
         return ResourcesHandler().updateResource(rid, request.get_json())
     else:
         return jsonify(Error="Method Not Allowed"), 405
+
+@resources_route.route('/api/resources/count', methods=['GET'])
+def getResourceCount():
+    """ Returns the ammount of resources"""
+    if request.method == 'GET':
+        return ResourcesHandler().count()
+    else:
+        return jsonify(Error="Method not allowed. "), 405

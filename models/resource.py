@@ -5,7 +5,7 @@ class Resource:
         result = {}
         result['rid'] = row[0]
         result['rname'] = row[1]
-        result['catId'] = row[2] #Foreign Key form Categories
+        result['category'] = Category().build_dict_from_row(row[2:])
         return result
 
     def build_dict_from_row_category(self, row):

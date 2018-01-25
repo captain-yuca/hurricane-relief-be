@@ -21,6 +21,13 @@ class Purchase:
         result['uid'] = row[3] #User Id, Buyer (Foreign Key)
         result['payment_info'] = PaymentInfo().build_dict_from_row(row[4:])
         return result
+    def build_dict_from_row_payment_no_user(self, row):
+        result = {}
+        result['purchase_id'] = row[0]
+        result['date'] = row[1] #Purchase Date
+        result['total'] = row[2] #Purchase Total
+        result['payment_info'] = PaymentInfo().build_dict_from_row(row[3:])
+        return result
     def build_dict_from_row2(self, row):
         result = {}
         result['purchase_id'] = row[0]

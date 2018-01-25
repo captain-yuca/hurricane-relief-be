@@ -9,7 +9,7 @@ class User:
         result['lastName'] = row[2]
         result['firstName'] = row[3]
         result['isAdmin'] = row[4]
-        result['add_id'] = row[5]
+        result['addId'] = row[5]
         return result
 
     def build_dict_from_row_noAdmin(self, row): # ADDED THIS DICT WITHOUT ISADMIN
@@ -20,7 +20,7 @@ class User:
         result['firstName'] = row[3]
         result['email'] = row[4]
         result['phone'] = row[5]
-        result['add_id'] = row[6]
+        result['addId'] = row[6]
         return result
 
     def build_dict_from_row_address(self, row):

@@ -63,3 +63,30 @@ class AvailabilityAnnouncement:
 
         announcements.append(announcement)
         return announcements
+    def build_dict_from_table_no_sup(self, table):
+        announcements = []
+        announcement=None
+        announcement_detail = None
+        isFirstRow = True
+        for row in table:
+            if not announcement or announcement['annId']!=row[0]: #if creating a transaction for the first time
+                if announcement:
+                    announcements.append(announcement)
+                announcement = {}
+                announcement['annId'] = row[0]
+                announcement['annDate'] = row[1]
+                announcement['details'] = []
+                announcement_detail = {}
+                announcement_detail['qty'] = row[2]
+                announcement_detail['priceAtTime'] = row[3]
+                announcement_detail['resource'] = Resource().build_dict_from_row_category(row[4:])
+
+            else:
+                announcement_detail['qty'] = row[2]
+                announcement_detail['priceAtTime'] = row[3]
+                announcement_detail['resource'] = Resource().build_dict_from_row_category(row[4:])
+            announcement['details'].append(announcement_detail)
+            announcement_detail = {}
+
+        announcements.append(announcement)
+        return announcements

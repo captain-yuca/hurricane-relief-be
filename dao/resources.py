@@ -13,7 +13,7 @@ class ResourcesDAO:
 
     def getAllResources(self):
         cursor = self.conn.cursor()
-        query = "select * from resource;"
+        query = "select rid, rname, catid, catname from resource natural inner join category;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -23,7 +23,7 @@ class ResourcesDAO:
 
     def getResourceById(self, rid):
         cursor = self.conn.cursor()
-        query = "select * from resource where rid = %s;"
+        query = "select rid, rname, catid, catname from resource natural inner join category where rid = %s;"
         cursor.execute(query, (rid,))
         result = cursor.fetchone()
         return result
@@ -140,7 +140,7 @@ class ResourcesDAO:
 
 
         query ="""
-        select rid, rname, catid
+        select rid, rname, catid, catname
         from supplier natural inner join appuser natural inner join stock natural inner join resource natural inner join category natural inner join address
         where
         """
@@ -191,3 +191,10 @@ class ResourcesDAO:
         cursor.execute(query, (rname, catid, rid,))
         self.conn.commit()
         return rid
+
+    def count(self):
+        cursor =self.conn.cursor()
+        query = "select count(*) from resource"
+        cursor.execute(query)
+        result = cursor.fetchone()
+        return result

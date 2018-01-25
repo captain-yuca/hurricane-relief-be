@@ -52,7 +52,7 @@ class UsersHandler:
         purchases = purchasesDao.getPurchasesByUid(uid)
         result_list=[]
         for row in purchases:
-            purchase =Purchase().build_dict_from_row_payment(row)
+            purchase =Purchase().build_dict_from_row_payment_no_user(row)
             result_list.append(purchase)
         return jsonify(result_list)
 
