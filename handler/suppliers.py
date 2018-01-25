@@ -176,7 +176,7 @@ class SuppliersHandler:
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 #this one feel like a damn placeholder, so much shit to fix -Herbert. Mostly confused since its a lot of stuff being added
-    def insertAnnouncement(self, form, sid): #added by herbert for post announcements by supplier
+    def insertAvailabilityAnnouncementbySID(self, form, sid): #added by herbert for post announcements by supplier
         print(len(form))
         if len(form) != 3:
             return jsonify(Error="Malformed post request"), 400
@@ -210,8 +210,38 @@ class SuppliersHandler:
                 dao = AvailabilityAnnoucementDetailsDAO()
                 dao.insertAvailabilityAnnouncementDetails(ann_id,rid, qty, priceattime) #do a loop to add all the fields
                 dao = AvailabilityAnnouncementsDAO()
-                result = AvailabilityAnnouncement().build_dict_from_row(dao.getAvailabilityAnnouncementById(ann_id)) #will likely be a new dictionary? or not.
+                result = AvailabilityAnnouncement().build_dict_from_row(dao.getAnnouncementByIdWithDetails(ann_id)) #will likely be a new dictionary? or not.
                 return jsonify(result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def getAvailabilityAnnouncementsBySID(self, sid):
+
+        supplierDAO = SuppliersDAO()
+        supplier = supplierDAO.getSupplierById(sid)
+        if not supplier:
+            return jsonify(Error="Supplier Not Found"), 404
+        dao = AvailabilityAnnouncementsDAO()
+        if not dao.getAnnouncementBySIDWithDetails():
+            return jsonify(Error="Announcements Not Found"), 404
+
+        table = dao.getAnnouncementBySIDWithDetails(sid)
+        if not table:
+            return jsonify(Error="Availability Announcement Not Found"), 404
+        else:
+            result = AvailabilityAnnouncement().build_dict_from_table_details(table)
+            return jsonify(announcement=result)
+
+
+
+
+
+
+
+        announcement_list = dao.getAnnouncementBySIDWithDetails()
+        results_list = []
+        for row in announcement_list:
+            announcement = AvailabilityAnnouncement().build_dict_from_table_details(row)
+            results_list.append(announcement)
+        return jsonify(results_list)
 

@@ -90,10 +90,10 @@ def getSuppliersCountPerRegion():
 def getAnnouncementsBySid(sid):
     if request.method == 'GET':
         if not request.args:
-            return SuppliersHandler().getAnnouncementsBySID(sid)
+            return SuppliersHandler().getAvailabilityAnnouncementsBySID(sid)
         else:
             pass
     elif request.method == 'POST':
-        return SuppliersHandler().insertAnnouncement(request.get_json(), sid)
+        return SuppliersHandler().insertAvailabilityAnnouncementbySID(request.get_json(), sid)
     else:
         return jsonify(Error="Method not allowed. "), 405
