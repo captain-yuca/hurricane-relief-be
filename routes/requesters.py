@@ -34,7 +34,7 @@ def getRequestsByNid(nid):
         else:
             pass
     elif request.method == 'POST':
-        return RequestersHandler().insertRequest(request.get_json, nid)
+        return RequestersHandler().insertRequest(request.get_json(), nid)
     else:
         return jsonify(Error="Method not allowed"), 405
 

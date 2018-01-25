@@ -32,10 +32,20 @@ class ResourceRequestsDAO:
         order by rname;
         """
         cursor.execute(query,(req_id,))
-        result = []
-        for row in cursor:
-            result.append(row)
+        result = cursor.fetchone()
         return result
+
+    def getRequestByIdWithDetails2(self, req_id):
+        cursor = self.conn.cursor()
+        query = """select req_id, req_date, qty, rid, rname, catid, catname
+        from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category
+        where req_id=%s
+        order by rname;
+        """
+        cursor.execute(query, (req_id,))
+        result = cursor.fetchone()
+        return result
+
     #created by herbert to get all resources requeste dby users, sorted by nane
     def getRequestedResources(self):
         cursor = self.conn.cursor()
@@ -82,11 +92,11 @@ class ResourceRequestsDAO:
 
     def getRequestsByNid(self, nid):
         cursor = self.conn.cursor()
-        query = "select req_id, req_date, qty, rid, rname, catid, catname" \
-                "from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category" \
+        query = "select req_id, req_date, qty, rid, rname, catid, catname " \
+                "from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category " \
                 "where nid = %s;"
         cursor.execute(query, (nid,))
         result = []
         for row in cursor:
             result.append(row)
-            return result
+        return result
