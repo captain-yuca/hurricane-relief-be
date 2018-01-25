@@ -97,3 +97,15 @@ def getAnnouncementsBySid(sid):
         return SuppliersHandler().insertAvailabilityAnnouncementbySID(request.get_json(), sid)
     else:
         return jsonify(Error="Method not allowed. "), 405
+
+@suppliers_route.route('/api/suppliers/<int:sid>/announcements/<int:ann_id>', methods=['GET', 'POST'])
+def getAnnouncementDetailsByAnn_Id(sid,ann_id): #addedby H Jan 25 7 24 PM
+    if request.method == 'GET':
+        if not request.args:
+            return SuppliersHandler.getAvailabilityAnnouncementsBySID(sid)
+        else:
+            pass
+    elif request.method == 'POST':
+        return SuppliersHandler().insertAvailabilityAnnouncementDetailByAnn_Id(request.get_json(), ann_id)
+    else:
+        return jsonify(Error="Method not allowed. "), 405
