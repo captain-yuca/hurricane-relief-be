@@ -72,3 +72,9 @@ class UsersDAO:
         cursor.execute(query)
         result = cursor.fetchone()
         return result
+    def getUserIdByPIID(self, pi_id):
+        cursor = self.conn.cursor()
+        query = "select uid from appuser natural inner join paymentinfo where pi_id= %s"; # GONNA LEAVE ISADMIN HERE FOR NOW -Kelvin
+        cursor.execute(query, (pi_id,))
+        result = cursor.fetchone()
+        return result

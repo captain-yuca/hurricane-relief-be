@@ -208,6 +208,13 @@ class StocksDAO:
             result.append(row)
         return result
 
+    def getStockQtyById(self, sid, rid):
+        cursor = self.conn.cursor()
+        query = " select qty from stock where sid = %s and rid= %s;"
+        cursor.execute(query,(sid,rid,))
+        result = cursor.fetchone()
+        return result
+
     def getStocksByParams(self, args, max_args, min_args):
         cursor = self.conn.cursor()
 
@@ -293,3 +300,21 @@ class StocksDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getStockQtyById(self, rid, sid):
+        cursor = self.conn.cursor()
+        query = "select qtysum from stock where rid = %s and sid = %s ;"
+        cursor.execute(query, (rid, sid))
+        result = cursor.fetchone()
+        return result
+    def getStockPriceById(self, rid, sid):
+        cursor = self.conn.cursor()
+        query = "select currentpriceperitem from stock where rid = %s and sid = %s ;"
+        cursor.execute(query, (rid, sid))
+        result = cursor.fetchone()
+        return result
+    def updateQty(self, sid, rid, qty):
+        cursor = self.conn.cursor()
+        query = "update stock set qtysum = %s where rid = %s and sid = %s;"
+        cursor.execute(query, (qty, rid, sid,))
+        self.conn.commit()
