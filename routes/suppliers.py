@@ -107,4 +107,4 @@ def getAnnouncementDetailsByAnn_Id(sid,ann_id): #addedby H Jan 25 7 24 PM
     elif request.method == 'POST':
         return SuppliersHandler().insertAvailabilityAnnouncementDetailByAnn_Id(request.get_json(), ann_id)
     else:
-        return jsonify(Error="Method not allowed. "), 405 
+        return jsonify(Error="Method not allowed. "), 405
