@@ -1,4 +1,4 @@
-from datetime import time
+import time
 
 from config.dbconfig import url
 import psycopg2
@@ -79,3 +79,14 @@ class ResourceRequestsDAO:
         req_id = cursor.fetchone()[0]
         self.conn.commit()
         return req_id
+
+    def getRequestsByNid(self, nid):
+        cursor = self.conn.cursor()
+        query = "select req_id, req_date, qty, rid, rname, catid, catname" \
+                "from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category" \
+                "where nid = %s;"
+        cursor.execute(query, (nid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+            return result

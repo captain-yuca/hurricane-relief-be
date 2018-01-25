@@ -71,3 +71,9 @@ class ResourceRequestDetailsDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insertRequestDetails(self, reqid, rid, qty):
+        cursor = self.conn.cursor()
+        query = "insert into resourcerequestdetail(qty, req_id, rid) values(%s, %s, %s);"
+        cursor.execute(query, (qty, reqid, rid,))
+        self.conn.commit()

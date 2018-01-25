@@ -81,8 +81,6 @@ class RequestersHandler:
 
                 dao2 = ResourceRequestsDAO()
                 reqid = dao2.insertRequest(nid)
-
-
                 dao3 = ResourceRequestDetailsDAO()
                 dao3.insertRequestDetails(reqid, rid, qty)
 
@@ -90,3 +88,18 @@ class RequestersHandler:
                 return jsonify(result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def getRequestsByNid(self, nid):
+        dao = RequestersDAO()
+        row = dao.getRequesterById(nid)
+        if not row:
+            return jsonify(Error="Requester Not Found"), 404
+        else:
+            dao2 = ResourceRequestsDAO()
+            requests_list = dao2.getRequestsByNid(nid)
+            result_list = []
+            for row in requests_list:
+                request = ResourceRequest().build_dict_from_row_resource(row)
+                result_list.append(request)
+            return jsonify(Requests=result_list)
+
