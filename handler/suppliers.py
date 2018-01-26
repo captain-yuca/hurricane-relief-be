@@ -26,7 +26,7 @@ class SuppliersHandler:
         for row in suppliers_list:
             supplier = Supplier().build_dict_from_row(row)
             result_list.append(supplier)
-        return jsonify(Suppliers=result_list)
+        return jsonify(result_list)
 
     def getSupplierById(self, sid):
         dao = SuppliersDAO()
@@ -35,7 +35,7 @@ class SuppliersHandler:
             return jsonify(Error = "Supplier Not Found"), 404
         else:
             supplier = Supplier().build_dict_from_row(row)
-            return jsonify(Supplier = supplier)
+            return jsonify(supplier)
 
     def getStocksBySupplierId(self, sid):
         # Check if supplier exists
@@ -207,7 +207,7 @@ class SuppliersHandler:
     def count(self):
         dao = SuppliersDAO()
         result = dao.count()
-        return jsonify(count=result[0])
+        return jsonify(result[0])
 
 #this one feel like a damn placeholder, so much shit to fix -Herbert. Mostly confused since its a lot of stuff being added
     def insertAvailabilityAnnouncementDetailByAnn_Id(self, form, ann_id):
@@ -256,7 +256,7 @@ class SuppliersHandler:
                     return jsonify(Error="Availability Announcement Not Found"), 404
                 else:
                     result = AvailabilityAnnouncement().build_dict_from_table_details(table)
-                    return jsonify(announcement=result)
+                    return jsonify(result)
         elif len(form) != 4:
             return jsonify(Error="Malformed post request"), 400
         else:
@@ -304,7 +304,7 @@ class SuppliersHandler:
                     return jsonify(Error="Availability Announcement Not Found"), 404
                 else:
                     result = AvailabilityAnnouncement().build_dict_from_table_details(table)
-                    return jsonify(announcement=result)
+                    return jsonify(result)
 
     def insertAvailabilityAnnouncementbySID(self, form, sid): #added by herbert for post announcements by supplier
         print(len(form))
@@ -343,7 +343,7 @@ class SuppliersHandler:
                     return jsonify(Error="Availability Announcement Not Found"), 404
                 else:
                     result = AvailabilityAnnouncement().build_dict_from_table_details(table)
-                    return jsonify(announcement=result)
+                    return jsonify(result)
         elif len(form) !=4:
             return jsonify(Error="Malformed post request"), 400
         else:
@@ -384,7 +384,7 @@ class SuppliersHandler:
                     return jsonify(Error="Availability Announcement Not Found"), 404
                 else:
                     result = AvailabilityAnnouncement().build_dict_from_table_details(table)
-                    return jsonify(announcement=result)
+                    return jsonify(result)
 
     def getAvailabilityAnnouncementsBySID(self, sid):
     #TOMORROW FIX: WHATS UP WITH THE DIC. SOMETHING ABOUT ADMIN.
@@ -399,4 +399,4 @@ class SuppliersHandler:
             return jsonify(Error="Availability Announcement Not Found"), 404
         else:
             result = AvailabilityAnnouncement().build_dict_from_table_no_sup(table)
-            return jsonify(announcement=result)
+            return jsonify(result)

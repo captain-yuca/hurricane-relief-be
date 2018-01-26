@@ -11,7 +11,7 @@ class PurchaseHandler:
         for row in purchases_list:
             result = Purchase().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(purchases=result_list)
+        return jsonify(result_list)
 
     def getPurchaseById(self, purchase_id):
         dao = PurchaseDAO()
@@ -20,7 +20,7 @@ class PurchaseHandler:
             return jsonify(Error="Resource Purchase Not Found"), 404
         else:
             purchase = Purchase().build_dict_from_table(row)
-            return jsonify(purchase=purchase)
+            return jsonify(purchase)
 
     def getAllReserves(self):
         dao = PurchaseDAO()
@@ -29,7 +29,7 @@ class PurchaseHandler:
         for row in purchases_list:
             result = Purchase().build_dict_from_row3(row)
             result_list.append(result)
-        return jsonify(purchases=result_list)
+        return jsonify(result_list)
 
     def getAllPaidPurchases(self):
         dao = PurchaseDAO()
@@ -38,7 +38,7 @@ class PurchaseHandler:
         for row in purchases_list:
             result = Purchase().build_dict_from_row3(row)
             result_list.append(result)
-        return jsonify(purchases=result_list)
+        return jsonify(result_list)
 
     def searchPurchases(self, args):
         date = args.get("date")
@@ -89,10 +89,10 @@ class PurchaseHandler:
             for row in purchases_list:
                 result = Purchase().build_dict_from_row2(row)
                 result_list.append(result)
-            return jsonify(Purchases=result_list)
+            return jsonify(result_list)
         else:
             result_list = []
             for row in purchases_list:
                 result = Purchase().build_dict_from_row(row)
                 result_list.append(result)
-            return jsonify(Purchases=result_list)
+            return jsonify(result_list)

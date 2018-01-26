@@ -11,7 +11,7 @@ class CategoriesHandler:
         for row in categories_list:
             result = Category().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Categories=result_list)
+        return jsonify(result_list)
 
     def getCategoryById(self, catId):
         dao = CategoriesDAO()
@@ -20,7 +20,7 @@ class CategoriesHandler:
             return jsonify(Error = "Category Not Found"), 404
         else:
             category = Category().build_dict_from_row(row)
-            return jsonify(Category = category)
+            return jsonify(category)
 
 
     def searchCategories(self, args):
@@ -35,7 +35,7 @@ class CategoriesHandler:
         for row in categories_list:
             result = Category().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Categories=result_list)
+        return jsonify(result_list)
 
     def insertCategory(self, form):
         if len(form) != 1:
@@ -46,7 +46,7 @@ class CategoriesHandler:
                 dao = CategoriesDAO()
                 catid = dao.insert(catname)
                 result = Category().build_dict_from_row(dao.getCategoryById(catid))
-                return jsonify(Category=result), 201
+                return jsonify(result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
@@ -62,6 +62,6 @@ class CategoriesHandler:
                 if catname:
                     catid = dao.update(catid, catname)
                     result = Category().build_dict_from_row(dao.getCategoryById(catid))
-                    return jsonify(Category=result), 201
+                    return jsonify(result), 201
                 else:
                     return jsonify(Error="Unexpected attributes in post request"), 400

@@ -33,7 +33,7 @@ class ResourcesHandler:
             for row in resources_list:
                 resource = Resource().build_dict_from_row(row)
                 result_list.append(resource)
-            return jsonify(resources=result_list)
+            return jsonify(result_list)
         elif args.get('requester'):
             dao = ResourcesDAO()
             resources_list = dao.getResourcesByRequester(args.get('requester'))
@@ -41,7 +41,7 @@ class ResourcesHandler:
             for row in resources_list:
                 resource = Resource().build_dict_from_row(row)
                 result_list.append(resource)
-            return jsonify(resources=result_list)
+            return jsonify(result_list)
         elif args.get('supplier'):
             dao = ResourcesDAO()
             resources_list = dao.getResourcesBySupplier(args.get('supplier'))

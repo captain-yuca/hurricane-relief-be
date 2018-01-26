@@ -21,7 +21,7 @@ class Stock:
         result = {}
         result['rid'] = row[0]
         result['rname'] = row[1]
-        result['qty'] = row[2]
+        result['qtySum'] = row[2]
         return result
 
     def build_dict_from_row_no_supplier(self, row):

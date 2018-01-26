@@ -11,7 +11,7 @@ class AddressesHandler:
         for row in users_list:
             address = Address().build_dict_from_row(row)
             result_list.append(address)
-        return jsonify(Addresses=result_list)
+        return jsonify(result_list)
 
     def getAddressById(self, add_id):
         dao = AddressesDAO()
@@ -20,4 +20,4 @@ class AddressesHandler:
             return jsonify(Error = "Address Not Found"), 404
         else:
             address = Address().build_dict_from_row(row)
-            return jsonify(Address = address)
+            return jsonify(address)

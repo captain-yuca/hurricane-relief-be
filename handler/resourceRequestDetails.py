@@ -11,7 +11,7 @@ class ResourceRequestDetailsHandler:
         for row in requestDetails_list:
             result = ResourceRequestDetails().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Request_Details=result_list)
+        return jsonify(result_list)
 
     def getRequestDetailsById(self, req_id, rid):
         dao = ResourceRequestDetailsDAO()
@@ -20,7 +20,7 @@ class ResourceRequestDetailsHandler:
             return jsonify(Error="Resource Request Detail Not Found"), 404
         else:
             requestDetails = ResourceRequestDetails().build_dict_from_row(row)
-            return jsonify(Request_Details=requestDetails)
+            return jsonify(requestDetails)
 
     def searchRequestDetails(self, args):
         req_id = args.get("req_id")
@@ -44,4 +44,4 @@ class ResourceRequestDetailsHandler:
         for row in requestDetails_list:
             result = ResourceRequestDetails.build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Request_Details=result_list)
+        return jsonify(result_list)
