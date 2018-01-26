@@ -11,7 +11,7 @@ class RequestersDAO:
                                         )
     def getAllRequesters(self):
         cursor = self.conn.cursor()
-        query = "select nid, uid, username, lname, fname, add_id from requester natural join appuser;" #Eliminated isAdmin parameter from query
+        query = "select nid, uid, username, lname, fname, email, phone, add_id from requester natural join appuser;" #Eliminated isAdmin parameter from query
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -21,7 +21,7 @@ class RequestersDAO:
 
     def getRequesterById(self, nid):
         cursor = self.conn.cursor()
-        query = "select nid, uid, username, lname, fname, add_id from requester natural join appuser where nid= %s"; #Eliminated isAdmin paramter from query -Kelvin
+        query = "select nid, uid, username, lname, fname, email, phone, add_id from requester natural join appuser where nid= %s"; #Eliminated isAdmin paramter from query -Kelvin
         cursor.execute(query, (nid,))
         result = cursor.fetchone()
         return result

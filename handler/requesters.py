@@ -84,7 +84,7 @@ class RequestersHandler:
                 dao3 = ResourceRequestDetailsDAO()
                 dao3.insertRequestDetails(reqid, rid, qty)
 
-                result = ResourceRequest().build_dict_from_row(dao2.getRequestByIdWithDetails(reqid))
+                result = ResourceRequest().build_dict_from_row_resource(dao2.getRequestByIdWithDetails2(reqid))
                 return jsonify(result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
