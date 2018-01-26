@@ -176,13 +176,18 @@ class UsersHandler:
                 dao = UsersDAO()
                 dao2 = AddressesDAO()
                 ua = dao2.getAddressesByUserId(uid)[0]
+                payment_dao= PaymentInfoDAO()
+
+                #Check if ccNum exists
+                if payment_dao.getPaymentInfoByCCNum(ccNum):
+                    return jsonify(Error="Credit Card already registered"), 400
+
                 if ua and ua[1]==address1 and ua[2]==address2 and ua[3]==zipcode and ua[4]==region and ua[5]==country and ua[6]==city:
                     add_id=ua[0]
                 else:
                     add_id = dao2.insert(address1, address2, zipcode, region, country, city)
                # uid = dao.insert(username, lastname, firstname, password, email, phone, add_id)
-                dao= PaymentInfoDAO()
-                pi_id = dao.insertPaymentInfo(ccNum, expirationDate,uid,add_id)
+                pi_id = payment_dao.insertPaymentInfo(ccNum, expirationDate,uid,add_id)
                 #result = User().build_dict_from_row(dao.getUserById(uid))
                 result = PaymentInfo().build_dict_from_row(dao.getPaymentInfoById(pi_id))
 

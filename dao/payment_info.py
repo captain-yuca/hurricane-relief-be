@@ -41,6 +41,15 @@ class PaymentInfoDAO:
         cursor.execute(query, (sid,))
         result = cursor.fetchone()
         return result
+
+    def getPaymentInfoByCCNum(self, ccNum):
+        cursor = self.conn.cursor()
+        query = "select pi_id from paymentinfo natural inner join appuser natural inner join supplier where ccnum=%s;"
+        cursor.execute(query, (ccNum,))
+        result = cursor.fetchone()
+        return result
+
+
     def insertPaymentInfo(self, ccNum, expirationDate, uid, add_id):
         cursor = self.conn.cursor()
         query = "insert into PaymentInfo(ccNum, expirationDate, uid, add_id) values (%s,%s,%s,%s) returning pi_id;"
