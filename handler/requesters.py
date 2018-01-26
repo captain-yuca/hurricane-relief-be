@@ -133,3 +133,81 @@ class RequestersHandler:
                 request = ResourceRequest().build_dict_from_row_resource(row)
                 result_list.append(request)
             return jsonify(Requests=result_list)
+
+    def insertRequestDetailsByReqId(self, form, req_id):
+        if 2 == len(form):
+            rid = form['rid']
+            qty = form['qty']
+
+            if rid and qty:
+                dao = ResourcesDAO()
+                if not dao.getResourceById(rid):
+                    return jsonify(Error="Resource Not Found"), 404
+
+                dao2 = ResourceRequestsDAO()
+                request = dao2.getRequestByIdWithDetails(req_id)
+                if not request:
+                    return jsonify(Error="Request Not Found"), 404
+                else:
+                    nid = request[0]
+
+                dao3 = ResourceRequestDetailsDAO()
+                if not dao3.getRequestDetailsById(req_id, rid):
+                    dao3.insertRequestDetails(req_id, rid, qty)
+                else:
+                    return jsonify(Error="Duplicate Primary Key"), 400
+
+                table = dao2.getRequestByIdWithDetails2(req_id)
+                if not table:
+                    return jsonify(Error="Resource Request Not Found"), 404
+                else:
+                    result = ResourceRequest().build_dict_from_row_resource(table)
+                    return jsonify(result)
+            elif len(form) != 3:
+                return jsonify(Error="Malformed Post Request"), 400
+            else:
+                rname = form['rname']
+                catid = form['catid']
+                qty = form['qty']
+                if rname and catid and qty:
+                    dao = ResourcesDAO()
+                    dao2 = CategoriesDAO()
+                    resource = dao.getResourcesByRname(rname)
+                    if not resource:
+                        if not dao2.getCategoryById(catid):
+                            return jsonify(Error="Category Not Found"), 404
+                        rid = dao.insert(rname, catid)
+                    else:
+                        rid = (resource[0])[0]
+                    dao3 = ResourceRequestsDAO()
+                    request = dao3.getRequestByIdWithDetails(req_id)
+                    if not request:
+                        return jsonify(Error="Request Not Found"), 404
+                    else:
+                        nid = request[0]
+                    dao4 = ResourceRequestDetailsDAO()
+                    if not dao4.getRequestDetailsById(req_id, rid):
+                        dao4.insertRequestDetails(req_id, rid, qty)
+                    else:
+                        return jsonify(Error="Duplicate Primary Key"), 400
+
+                    table = dao3.getRequestByIdWithDetails2(req_id)
+                    if not table:
+                        return jsonify(Error="Request Not Found"), 404
+                    else:
+                        result = ResourceRequest().build_dict_from_row_resource(table)
+                        return jsonify(result)
+
+    def updateRequestDetailsByReqId(self, form, req_id):
+        if len(form) == 2:
+            rid = form['rid']
+            qty = form['qty']
+
+            if rid and qty:
+
+                rdao = ResourcesDAO()
+                if not rdao.getResourceById(rid):
+                    return jsonify(Error="Resource Not Found")
+
+                
+
