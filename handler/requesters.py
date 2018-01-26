@@ -117,9 +117,10 @@ class RequestersHandler:
             if not requests_list[0]:
                 return jsonify(Error="Request Not Found"), 404
             dao = ResourceRequestsDAO
-            result = dao.getRequestByIdWithDetails(req_id)
-
-            return jsonify(result)
+            result =[]
+            result.append(dao.getRequestByIdWithDetails(req_id))
+            newresult = ResourceRequest().build_dict_from_table_no_nid(result)
+            return jsonify(newresult)
     def getRequestsByNid(self, nid):
         dao = RequestersDAO()
         row = dao.getRequesterById(nid)
