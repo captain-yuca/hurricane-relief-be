@@ -82,7 +82,7 @@ class ResourceTransactionsHandler:
             # TODO: Check if valid objects in details array
 
             # Check if payment is valid
-            buyer_pi_id = PaymentInfoDAO().getPaymentInfoById(form['pi_id'])[0]
+            buyer_pi_id = PaymentInfoDAO().getPaymentInfoById(form['piId'])[0]
             if not buyer_pi_id:
                 return jsonify(Error="Purchase Info not found"), 400
 

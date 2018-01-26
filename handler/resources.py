@@ -1,5 +1,7 @@
 from flask import jsonify
 from dao.resources import ResourcesDAO
+from dao.categories import CategoriesDAO
+
 from models.resource import Resource
 
 class ResourcesHandler:
@@ -94,6 +96,13 @@ class ResourcesHandler:
             catid = form['catId']
             if rname and catid:
                 dao = ResourcesDAO()
+                catDao = CategoriesDAO()
+
+                category = catDao.getCategoryById(catid)
+                if not category:
+                    return jsonify(Error="Category not found!"), 400
+
+
                 rid = dao.insert(rname, catid)
                 result = Resource().build_dict_from_row(dao.getResourceById(rid))
                 return jsonify(Resource=result), 201

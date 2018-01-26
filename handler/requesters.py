@@ -56,6 +56,7 @@ class RequestersHandler:
                 return jsonify(Error="Unexpected attributes in post requester"), 400
 
     def insertRequest(self, form, nid):
+        # New Resource
         if len(form) == 3:
             rname = form['rname']
             catid = form['catid']
@@ -89,6 +90,7 @@ class RequestersHandler:
         elif len(form) != 2:
             return jsonify(Error="Malformed post request"), 400
         else:
+            # Existing Resource
             rid = form['rid']
             qty = form['qty']
 
@@ -162,19 +164,24 @@ class RequestersHandler:
             if rname and catid and qty:
                 dao = ResourcesDAO()
                 dao2 = CategoriesDAO()
+
+                # Check if resource exists
                 resource = dao.getResourcesByRname(rname)
                 if not resource:
+                    # Create new resource
                     if not dao2.getCategoryById(catid):
                         return jsonify(Error="Category Not Found"), 404
                     rid = dao.insert(rname, catid)
                 else:
                     rid = (resource[0])[0]
+
+
                 dao3 = ResourceRequestsDAO()
                 request = dao3.getRequestByIdWithDetails(req_id)
-                if not request:
+                if not request or not request[0]:
                     return jsonify(Error="Request Not Found"), 404
                 else:
-                    nid = request[2]
+                    nid = request[0][2]
                 dao4 = ResourceRequestDetailsDAO()
                 if not dao4.getRequestDetailsById(req_id, rid):
                     dao4.insertRequestDetails(req_id, rid, qty)
@@ -187,6 +194,8 @@ class RequestersHandler:
                 else:
                     result = ResourceRequest().build_dict_from_table_details(table)
                     return jsonify(result)
+            else:
+                return jsonify(Error="Malformed Post Request"), 400
 
     def updateRequestDetailsByReqId(self, form, req_id):
         if len(form) == 2:

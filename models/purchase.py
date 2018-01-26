@@ -80,6 +80,7 @@ class Purchase:
 
     def build_dict_from_table_detailed(self, table):
         purchase = {}
+        transaction = {}
         currentTransaction = None
         isCurrentTransaction = False
         isFirstRow = True
@@ -115,6 +116,9 @@ class Purchase:
                 detail['qty'] = row[21]
                 detail['purchasePrice'] = row[22]
                 transaction['details'].append(detail)
+
+        purchase['transactions'].append(transaction)
+
         return purchase
 
 
