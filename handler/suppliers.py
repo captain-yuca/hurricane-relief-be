@@ -8,6 +8,7 @@ from dao.addresses import AddressesDAO
 from dao.resources import ResourcesDAO #added by Herbert Jan 23 for a post
 from dao.availability_announcements import AvailabilityAnnouncementsDAO #added by Herbert
 from dao.availabilityAnnoucementDetails import AvailabilityAnnoucementDetailsDAO #H again
+from dao.categories import CategoriesDAO
 
 from models.supplier import Supplier
 from models.stock import Stock
@@ -267,6 +268,9 @@ class SuppliersHandler:
             rid = None
             sid = None
             if rname and catid and qty and priceattime:
+                dao = CategoriesDAO()
+                if not dao.getCategoryById():
+                    return jsonify(Error="Category not found")
                 dao = ResourcesDAO()
                 resource = dao.getResourcesByRname(rname)
                 if not resource:
@@ -353,6 +357,9 @@ class SuppliersHandler:
             priceattime = form['priceattime']
             rid = None
             if rname and catid and qty and priceattime:
+                dao = CategoriesDAO()
+                if not dao.getCategoryById():
+                    return jsonify(Error="Category not found")
                 dao = ResourcesDAO()
                 resource = dao.getResourcesByRname(rname)
                 if not resource:
