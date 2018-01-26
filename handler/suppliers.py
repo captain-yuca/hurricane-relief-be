@@ -233,12 +233,13 @@ class SuppliersHandler:
             rid = None
             sid = None
             if rname and catid and qty and priceattime:
-                dao = CategoriesDAO()
-                if not dao.getCategoryById():
-                    return jsonify(Error="Category not found")
+                dao2 = CategoriesDAO()
+
                 dao = ResourcesDAO()
                 resource = dao.getResourcesByRname(rname)
                 if not resource:
+                    if not dao2.getCategoryById():
+                        return jsonify(Error="Category not found")
                     rid = dao.insert(rname, catid)
                 else:
                     rid = (resource[0])[0]
@@ -322,12 +323,12 @@ class SuppliersHandler:
             priceattime = form['priceattime']
             rid = None
             if rname and catid and qty and priceattime:
-                dao = CategoriesDAO()
-                if not dao.getCategoryById():
-                    return jsonify(Error="Category not found")
+                dao2 = CategoriesDAO()
                 dao = ResourcesDAO()
                 resource = dao.getResourcesByRname(rname)
                 if not resource:
+                    if not dao2.getCategoryById():
+                        return jsonify(Error="Category not found")
                     rid=dao.insert(rname,catid)
                 else:
                     rid=(resource[0])[0]
