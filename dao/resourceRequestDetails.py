@@ -22,7 +22,7 @@ class ResourceRequestDetailsDAO:
 
     def getRequestDetailsById(self, req_id, rid):
         cursor = self.conn.cursor()
-        query = "select * from resourcerequestdetail where req_id = %s and rid = %s;"
+        query = "select req_id, rid, qty, f_date from resourcerequestdetail where req_id = %s and rid = %s;"
         cursor.execute(query, (req_id, rid))
         result = cursor.fetchone()
         return result
@@ -77,3 +77,17 @@ class ResourceRequestDetailsDAO:
         query = "insert into resourcerequestdetail(qty, req_id, rid) values(%s, %s, %s);"
         cursor.execute(query, (qty, reqid, rid,))
         self.conn.commit()
+
+    def update(self, req_id, rid, qty, date):
+
+        cursor = self.conn.cursor()
+
+        if date:
+            query = "update resourcerequestdetail set qty=%s, f_date=%s where req_id = %s and rid = %s;"
+            cursor.execute(query, (qty, date, req_id, rid))
+        else:
+            query = "update resourcerequestdetail set qty=%s where req_id = %s and rid = %s;"
+            cursor.execute(query, (qty, req_id, rid,))
+
+        self.conn.commit()
+        return req_id
