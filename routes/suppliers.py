@@ -102,7 +102,7 @@ def getAnnouncementsBySid(sid):
 def getAnnouncementDetailsByAnn_Id(sid,ann_id): #addedby H Jan 25 7 24 PM
     if request.method == 'GET':
         if not request.args:
-            return SuppliersHandler.getAvailabilityAnnouncementsBySID(sid)
+            return SuppliersHandler().getAvailabilityAnnouncementsBySID(sid)
         else:
             pass
     elif request.method == 'POST':

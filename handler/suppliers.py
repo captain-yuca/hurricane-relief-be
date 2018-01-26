@@ -248,9 +248,7 @@ class SuppliersHandler:
                     newqty = astock[11] + qty
                     dao.updateStock(rid, sid, newqty, priceattime)
 
-                dao = AvailabilityAnnoucementDetailsDAO()
-                dao.insertAvailabilityAnnouncementDetails(ann_id, rid, qty,
-                                                          priceattime)
+
                 dao = AvailabilityAnnouncementsDAO()
                 table = dao.getAnnouncementByIdWithDetails(ann_id)
                 if not table:
