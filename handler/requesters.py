@@ -96,7 +96,7 @@ class RequestersHandler:
                 if not table:
                     return jsonify(Error="Request Not Found"), 404
                 else:
-                    
+
                     result = ResourceRequest().build_dict_from_row_resource(table)
                     return jsonify(request=result)
         elif len(form) != 2:
