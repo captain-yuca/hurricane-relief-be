@@ -410,3 +410,21 @@ class SuppliersHandler:
         else:
             result = AvailabilityAnnouncement().build_dict_from_table_no_sup(table)
             return jsonify(result)
+
+    def getAvailabilityAnnouncementByIds(self, sid,ann_id):
+        supplierDAO = SuppliersDAO()
+        supplier = supplierDAO.getSupplierById(sid)
+        if not supplier:
+            return jsonify(Error="Supplier Not Found"), 404
+
+        dao = AvailabilityAnnouncementsDAO()
+        supplier = dao.getAnnouncementBySIDWithDetails(sid)
+        if not supplier[0]:
+            return jsonify(Error="Availability Announcement not found"), 404
+        result=[]
+        result.append(dao.getAnnouncementById(ann_id))
+        if not result:
+            return jsonify(Error="Availability Announcement Not Found"), 404
+        else:
+            newresult = AvailabilityAnnouncement().build_dict_from_table_no_sup(result)
+            return jsonify(newresult)
