@@ -11,7 +11,7 @@ class ResourcesHandler:
         for row in resources_list:
             result = Resource().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(resources=result_list)
+        return jsonify(result_list)
 
     def getResourceById(self,rid):
         dao = ResourcesDAO()
@@ -20,7 +20,7 @@ class ResourcesHandler:
             return jsonify(Error = "Resource Not Found"), 404
         else:
             resource = Resource().build_dict_from_row(row)
-            return jsonify(resource = resource)
+            return jsonify(resource)
 
 
 
@@ -33,7 +33,7 @@ class ResourcesHandler:
             for row in resources_list:
                 resource = Resource().build_dict_from_row(row)
                 result_list.append(resource)
-            return jsonify(resources=result_list)
+            return jsonify(result_list)
         elif args.get('requester'):
             dao = ResourcesDAO()
             resources_list = dao.getResourcesByRequester(args.get('requester'))
@@ -41,7 +41,7 @@ class ResourcesHandler:
             for row in resources_list:
                 resource = Resource().build_dict_from_row(row)
                 result_list.append(resource)
-            return jsonify(resources=result_list)
+            return jsonify(result_list)
         elif args.get('supplier'):
             dao = ResourcesDAO()
             resources_list = dao.getResourcesBySupplier(args.get('supplier'))
@@ -49,7 +49,7 @@ class ResourcesHandler:
             for row in resources_list:
                 resource = Resource().build_dict_from_row(row)
                 result_list.append(resource)
-            return jsonify(resources=result_list)
+            return jsonify(result_list)
 
 
         # Query parameters allowed when searching
@@ -84,40 +84,8 @@ class ResourcesHandler:
         for row in resources_list:
             resource = Resource().build_dict_from_row(row)
             result_list.append(resource)
-        return jsonify(resources=result_list)
+        return jsonify(result_list)
 
-    #     rname = args.get("rname")
-    #     catId = args.get("catId")
-    #     supplier = args.get("supplier") #added by Herbert to implement 14
-    #     req_id = args.get("req_id") #-H
-    #     nid = args.get("nid") #-H
-    #     requester = args.get("requester") #-H
-    #     category = args.get("category") #-H
-    #     dao = ResourcesDAO()
-    #     resources_list = []
-    #     if(len(args)==2) and rname and catId:
-    #         resources_list = dao.getResourcesByRnameAndCatId(rname, catId)
-    #     elif(len(args)==1) and rname:
-    #         resources_list = dao.getResourcesByRname(rname)
-    #     elif(len(args)==1) and catId:
-    #         resources_list = dao.getResourcesByCatId(catId)
-    #     elif(len(args) == 1) and supplier: #added by Herbert to implement 14
-    #         resources_list = dao.getResourcesBySupplier(supplier)
-    #     elif(len(args) == 1) and req_id: # added by Herbert
-    #         resources_list = dao.getResourcesByRequest(req_id)
-    #     elif (len(args) == 1) and nid:  # added by Herbert
-    #         resources_list = dao.getResourcesByNID(nid)
-    #     elif (len(args) == 1) and requester:  # added by Herbert (requester is a username)
-    #         resources_list = dao.getResourcesByRequester(requester)
-    #     elif (len(args) == 1) and category:  # added by Herbert
-    #         resources_list = dao.getResourcesByCategory
-    #     else:
-    #         return jsonify(Error = "Malformed query string"), 400
-    #     result_list = []
-    #     for row in resources_list:
-    #         result = Resource().build_dict_from_row(row)
-    #         result_list.append(result)
-    #     return jsonify(Resources=result_list)
     def insertResource(self, form):
         if len(form) != 2:
             return jsonify(Error="Malformed post request"), 400
@@ -148,3 +116,7 @@ class ResourcesHandler:
                     return jsonify(result), 201
                 else:
                     return jsonify(Error="Unexpected attributes in put request"), 400
+    def count(self):
+        dao = ResourcesDAO()
+        result = dao.count()
+        return jsonify(count=result[0])

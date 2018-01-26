@@ -11,7 +11,7 @@ class ResourceTransactionDetailsHandler:
         for row in transactionDetails_list:
             result = ResourceTransactionDetails().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(TransactionDetails=result_list)
+        return jsonify(result_list)
 
     def getTransactionDetailsById(self, rid, tid):
         dao = ResourceTransactionDetailsDAO()
@@ -20,7 +20,7 @@ class ResourceTransactionDetailsHandler:
             return jsonify(Error="Resource Transaction Detail Not Found"), 404
         else:
             transactionDetail = ResourceTransactionDetails().build_dict_from_row(row)
-            return jsonify(Transaction_Details=transactionDetail)
+            return jsonify(transactionDetail)
 
     def searchTransactionDetails(self, args):
         rid = args.get("rid")
@@ -57,5 +57,4 @@ class ResourceTransactionDetailsHandler:
         for row in transactionDetails_list:
             result = ResourceTransactionDetails().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Transaction_Details=result_list)
-
+        return jsonify(result_list)

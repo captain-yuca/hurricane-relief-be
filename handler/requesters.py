@@ -21,7 +21,7 @@ class RequestersHandler:
         for row in requesters_list:
             requester = Requester().build_dict_from_row(row)
             result_list.append(requester)
-        return jsonify(Requesters=result_list)
+        return jsonify(result_list)
 
     def getRequesterById(self, nid):
         dao = RequestersDAO()
@@ -30,7 +30,7 @@ class RequestersHandler:
             return jsonify(Error = "Requester Not Found"), 404
         else:
             requester = Requester().build_dict_from_row(row)
-            return jsonify(Requester = requester)
+            return jsonify(requester)
 
     def getRequestersCountByRegion(self):
         dao = RequestersDAO()
@@ -39,7 +39,7 @@ class RequestersHandler:
         for row in counts_list:
             count = Address().build_dict_from_row_count(row)
             result_list.append(count)
-        return jsonify(requesters_per_region=result_list)
+        return jsonify(result_list)
 
     # def getAddressesByUserId(self, sid):
     #     userDao = UsersDAO()
@@ -133,4 +133,3 @@ class RequestersHandler:
                 request = ResourceRequest().build_dict_from_row_resource(row)
                 result_list.append(request)
             return jsonify(Requests=result_list)
-

@@ -11,7 +11,7 @@ class StocksHandler:
         for row in stocks_list:
             result = Stock().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Stocks=result_list)
+        return jsonify(result_list)
 
     def getStockById(self, rid, sid):
         dao = StocksDAO()
@@ -20,7 +20,7 @@ class StocksHandler:
             return jsonify(Error="Stock Not Found"), 404
         else:
             stock = Stock().build_dict_from_row(row)
-            return jsonify(Stock=stock)
+            return jsonify(stock)
 
     def getStocksInStock(self):
         dao = StocksDAO()
@@ -29,7 +29,7 @@ class StocksHandler:
         for row in stocks_list:
             result = Stock().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Stocks=result_list)
+        return jsonify(result_list)
     def getStocksEmptyStock(self):
         dao = StocksDAO()
         stocks_list = dao.getStocksEmptyStock()
@@ -37,7 +37,7 @@ class StocksHandler:
         for row in stocks_list:
             result = Stock().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Stocks=result_list)
+        return jsonify(result_list)
 
     def getSumOfResources(self):
         dao = StocksDAO()
@@ -46,7 +46,7 @@ class StocksHandler:
         for row in sum_list:
             result = Stock().build_dict_from_row_sum(row)
             result_list.append(result)
-        return jsonify(Sums=result_list)
+        return jsonify(result_list)
 
 
     def searchStocks(self, args):
@@ -82,4 +82,4 @@ class StocksHandler:
         for row in resources_list:
             resource = Stock().build_dict_from_row(row)
             result_list.append(resource)
-        return jsonify(stocks=result_list)
+        return jsonify(result_list)

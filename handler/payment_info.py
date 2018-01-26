@@ -11,7 +11,7 @@ class PaymentInfoHandler:
         for row in paymentInfo_list:
             paymentInfo = PaymentInfo().build_dict_from_row(row)
             result_list.append(paymentInfo)
-        return jsonify(PaymentInfo=result_list)
+        return jsonify(result_list)
 
     def getPaymentInfoById(self, pi_id):
         dao = PaymentInfoDAO()
@@ -20,4 +20,4 @@ class PaymentInfoHandler:
             return jsonify(Error = "Payment Info Not Found"), 404
         else:
             paymentInfo = PaymentInfo().build_dict_from_row(row)
-            return jsonify(PaymentInfo = paymentInfo)
+            return jsonify(paymentInfo)

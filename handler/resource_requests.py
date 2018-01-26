@@ -11,7 +11,7 @@ class ResourceRequestsHandler:
         for row in request_list:
             request = ResourceRequest().build_dict_from_row_resource(row)
             result_list.append(request)
-        return jsonify(ResourceRequests=result_list)
+        return jsonify(result_list)
 
     def getRequestById(self, req_id):
         dao = ResourceRequestsDAO()
@@ -20,7 +20,7 @@ class ResourceRequestsHandler:
             return jsonify(Error = "Availability Announcement Not Found"), 404
         else:
             result = ResourceRequest().build_dict_from_table_details(request)
-            return jsonify(ResourceRequest = result)
+            return jsonify(result)
 
     #added by Herbert
     def getRequestedResources(self):
@@ -30,7 +30,7 @@ class ResourceRequestsHandler:
         for row in request_list:
             request = ResourceRequest().build_dict_from_row2(row)
             result_list.append(request)
-        return jsonify(ResourceRequests=result_list)
+        return jsonify(result_list)
 
     def searchRequests(self, args):
         allowedKeys= {"rid", "rname", "catname", "catid"}
@@ -44,4 +44,4 @@ class ResourceRequestsHandler:
         for row in requests_list:
             request = ResourceRequest().build_dict_from_row_resource(row)
             result_list.append(request)
-        return jsonify(requests=result_list)
+        return jsonify(result_list)

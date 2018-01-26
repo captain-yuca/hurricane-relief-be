@@ -11,7 +11,7 @@ class AvailabilityAnnouncementDetailsHandler:
         for row in announcementDetails_list:
             result = AvailabilityAnnouncementDetails().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Announcement_Details=result_list)
+        return jsonify(result_list)
 
     def getAnnouncementDetailsById(self, ann_id, rid):
         dao = AvailabilityAnnoucementDetailsDAO()
@@ -20,7 +20,7 @@ class AvailabilityAnnouncementDetailsHandler:
             return jsonify(Error="Availability Announcement Detail Not Found"), 404
         else:
             announcementDetails = AvailabilityAnnouncementDetails().build_dict_from_row(row)
-            return jsonify(Announcement_Details=announcementDetails)
+            return jsonify(announcementDetails)
 
     def searchAnnouncementDetails(self, args):
         ann_id = args.get("ann_id")
@@ -57,4 +57,4 @@ class AvailabilityAnnouncementDetailsHandler:
         for row in announcementDetails_list:
             result = AvailabilityAnnouncementDetails().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Announcement_Details=result_list)
+        return jsonify(result_list)

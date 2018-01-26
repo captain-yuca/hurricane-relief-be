@@ -19,7 +19,7 @@ class ResourceTransactionsHandler:
         for row in transactions_list:
             result = ResourceTransaction().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Transactions=result_list)
+        return jsonify(result_list)
 
     def getTransactionById(self, tid):
         dao = ResourceTransactionsDAO()
@@ -28,7 +28,7 @@ class ResourceTransactionsHandler:
             return jsonify(Error="Resource Transaction Not Found"), 404
         else:
             transaction = ResourceTransaction().build_dict_from_table(row)
-            return jsonify(Transaction=transaction)
+            return jsonify(transaction)
 
     def searchTransactions(self, args):
         sid = args.get("sid")
@@ -63,7 +63,7 @@ class ResourceTransactionsHandler:
         for row in transactions_list:
             result = ResourceTransaction().build_dict_from_row(row)
             result_list.append(result)
-        return jsonify(Transactions=result_list)
+        return jsonify(result_list)
 
     def checkIfExists(self, supplier_resource_array, sid, rid):
         for entry in supplier_resource_array:
