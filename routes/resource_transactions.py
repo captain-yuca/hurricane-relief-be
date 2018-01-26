@@ -17,7 +17,9 @@ def getAllTransactions():
         return jsonify(Error="Method not allowed. "), 405
 
 
-@resource_transactions_route.route('/api/transactions/<int:tid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
+@resource_transactions_route.route('/api/transactions/<int:tid>', methods=['GET'])
 def getTransactionById(tid):
     if request.method == 'GET':
         return ResourceTransactionsHandler().getTransactionById(tid)
+    else:
+        return jsonify(Error="Method not allowed. "), 405

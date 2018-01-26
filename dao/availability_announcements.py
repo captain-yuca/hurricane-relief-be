@@ -15,7 +15,7 @@ class AvailabilityAnnouncementsDAO:
         query = """
         select ann_id, sid, ann_date, qty, priceattime, rid, rname, catid, catname
         from availabilityannouncement natural inner join availabilityannouncementdetail natural inner join resource natural inner join category natural inner join supplier natural inner join appuser
-        order by rname
+        order by ann_id, rname;
         """
         cursor.execute(query)
         result = []
@@ -63,12 +63,19 @@ class AvailabilityAnnouncementsDAO:
         cursor = self.conn.cursor()
 
         query ="""
-        select ann_id, ann_date, qty, rid, rname, catid, catname
+        select ann_id, sid, ann_date, qty, priceattime, rid, rname, catid, catname
         from availabilityannouncement natural inner join availabilityannouncementdetail natural inner join resource natural inner join category
-        where
-        """ # TOOK OUT ISADMIN HERE -Kelvin
-        query+= "=%s AND ".join(args.keys())
-        query+= "=%s"
+        where ann_id in
+        """
+        subquery = """
+        select ann_id
+        from availabilityannouncement natural inner join availabilityannouncementdetail natural inner join resource natural inner join category
+		where
+        """
+        subquery+= "=%s AND ".join(args.keys())
+        subquery+= "=%s order by ann_id"
+        # TOOK OUT ISADMIN HERE -Kelvin
+        query+= "(" + subquery + ") ORDER BY ann_id, rname;"
 
         cursor.execute(query, tuple(args.values()))
         result=[]

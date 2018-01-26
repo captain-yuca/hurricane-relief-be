@@ -7,10 +7,7 @@ class ResourceRequestsHandler:
     def getAllRequests(self):
         dao = ResourceRequestsDAO()
         request_list = dao.getAllRequests()
-        result_list=[]
-        for row in request_list:
-            request = ResourceRequest().build_dict_from_row_resource(row)
-            result_list.append(request)
+        result_list = ResourceRequest().build_dict_from_table(request_list)
         return jsonify(result_list)
 
     def getRequestById(self, req_id):
@@ -39,9 +36,6 @@ class ResourceRequestsHandler:
                 return jsonify(Error="Malformed query string"), 400
 
         dao = ResourceRequestsDAO()
-        requests_list = dao.getRequestsByParameters(args)
-        result_list=[]
-        for row in requests_list:
-            request = ResourceRequest().build_dict_from_row_resource(row)
-            result_list.append(request)
+        request_list = dao.getRequestsByParameters(args)
+        result_list = ResourceRequest().build_dict_from_table(request_list)
         return jsonify(result_list)

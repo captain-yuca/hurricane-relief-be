@@ -57,3 +57,29 @@ class ResourceRequest:
         result['add_id'] = row[10]
         result['re1_date'] = row[11]
         return result
+    def build_dict_from_table(self, table):
+        requests = []
+        request=None
+        request_detail = None
+        isFirstRow = True
+        for row in table:
+            if not request or request['reqId']!=row[0]: #if creating a transaction for the first time
+                if request:
+                    requests.append(request)
+                request = {}
+                request['reqId'] = row[0]
+                request['nid'] = row[1]
+                request['reqDate'] = row[2]
+                request['details'] = []
+                request_detail = {}
+                request_detail['qty'] = row[3]
+                request_detail['resource'] = Resource().build_dict_from_row_category(row[4:])
+
+            else:
+                request_detail['qty'] = row[3]
+                request_detail['resource'] = Resource().build_dict_from_row_category(row[4:])
+            request['details'].append(request_detail)
+            request_detail = {}
+
+        requests.append(request)
+        return requests

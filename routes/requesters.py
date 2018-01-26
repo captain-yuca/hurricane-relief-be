@@ -19,12 +19,12 @@ def getRequesterById(nid):
     else:
         return jsonify(Error="Method Not Allowed"), 405
 
-@requesters_route.route('/api/requesters/countPerRegion', methods=['GET', 'POST'])
+@requesters_route.route('/api/requesters/countPerRegion', methods=['GET'])
 def getRequestersCountPerRegion():
     if request.method == 'GET':
         return RequestersHandler().getRequestersCountByRegion()
     else:
-        pass
+        return jsonify(Error="Method not allowed. "), 405
 
 @requesters_route.route('/api/requesters/<int:nid>/requests', methods=['GET', 'POST'])
 def getRequestsByNid(nid):
@@ -32,9 +32,9 @@ def getRequestsByNid(nid):
         if not request.args:
             return RequestersHandler().getRequestsByNid(nid)
         else:
+            return RequestersHandler().getRequestsByNid(nid)
             pass
     elif request.method == 'POST':
         return RequestersHandler().insertRequest(request.get_json(), nid)
     else:
         return jsonify(Error="Method not allowed"), 405
-

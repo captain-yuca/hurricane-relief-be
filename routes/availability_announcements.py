@@ -3,13 +3,19 @@ from handler.availability_announcements import AvailabilityAnnouncementsHandler
 
 availability_announcements_route = Blueprint('availability_announcements_route', __name__)
 
-@availability_announcements_route.route('/api/announcements', methods=['GET', 'POST'])
+@availability_announcements_route.route('/api/announcements', methods=['GET'])
 def getAllAnnouncements():
-    if not request.args:
-        return AvailabilityAnnouncementsHandler().getAllAnnouncements()
+    if request.method == 'GET':
+        if not request.args:
+            return AvailabilityAnnouncementsHandler().getAllAnnouncements()
+        else:
+            return AvailabilityAnnouncementsHandler().searchAnnouncements(request.args)
     else:
-        return AvailabilityAnnouncementsHandler().searchAnnouncements(request.args)
-@availability_announcements_route.route('/api/announcements/<int:annid>', methods=['GET', 'POST', 'DELETE', 'UPDATE'])
+        return jsonify(Error="Method not allowed. "), 405
+
+@availability_announcements_route.route('/api/announcements/<int:annid>', methods=['GET'])
 def getAnnouncementById(annid):
     if request.method == 'GET':
         return AvailabilityAnnouncementsHandler().getAnnouncementById(annid)
+    else:
+        return jsonify(Error="Method not allowed. "), 405
