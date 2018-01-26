@@ -29,7 +29,7 @@ class AddressesDAO:
 
     def getAddressesByUserId(self, uid):
         cursor = self.conn.cursor()
-        query = "select add_id, address1, address2, city, country, region, zipcode from appuser natural join address where uid = %s;"
+        query = "select add_id, address1, address2, zipcode, region, country, city from appuser natural join address where uid = %s;"
         cursor.execute(query, (uid,))
         result = []
         for row in cursor:

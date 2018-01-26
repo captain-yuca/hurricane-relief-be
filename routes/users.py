@@ -58,3 +58,12 @@ def getAddressesByUserId(uid):
         return UsersHandler().getAddressesByUserId(uid)
     else:
         return jsonify(Error="Method not allowed. "), 405
+@users_route.route('/api/users/<int:uid>/paymentInfo', methods=['GET','POST'])
+def getPaymentInfoByUserId(uid):
+    """ Returns all addresses tied to the user with uid. """
+    if request.method == 'GET':
+        return UsersHandler().getPaymentInfoByUser(uid)
+    elif request.method == 'POST':
+        return UsersHandler().insertUserPaymentInfo(uid, request.get_json())
+    else:
+        return jsonify(Error="Method not allowed. "), 405

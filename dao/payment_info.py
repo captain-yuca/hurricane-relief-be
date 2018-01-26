@@ -19,9 +19,18 @@ class PaymentInfoDAO:
 
         return result
 
+    def getPaymentInfoByUID(self, uid):
+        cursor = self.conn.cursor()
+        query = "select * from paymentinfo where uid=%s;"
+        cursor.execute(query, (uid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+
+        return result
     def getPaymentInfoById(self, pi_id):
         cursor = self.conn.cursor()
-        query = "select * from paymentinfo where pi_id=%s;"
+        query = "select pi_id, ccnum, expirationDate, add_id from paymentinfo where pi_id=%s;"
         cursor.execute(query, (pi_id,))
         result = cursor.fetchone()
         return result
@@ -32,3 +41,10 @@ class PaymentInfoDAO:
         cursor.execute(query, (sid,))
         result = cursor.fetchone()
         return result
+    def insertPaymentInfo(self, ccNum, expirationDate, uid, add_id):
+        cursor = self.conn.cursor()
+        query = "insert into PaymentInfo(ccNum, expirationDate, uid, add_id) values (%s,%s,%s,%s) returning pi_id;"
+        cursor.execute(query, (ccNum, expirationDate, uid, add_id,))
+        pi_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return pi_id
