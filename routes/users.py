@@ -64,6 +64,6 @@ def getAddressesByUserId(uid):
     if request.method == 'GET':
         return UsersHandler().getPaymentInfoByUser(uid)
     elif request.method == 'POST':
-        return UsersHandler.insertUserPaymentInfo(uid, request.get_json())
+        return UsersHandler().insertUserPaymentInfo(uid, request.get_json())
     else:
         return jsonify(Error="Method not allowed. "), 405

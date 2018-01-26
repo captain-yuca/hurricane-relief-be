@@ -314,6 +314,8 @@ class SuppliersHandler:
                 else:
                     result = AvailabilityAnnouncement().build_dict_from_table_details(table)
                     return jsonify(announcement=result)
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
         elif len(form) !=4:
             return jsonify(Error="Malformed post request"), 400
         else:
@@ -358,6 +360,8 @@ class SuppliersHandler:
                 else:
                     result = AvailabilityAnnouncement().build_dict_from_table_details(table)
                     return jsonify(announcement=result)
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
     def getAvailabilityAnnouncementsBySID(self, sid):
     #TOMORROW FIX: WHATS UP WITH THE DIC. SOMETHING ABOUT ADMIN.
         supplierDAO = SuppliersDAO()

@@ -2,10 +2,12 @@ from flask import jsonify
 from dao.users import UsersDAO
 from dao.addresses import AddressesDAO
 from dao.purchase import PurchaseDAO
+from dao.payment_info import PaymentInfoDAO
 from dao.resourceTransactions import ResourceTransactionsDAO
 from models.user import User
 from models.address import Address
 from models.purchase import Purchase
+from models.payment_info import PaymentInfo
 from models.resourceTransaction import ResourceTransaction
 
 class UsersHandler:
@@ -167,3 +169,47 @@ class UsersHandler:
         dao = UsersDAO()
         result = dao.count()
         return jsonify(count=result[0])
+
+    def getPaymentInfoByUser(self, uid):
+        dao = PaymentInfoDAO()
+        paymentInfo_list = dao.getPaymentInfoByUID()
+        result_list = []
+        for row in paymentInfo_list:
+            paymentInfo = PaymentInfo().build_dict_from_row(row)
+            result_list.append(paymentInfo)
+        return jsonify(PaymentInfo=result_list)
+
+
+    def insertUserPaymentInfo(self, uid, form):
+        print(len(form))
+        if len(form) != 3:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            ccNum = form['ccNum']
+            expirationDate = form["expirationDate"]
+            #add_id=form["addId"]
+            #username = form['username']
+            #hod this work again?
+            address1 = form['address']['address1']
+            address2 = form['address']['address2']
+            zipcode = form['address']['zipcode']
+            region = form['address']['region']
+            country = form['address']['country']
+            city = form['address']['city']
+            if ccNum and expirationDate and address1 and zipcode and region and country and city:
+                dao = UsersDAO()
+                dao2 = AddressesDAO()
+                ua = dao2.getAddressesByUserId(uid)
+                if ua[1]==address1 and ua[2]==address2 and ua[3]==zipcode and ua[4]==region and ua[5]==country and ua[6]==city:
+                    add_id=ua[0]
+                else:
+                    add_id = dao2.insert(address1, address2, zipcode, region, country, city)
+               # uid = dao.insert(username, lastname, firstname, password, email, phone, add_id)
+                dao= PaymentInfoDAO()
+                pi_id = dao.insertPaymentInfo(ccNum, expirationDate,uid,add_id)
+                #result = User().build_dict_from_row(dao.getUserById(uid))
+                result = PaymentInfo().build_dict_from_row(dao.getPaymentInfoById(pi_id))
+
+                return jsonify(result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
