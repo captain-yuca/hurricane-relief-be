@@ -106,7 +106,20 @@ class RequestersHandler:
                 return jsonify(result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+    def getRequestByIds(self, nid, req_id): #new by herbert
+        dao = RequestersDAO()
+        row = dao.getRequesterById()
+        if not row:
+            return jsonify(Error="Requester Not Found"), 404
+        else:
+            dao2 = ResourceRequestsDAO()
+            requests_list = dao2.getRequestsByNid(nid)
+            if not requests_list[0]:
+                return jsonify(Error="Request Not Found"), 404
+            dao = ResourceRequestsDAO
+            result = dao.getRequestByIdWithDetails(req_id)
 
+            return jsonify(result)
     def getRequestsByNid(self, nid):
         dao = RequestersDAO()
         row = dao.getRequesterById(nid)

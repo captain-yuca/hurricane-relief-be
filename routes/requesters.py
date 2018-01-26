@@ -44,7 +44,7 @@ def getRequestsByNid(nid):
 def getRequestDetailsByReqId(nid, req_id):
     if request.method == 'GET':
         if not request.args:
-            return RequestersHandler().getRequestsByNid(nid)
+            return RequestersHandler().getRequestByIds(nid, req_id)#this is what needs changing
         else:
             pass
     elif request.method == 'POST':
