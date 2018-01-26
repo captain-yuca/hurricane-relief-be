@@ -1,5 +1,6 @@
 from flask import jsonify
 
+from dao.categories import CategoriesDAO
 from dao.resourceRequestDetails import ResourceRequestDetailsDAO
 from dao.resource_requests import ResourceRequestsDAO
 from dao.resources import ResourcesDAO
@@ -68,7 +69,37 @@ class RequestersHandler:
                 return jsonify(Error="Unexpected attributes in post requester"), 400
 
     def insertRequest(self, form, nid):
-        if len(form) != 2:
+        if len(form) == 3:
+            rname = form['rname']
+            catid = form['catid']
+            qty = form['qty']
+            if rname and catid and qty:
+                dao = ResourcesDAO()
+                resource = dao.getResourcesByRname(rname)
+                if not resource:
+                    dao2 = CategoriesDAO()
+                    if not dao2.getCategoryById(catid):
+                        return jsonify(Error="Category Not Found"), 404
+                    rid = dao.insert(rname, catid)
+                else:
+                    rid = (resource[0])[0]
+
+
+                dao = ResourceRequestsDAO()
+                req_id = dao.insertRequest(nid)
+
+                dao3 = ResourceRequestDetailsDAO()
+                dao3.insertRequestDetails(req_id, rid, qty)
+
+                table = dao.getRequestByIdWithDetails2(req_id)
+
+                if not table:
+                    return jsonify(Error="Request Not Found"), 404
+                else:
+                    
+                    result = ResourceRequest().build_dict_from_row_resource(table)
+                    return jsonify(request=result)
+        elif len(form) != 2:
             return jsonify(Error="Malformed post request"), 400
         else:
             rid = form['rid']
