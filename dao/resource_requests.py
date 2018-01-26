@@ -26,13 +26,15 @@ class ResourceRequestsDAO:
 
     def getRequestByIdWithDetails(self, req_id):
         cursor = self.conn.cursor()
-        query = """select req_id, req_date, nid, uid, username, lname, fname, isAdmin, add_id, qty, rid, rname, catid, catname
+        query = """select req_id, req_date, nid, uid, username, lname, fname, email, phone, add_id, qty, rid, rname, catid, catname
         from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category
         where req_id=%s
         order by rname;
         """
         cursor.execute(query,(req_id,))
-        result = cursor.fetchone()
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getRequestByIdWithDetails2(self, req_id):
@@ -100,11 +102,23 @@ class ResourceRequestsDAO:
 
     def getRequestsByNid(self, nid):
         cursor = self.conn.cursor()
-        query = "select req_id, req_date, qty, rid, rname, catid, catname " \
-                "from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category " \
-                "where nid = %s;"
+        query ="""
+        select req_id, req_date, qty, rid, rname, catid, catname
+        from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category
+        where req_id in
+        """ # TOOK OUT ISADMIN HERE -Kelvin
+
+        subquery = """
+        select req_id
+        from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category
+		where nid = %s ORDER BY req_id
+        """
+
+        query+= "(" + subquery + ") ORDER BY req_id, rname;"
+
+
         cursor.execute(query, (nid,))
-        result = []
+        result=[]
         for row in cursor:
             result.append(row)
         return result

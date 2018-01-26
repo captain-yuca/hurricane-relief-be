@@ -227,7 +227,7 @@ class SuppliersHandler:
                     return jsonify(Error="Resource not found"), 404
 
                 dao = AvailabilityAnnouncementsDAO()
-                announcement=dao.getAnnouncementById(ann_id);
+                announcement=dao.getAnnouncementById(ann_id)
                 if not announcement:
                     return jsonify(Error="Announcement not found"),404
                 else:
@@ -271,14 +271,14 @@ class SuppliersHandler:
                 dao = ResourcesDAO()
                 resource = dao.getResourcesByRname(rname)
                 if not resource:
-                    if not dao2.getCategoryById():
+                    if not dao2.getCategoryById(catid):
                         return jsonify(Error="Category not found")
                     rid = dao.insert(rname, catid)
                 else:
                     rid = (resource[0])[0]
                     print(rid)
                 dao = AvailabilityAnnouncementsDAO()
-                announcement = dao.getAnnouncementById(ann_id);
+                announcement = dao.getAnnouncementById(ann_id)
                 if not announcement:
                     return jsonify(Error="Announcement not found"), 404
                 else:
@@ -362,7 +362,7 @@ class SuppliersHandler:
                 dao = ResourcesDAO()
                 resource = dao.getResourcesByRname(rname)
                 if not resource:
-                    if not dao2.getCategoryById():
+                    if not dao2.getCategoryById(catid):
                         return jsonify(Error="Category not found")
                     rid=dao.insert(rname,catid)
                 else:

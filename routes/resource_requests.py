@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, request
+from flask import Blueprint, render_template, abort, request, jsonify
 from handler.resource_requests import ResourceRequestsHandler
 
 resource_requests_route = Blueprint('resource_requests_route', __name__)
@@ -13,6 +13,7 @@ def getAllRequests():
     else:
         return jsonify(Error="Method not allowed. "), 405
 @resource_requests_route.route('/api/requests/<int:reqid>', methods=['GET'])
+
 def getRequestById(reqid):
     if request.method == 'GET':
         return ResourceRequestsHandler().getRequestById(reqid)

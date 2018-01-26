@@ -38,3 +38,16 @@ def getRequestsByNid(nid):
         return RequestersHandler().insertRequest(request.get_json(), nid)
     else:
         return jsonify(Error="Method not allowed"), 405
+
+
+@requesters_route.route('/api/requesters/<int:nid>/requests/<int:req_id>', methods=['GET', 'POST', 'PUT'])
+def getRequestDetailsByReqId(nid, req_id):
+    if request.method == 'GET':
+        if not request.args:
+            return RequestersHandler().getRequestsByNid(nid)
+        else:
+            pass
+    elif request.method == 'POST':
+        return RequestersHandler().insertRequestDetailsByReqId(request.get_json(), req_id)
+    elif request.method == 'PUT':
+        return RequestersHandler().updateRequestDetailsByReqId(request.get_json(), req_id)

@@ -25,16 +25,14 @@ class ResourceRequest:
                 request = {}
                 request['req_id'] = row[0]
                 request['date'] = row[1]
-                request['requester'] = Requester().build_dict_from_row(row[2:9])
+                request['requester'] = Requester().build_dict_from_row(row[2:10])
                 request['details'] = []
-                request_detail['qty'] = row[9]
-                request_detail['resource'] = Resource().build_dict_from_row_category(row[10:])
-                request_detail['qty'] = row[9]
-                request_detail['resource'] = Resource().build_dict_from_row_category(row[10:])
+                request_detail['qty'] = row[10]
+                request_detail['resource'] = Resource().build_dict_from_row_category(row[11:])
                 isFirstRow = False
             else:
-                request_detail['qty'] = row[9]
-                request_detail['resource'] = Resource().build_dict_from_row_category(row[10:])
+                request_detail['qty'] = row[10]
+                request_detail['resource'] = Resource().build_dict_from_row_category(row[11:])
 
             request['details'].append(request_detail)
             request_detail = {}
@@ -78,6 +76,32 @@ class ResourceRequest:
             else:
                 request_detail['qty'] = row[3]
                 request_detail['resource'] = Resource().build_dict_from_row_category(row[4:])
+            request['details'].append(request_detail)
+            request_detail = {}
+
+        requests.append(request)
+        return requests
+
+    def build_dict_from_table_no_nid(self, table):
+        requests = []
+        request=None
+        request_detail = None
+        isFirstRow = True
+        for row in table:
+            if not request or request['reqId']!=row[0]: #if creating a transaction for the first time
+                if request:
+                    requests.append(request)
+                request = {}
+                request['reqId'] = row[0]
+                request['reqDate'] = row[1]
+                request['details'] = []
+                request_detail = {}
+                request_detail['qty'] = row[2]
+                request_detail['resource'] = Resource().build_dict_from_row_category(row[3:])
+
+            else:
+                request_detail['qty'] = row[2]
+                request_detail['resource'] = Resource().build_dict_from_row_category(row[3:])
             request['details'].append(request_detail)
             request_detail = {}
 

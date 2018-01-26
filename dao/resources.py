@@ -30,7 +30,7 @@ class ResourcesDAO:
 
     def getResourcesByRname(self, rname):
         cursor = self.conn.cursor()
-        query = "select * from resource where rname = %s;"
+        query = "select rid, rname, catid from resource where rname = %s;"
         cursor.execute(query, (rname,))
         result = []
         for row in cursor:
