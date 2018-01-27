@@ -235,7 +235,7 @@ class RequestersHandler:
 
                 rrddao.update(req_id, rid, qty, None)
 #FIX HEREEEE
-                result = ResourceRequest().build_dict_from_table_no_nid(rrdao.getRequestByIdWithDetails(req_id))
+                result = ResourceRequest().build_dict_from_table_no_nid(rrdao.getRequestByIdWithDetailsNoReq(req_id))
                 return jsonify(result), 201
             else:
                 return jsonify(Error="Unexpected Attributes in Put Request"), 400
