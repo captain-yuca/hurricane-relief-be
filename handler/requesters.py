@@ -220,4 +220,55 @@ class RequestersHandler:
 
                 rdao = ResourcesDAO()
                 if not rdao.getResourceById(rid):
-                    return jsonify(Error="Resource Not Found")
+                    return jsonify(Error="Resource Not Found"), 404
+
+                rrdao = ResourceRequestsDAO()
+                if not rrdao.getRequestByIdWithDetails(req_id):
+                    return jsonify(Error="Request Not Found"), 404
+
+                rrddao = ResourceRequestDetailsDAO()
+                if not rrddao.getRequestDetailsById(req_id, rid):
+                    return jsonify(Error="Request Detail Not Found"), 404
+
+                if rrddao.getRequestDetailsById(req_id, rid)[3]:
+                    return jsonify(Error="Request Detail was Fulfilled"), 400
+
+                rrddao.update(req_id, rid, qty, None)
+#FIX HEREEEE
+                result = ResourceRequest().build_dict_from_table_no_nid(rrdao.getRequestByIdWithDetails(req_id))
+                return jsonify(result), 201
+            else:
+                return jsonify(Error="Unexpected Attributes in Put Request"), 400
+        elif len(form) != 3:
+            return jsonify("Malformed Put Request"), 400
+        else:
+            rid = form['rid']
+            qty = form['qty']
+            date = form['f_date']
+
+            if rid and qty and date:
+                rdao = ResourcesDAO()
+                if not rdao.getResourceById(rid):
+                    return jsonify(Error="Resource Not Found"), 404
+
+                rrdao = ResourceRequestsDAO()
+                if not rrdao.getRequestByIdWithDetails2(req_id):
+                    return jsonify(Error="Request Not Found"), 404
+
+                rrddao = ResourceRequestDetailsDAO()
+                if not rrddao.getRequestDetailsById(req_id, rid):
+                    return jsonify(Error="Request Detail Not Found"), 404
+
+                if rrddao.getRequestDetailsById(req_id, rid)[3]:
+                    return jsonify(Error="Request Detail was Fulfilled"), 400
+
+                rrddao.update(req_id, rid, qty, date)
+                result_list = rrdao.getRequestByIdWithDetails2(req_id)
+                table = []
+
+#FIX HEREEEEE
+                result = ResourceRequest().build_dict_from_table_no_nid(rrdao.getRequestByIdWithDetails(req_id))
+                return jsonify(result), 201
+
+            else:
+                return jsonify(Error="Unexpected Attributes in Put Request"), 400
