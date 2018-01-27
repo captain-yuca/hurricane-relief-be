@@ -37,6 +37,19 @@ class ResourceRequestsDAO:
             result.append(row)
         return result
 
+    def getRequestByIdWithDetailsNoReq(self, req_id):
+        cursor = self.conn.cursor()
+        query = """select req_id, req_date, qty, rid, rname, catid, catname
+        from resourcerequest natural inner join requester natural inner join appuser natural inner join resourcerequestdetail natural inner join resource natural inner join category
+        where req_id=%s
+        order by rname;
+        """
+        cursor.execute(query,(req_id,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getRequestByIdWithDetails2(self, req_id):
         cursor = self.conn.cursor()
         query = """select req_id, req_date, qty, rid, rname, catid, catname

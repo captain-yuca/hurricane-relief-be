@@ -57,6 +57,19 @@ class AvailabilityAnnouncementsDAO:
             result.append(row)
         return result
 
+    def getAnnouncementByIdWithDetailsNoSup(self, ann_id):
+        cursor = self.conn.cursor()
+        query = """
+        select ann_id, ann_date, qty, priceattime, rid, rname, catid, catname
+        from availabilityannouncement natural inner join availabilityannouncementdetail natural inner join resource natural inner join category natural inner join supplier natural inner join appuser
+        where ann_id = %s
+        """
+        cursor.execute(query, (ann_id,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
 
     def getAnnouncementsByParameters(self, args):
 

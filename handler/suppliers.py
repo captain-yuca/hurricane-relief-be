@@ -421,8 +421,7 @@ class SuppliersHandler:
         supplier = dao.getAnnouncementBySIDWithDetails(sid)
         if not supplier[0]:
             return jsonify(Error="Availability Announcement not found"), 404
-        result=[]
-        result.append(dao.getAnnouncementById(ann_id))
+        result = dao.getAnnouncementByIdWithDetailsNoSup(ann_id)
         if not result:
             return jsonify(Error="Availability Announcement Not Found"), 404
         else:

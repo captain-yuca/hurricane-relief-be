@@ -27,5 +27,7 @@ class AvailabilityAnnouncementsHandler:
 
         dao = AvailabilityAnnouncementsDAO()
         announcement_list = dao.getAnnouncementsByParameters(args)
+        if not announcement_list:
+            return jsonify([])
         result_list=AvailabilityAnnouncement().build_dict_from_table(announcement_list)
         return jsonify(result_list)

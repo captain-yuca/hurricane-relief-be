@@ -35,7 +35,7 @@ Supplier POST
 }
 
 3) Anunciar Recursos
-
+//annoucement 1 resource
 /api/suppliers/2/announcements
 
 Announcement Post
@@ -51,12 +51,19 @@ Announcement Post
   "priceattime":3.00,
   "catid":2
 }
-
+//add more resources to announcement
+/api/suppliers/2/announcements/2
+Announcement Details Post
+{
+  "rid":1,
+  "qty":4,
+  "priceattime":50
+}
 4) Solicitar Recursos
-
+//creates request for one resource
 /api/requesters/2/requests
 
-Announcement POST
+Request POST
 
 {
   "rid":1,
@@ -67,7 +74,13 @@ Announcement POST
   "qty":30,
   "catid":2
 }
-
+//add more resources to request
+/api/requesters/2/requests/1
+Request Details POST
+{
+  "rid":1,
+  "qty":4
+}
 5) Comprar recursos
 
 
@@ -135,6 +148,8 @@ Announcement POST
 }
 
 10) Actualizar la informacion de Tarjeta de Credito
+
+
 
 /api/users/2/paymentinfo
 
