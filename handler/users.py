@@ -157,7 +157,6 @@ class UsersHandler:
 
 
     def insertUserPaymentInfo(self, uid, form):
-        print(len(form))
         if len(form) != 3:
             return jsonify(Error="Malformed post request"), 400
         else:
@@ -177,6 +176,7 @@ class UsersHandler:
                 dao2 = AddressesDAO()
                 ua = dao2.getAddressesByUserId(uid)[0]
                 payment_dao= PaymentInfoDAO()
+                print("Hello")
 
                 #Check if ccNum exists
                 if payment_dao.getPaymentInfoByCCNum(ccNum):
@@ -189,7 +189,7 @@ class UsersHandler:
                # uid = dao.insert(username, lastname, firstname, password, email, phone, add_id)
                 pi_id = payment_dao.insertPaymentInfo(ccNum, expirationDate,uid,add_id)
                 #result = User().build_dict_from_row(dao.getUserById(uid))
-                result = PaymentInfo().build_dict_from_row(dao.getPaymentInfoById(pi_id))
+                result = PaymentInfo().build_dict_from_row(payment_dao.getPaymentInfoById(pi_id))
 
                 return jsonify(result), 201
             else:

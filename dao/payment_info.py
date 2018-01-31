@@ -44,9 +44,10 @@ class PaymentInfoDAO:
 
     def getPaymentInfoByCCNum(self, ccNum):
         cursor = self.conn.cursor()
-        query = "select pi_id from paymentinfo natural inner join appuser natural inner join supplier where ccnum=%s;"
+        query = "select pi_id from paymentinfo where ccnum=%s;"
         cursor.execute(query, (ccNum,))
         result = cursor.fetchone()
+        print("Here")
         return result
 
 
